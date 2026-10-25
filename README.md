@@ -1,35 +1,30 @@
-# HWM alfa 0.8.5
+# HWM alfa 0.8.6
 
-Esta versión conserva la base táctica de HWM 0.8.4 e incorpora dos mejoras estructurales:
+HWM 0.8.6 conserva la jugabilidad de 0.8.5 y agrega la arquitectura musical definitiva por fases.
 
-- **Dos velocidades por formación:** Marcha y Rápido.
-- **Arquitectura de audio por estados** preparada para integrar la banda sonora y efectos de mayor calidad.
+## Música
 
-## Velocidades
+- **Briefing inicial:** `Shadows of War`
+- **Preparación / despliegue:** `Omniscient Evil`
+- **Batalla:** sin música por ahora
+- **Resultado:** `What History Remembers`
 
-Cada formación aliada puede alternar entre:
+El cambio entre pistas usa fade suave. La música se puede silenciar desde el botón **♫** de la barra superior.
 
-- **Marcha** — velocidad normal.
-- **Rápido** — aproximadamente +42% de velocidad, con pérdida gradual de cohesión mientras la formación se desplaza fuera del contacto.
+Por las restricciones de reproducción automática del navegador, la primera pista comienza a partir de la primera interacción del jugador.
 
-Esto agrega una decisión táctica sin modificar daño, moral, IA ni reglas de combate.
+## Efectos
 
-## Audio
+Los efectos sintéticos de prueba permanecen retirados. La batalla queda preparada para incorporar más adelante muestras reales de armas, escudos, proyectiles, caballería, marcha y voces.
 
-Los efectos sintéticos generados con Web Audio que se probaron durante el desarrollo fueron retirados del build público porque no alcanzaban el nivel de calidad buscado.
+## Movimiento
 
-Se conserva la lógica de eventos para integrar después muestras reales/cinematográficas sin tocar el motor táctico.
+Cada formación aliada tiene dos velocidades:
 
-Estados musicales disponibles:
+- **Marcha:** velocidad normal.
+- **Rápido:** +42% de velocidad aproximadamente, con pérdida gradual de cohesión durante el desplazamiento.
 
-- `menu`
-- `deploy`
-- `approach`
-- `combat`
-- `crisis`
-- `victory`
-- `defeat`
+## Baselines
 
-## Baseline
-
-La rama `baseline-0.8.4` conserva la versión estable anterior.
+- `baseline-0.8.4`: primera versión estable de referencia.
+- `baseline-0.8.5`: versión estable anterior a la integración musical.
