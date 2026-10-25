@@ -1,16 +1,43 @@
-# HWM alfa 0.8.4
+# HWM alfa 0.8.5 AUDIO
 
-Ajustes de Maratón 1:
+Esta versión parte de HWM 0.8.4 y agrega una capa sonora adaptativa sin modificar la lógica de combate.
 
-- **El mar deja de ser terreno transitable** mediante una línea costera aproximada que sigue la fotografía real.
-- El primer despliegue persa se mueve desde el agua hacia **tierra firme junto a la costa** y se reajustan las restantes posiciones persas para una lectura más natural del frente.
-- **Todas las formaciones llevan estandarte**, sin excepciones, para identificar inmediatamente aliados y enemigos.
-- Se mantienen los colores de facción: azul para aliados y rojo para enemigos.
+## Efectos implementados
 
-Se conserva sin cambios la lógica base de combate, moral, cohesión, hostigamiento, formaciones y ritmo de batalla de la 0.8.3.
+- confirmación de órdenes con llamada breve tipo salpinx;
+- marcha de formaciones;
+- galope de caballería;
+- choque de escudos / armas en cuerpo a cuerpo;
+- impacto reforzado de caballería;
+- descarga de arqueros;
+- lanzamiento de jabalinas de peltastas;
+- impactos diferenciados de flechas y jabalinas;
+- desbandada de formaciones;
+- señal de penetración del paso en Termópilas;
+- inicio de batalla;
+- cierre breve de victoria o derrota;
+- ambiente de batalla cuya densidad aumenta según la cantidad real de formaciones trabadas.
 
-Termópilas mantiene el mapa original y el corredor estrecho jugable introducido en 0.8.3.
+Los sonidos se generan con Web Audio API y no requieren archivos de audio externos. Se usan límites de frecuencia para evitar saturación cuando varias formaciones combaten al mismo tiempo.
 
-Archivos principales:
-- `index.html`
-- `assets/`
+## Estados musicales preparados
+
+El juego emite el evento `hwm:musicstate` con estos estados:
+
+- `menu`
+- `deploy`
+- `approach`
+- `combat`
+- `crisis`
+- `victory`
+- `defeat`
+
+Esto permite integrar después la música de HWM sin tocar el motor táctico.
+
+## Controles
+
+El botón **FX** de la barra superior activa o silencia los efectos. La preferencia queda guardada en el navegador.
+
+## Baseline
+
+HWM 0.8.4 se conserva como referencia estable separada. La 0.8.5 no altera daño, moral, cohesión, IA, formaciones, velocidades ni ritmo de batalla.
