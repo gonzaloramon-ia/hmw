@@ -1,23 +1,43 @@
 # HWM alfa 0.8.5 AUDIO
 
-Rama experimental de audio basada en la jugabilidad estable de 0.8.4.
+Esta versión parte de HWM 0.8.4 y agrega una capa sonora adaptativa sin modificar la lógica de combate.
 
-## Efectos incluidos
+## Efectos implementados
 
-- órdenes del jugador;
-- choque cuerpo a cuerpo;
+- confirmación de órdenes con llamada breve tipo salpinx;
+- marcha de formaciones;
+- galope de caballería;
+- choque de escudos / armas en cuerpo a cuerpo;
 - impacto reforzado de caballería;
-- descargas de arqueros;
+- descarga de arqueros;
 - lanzamiento de jabalinas de peltastas;
-- impactos de proyectiles;
-- desbandada de una formación;
+- impactos diferenciados de flechas y jabalinas;
+- desbandada de formaciones;
+- señal de penetración del paso en Termópilas;
 - inicio de batalla;
-- victoria y derrota.
+- cierre breve de victoria o derrota;
+- ambiente de batalla cuya densidad aumenta según la cantidad real de formaciones trabadas.
 
-Los efectos se generan con **Web Audio API** y no requieren archivos de sonido externos. Se agrupan y limitan por tiempo para evitar saturación cuando muchas formaciones combaten a la vez.
+Los sonidos se generan con Web Audio API y no requieren archivos de audio externos. Se usan límites de frecuencia para evitar saturación cuando varias formaciones combaten al mismo tiempo.
 
-El botón **FX** de la barra superior permite activar o silenciar los efectos. La preferencia queda guardada en el navegador.
+## Estados musicales preparados
+
+El juego emite el evento `hwm:musicstate` con estos estados:
+
+- `menu`
+- `deploy`
+- `approach`
+- `combat`
+- `crisis`
+- `victory`
+- `defeat`
+
+Esto permite integrar después la música de HWM sin tocar el motor táctico.
+
+## Controles
+
+El botón **FX** de la barra superior activa o silencia los efectos. La preferencia queda guardada en el navegador.
 
 ## Baseline
 
-La rama `main` conserva HWM 0.8.4 como referencia estable. Esta rama no modifica la lógica de combate, moral, cohesión, IA, formaciones ni ritmo de batalla.
+HWM 0.8.4 se conserva como referencia estable separada. La 0.8.5 no altera daño, moral, cohesión, IA, formaciones, velocidades ni ritmo de batalla.
