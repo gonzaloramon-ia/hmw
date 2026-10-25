@@ -134,77 +134,180 @@ const el=id=>document.getElementById(id);const ui={list:el('battlelist'),sidebar
 // HWM 0.8.5 — efectos de batalla sintetizados en tiempo real.
 // No usa archivos de audio: la música podrá añadirse después como una capa independiente.
 const SFX=(()=>{
- let ctx=null,master=null,last={},enabled=true;
+ let ctx=null,master=null,compressor=null,noiseBuffer=null,last={},enabled=true,lastScene='';
  try{enabled=localStorage.getItem('hwm-sfx')!=='0'}catch(_){}
  const AC=window.AudioContext||window.webkitAudioContext;
+
  function ensure(){
   if(!enabled||!AC)return null;
   if(!ctx){
    ctx=new AC();
-   master=ctx.createGain();master.gain.value=.46;master.connect(ctx.destination);
+   master=ctx.createGain();master.gain.value=.38;
+   compressor=ctx.createDynamicsCompressor();
+   compressor.threshold.value=-20;compressor.knee.value=16;compressor.ratio.value=5;compressor.attack.value=.004;compressor.release.value=.22;
+   master.connect(compressor);compressor.connect(ctx.destination);
+   noiseBuffer=ctx.createBuffer(1,Math.floor(ctx.sampleRate*1.5),ctx.sampleRate);
+   const data=noiseBuffer.getChannelData(0);
+   for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
   }
   if(ctx.state==='suspended')ctx.resume().catch(()=>{});
   return ctx;
  }
  function gate(name,ms){const now=performance.now();if(now-(last[name]||0)<ms)return false;last[name]=now;return true}
- function gainEnv(t,d,peak=.25,attack=.006){
+ function panFor(x){if(x==null)return 0;return Math.max(-.72,Math.min(.72,(x/WORLD.w-.5)*1.44))}
+ function outputNode(x=null){
   const c=ensure();if(!c)return null;
-  const g=c.createGain();g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.001,peak),t+attack);g.gain.exponentialRampToValueAtTime(.0001,t+d);g.connect(master);return g;
+  if(c.createStereoPanner){const p=c.createStereoPanner();p.pan.value=panFor(x);p.connect(master);return p}
+  return master;
  }
- function tone(freq,d=.12,peak=.12,type='triangle',slide=1){
+ function envelope(d=.12,peak=.12,attack=.004,x=null){
+  const c=ensure();if(!c)return null;
+  const g=c.createGain(),t=c.currentTime;
+  g.gain.setValueAtTime(.0001,t);
+  g.gain.exponentialRampToValueAtTime(Math.max(.001,peak),t+attack);
+  g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  g.connect(outputNode(x));return g;
+ }
+ function tone(freq,d=.12,peak=.08,type='triangle',slide=1,x=null,delay=0){
   const c=ensure();if(!c)return;
-  const t=c.currentTime,o=c.createOscillator(),g=gainEnv(t,d,peak);
+  const t=c.currentTime+delay,o=c.createOscillator(),g=c.createGain(),out=outputNode(x);
   o.type=type;o.frequency.setValueAtTime(freq,t);o.frequency.exponentialRampToValueAtTime(Math.max(30,freq*slide),t+d);
-  o.connect(g);o.start(t);o.stop(t+d+.02);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.001,peak),t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g);g.connect(out);o.start(t);o.stop(t+d+.03);
  }
- function noise(d=.08,peak=.12,filterType='bandpass',freq=1200,q=.7){
-  const c=ensure();if(!c)return;
-  const frames=Math.max(1,Math.floor(c.sampleRate*d)),buf=c.createBuffer(1,frames,c.sampleRate),data=buf.getChannelData(0);
-  for(let i=0;i<frames;i++)data[i]=(Math.random()*2-1)*(1-i/frames*.55);
-  const src=c.createBufferSource(),fil=c.createBiquadFilter(),g=gainEnv(c.currentTime,d,peak,.002);
-  fil.type=filterType;fil.frequency.value=freq;fil.Q.value=q;src.buffer=buf;src.connect(fil);fil.connect(g);src.start();
+ function noise(d=.08,peak=.08,filterType='bandpass',freq=1000,q=.8,x=null,delay=0){
+  const c=ensure();if(!c||!noiseBuffer)return;
+  const t=c.currentTime+delay,src=c.createBufferSource(),fil=c.createBiquadFilter(),g=c.createGain(),out=outputNode(x);
+  src.buffer=noiseBuffer;src.playbackRate.value=.88+Math.random()*.24;
+  fil.type=filterType;fil.frequency.value=freq*(.92+Math.random()*.16);fil.Q.value=q;
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.001,peak),t+.003);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  src.connect(fil);fil.connect(g);g.connect(out);src.start(t,Math.random()*.8);src.stop(t+d+.03);
  }
- function order(){if(!gate('order',80))return;tone(185,.075,.10,'square',.82);tone(92,.11,.07,'triangle',.74)}
- function melee(cavalry=false){
-  if(!gate('melee',105))return;
-  noise(cavalry?.16:.10,cavalry?.19:.13,'bandpass',cavalry?430:1050,cavalry?1.1:1.8);
-  tone(cavalry?78:620,cavalry?.18:.075,cavalry?.13:.075,cavalry?'triangle':'square',cavalry?.58:1.42);
-  if(!cavalry&&Math.random()<.48)tone(1480,.055,.035,'sine',.72);
+ function drum(x=null,peak=.11,delay=0){
+  tone(74+Math.random()*10,.17,peak,'sine',.48,x,delay);
+  noise(.075,peak*.55,'lowpass',340,.45,x,delay);
  }
- function ranged(kind){
-  if(!gate('ranged-'+kind,150))return;
+ function order(){
+  if(!gate('order',110))return;
+  // Short salpinx-like command: audible but not a modern UI beep.
+  tone(246,.11,.07,'sawtooth',1.06,null,0);
+  tone(328,.13,.065,'sawtooth',.94,null,.08);
+  noise(.045,.025,'bandpass',1600,1.4,null,.02);
+ }
+ function melee(attacker=null){
+  if(!gate('melee',85))return;
+  const x=attacker?.x,cavalry=attacker?.type==='cavalry';
+  noise(cavalry?.18:.095,cavalry?.15:.105,'bandpass',cavalry?430:980,cavalry?1.0:1.7,x);
+  tone(cavalry?82:540,cavalry?.17:.065,cavalry?.09:.045,cavalry?'triangle':'square',cavalry?.55:1.34,x);
+  if(!cavalry&&Math.random()<.42)tone(1420+Math.random()*420,.052,.025,'sine',.70,x,.008);
+  if(cavalry){drum(x,.075,.015);noise(.12,.055,'lowpass',270,.5,x,.045)}
+ }
+ function ranged(u){
+  const kind=u?.type||u;if(!gate('ranged-'+kind,145))return;
+  const x=u?.x;
   if(kind==='archer'){
-   noise(.11,.085,'highpass',1800,.5);tone(930,.08,.035,'triangle',1.35);
+   // Bow-string snap + a short airy release.
+   noise(.055,.050,'highpass',2600,.45,x);
+   tone(780,.060,.027,'triangle',1.65,x,.005);
+   noise(.12,.034,'bandpass',1350,.65,x,.018);
   }else{
-   noise(.12,.105,'bandpass',720,.8);tone(290,.10,.05,'triangle',.62);
+   // Javelin release: heavier and lower than arrows.
+   noise(.075,.065,'bandpass',730,.75,x);
+   tone(305,.10,.032,'triangle',.58,x,.005);
+   noise(.11,.030,'highpass',1050,.5,x,.02);
   }
  }
- function projectileHit(kind){
-  if(!gate('hit-'+kind,120))return;
-  noise(.055,kind==='archer'?.06:.075,'bandpass',kind==='archer'?1500:900,1.1);
+ function projectileHit(kind,target=null){
+  if(!gate('hit-'+kind,105))return;
+  const x=target?.x;
+  if(kind==='archer'){
+   noise(.045,.047,'bandpass',1850,1.2,x);
+   tone(980,.04,.018,'triangle',.72,x);
+  }else{
+   noise(.07,.060,'bandpass',820,.85,x);
+   tone(190,.065,.025,'triangle',.64,x);
+  }
  }
- function rout(side){
-  if(!gate('rout',850))return;
-  tone(side==='ally'?165:195,.42,.13,'sawtooth',.48);noise(.22,.07,'lowpass',520,.5);
+ function rout(u){
+  if(!gate('rout',700))return;
+  const x=u?.x;
+  noise(.32,.072,'lowpass',680,.45,x);
+  tone(u?.side==='ally'?176:205,.46,.10,'sawtooth',.43,x);
+  tone(108,.34,.06,'triangle',.60,x,.08);
  }
- function battleStart(){if(!gate('battle-start',500))return;tone(86,.18,.15,'triangle',.72);setTimeout(()=>tone(112,.22,.12,'triangle',.74),90)}
+ function battleStart(){
+  if(!gate('battle-start',600))return;
+  drum(null,.13,0);drum(null,.105,.17);tone(112,.32,.06,'triangle',.76,null,.10);
+  setScene('approach');
+ }
  function battleEnd(victory){
-  if(!gate('battle-end',900))return;
-  if(victory){tone(220,.28,.11,'triangle',1.35);setTimeout(()=>tone(330,.34,.10,'triangle',1.20),150)}
-  else{tone(185,.34,.12,'sawtooth',.58);setTimeout(()=>tone(105,.42,.10,'triangle',.62),150)}
+  if(!gate('battle-end',1000))return;
+  if(victory){
+   tone(196,.28,.075,'triangle',1.25,null,0);tone(247,.32,.070,'triangle',1.18,null,.15);tone(330,.40,.065,'triangle',1.08,null,.30);
+   setScene('victory');
+  }else{
+   tone(175,.32,.085,'sawtooth',.62,null,0);tone(117,.42,.070,'triangle',.58,null,.15);noise(.25,.035,'lowpass',420,.4,null,.08);
+   setScene('defeat');
+  }
+ }
+ function breach(x=null){
+  if(!gate('breach',850))return;
+  tone(220,.18,.095,'sawtooth',.88,x,0);tone(185,.20,.09,'sawtooth',.82,x,.12);tone(147,.26,.085,'sawtooth',.72,x,.25);
+  drum(x,.07,.04);
+ }
+ function march(units,cavalry=false){
+  if(!units?.length||!gate(cavalry?'hoof-bed':'march-bed',cavalry?410:520))return;
+  const x=units.reduce((n,u)=>n+u.x,0)/units.length;
+  const strength=Math.min(1,units.length/8);
+  if(cavalry){
+   for(let i=0;i<4;i++){noise(.055,.025+.018*strength,'lowpass',300,.45,x,i*.085);tone(94,.05,.015+.01*strength,'sine',.72,x,i*.085)}
+  }else{
+   noise(.10,.025+.022*strength,'lowpass',260,.35,x);
+   noise(.07,.018+.012*strength,'bandpass',520,.55,x,.12);
+  }
+ }
+ function battleBed(units,intensity){
+  if(!units?.length||!gate('battle-bed',620))return;
+  const x=units.reduce((n,u)=>n+u.x,0)/units.length;
+  const p=.018+.040*Math.min(1,intensity);
+  noise(.34,p,'bandpass',620,.45,x);
+  if(intensity>.35&&Math.random()<.70)noise(.09,p*.9,'bandpass',1250,1.3,x,.07);
+  if(intensity>.62&&Math.random()<.45)tone(690+Math.random()*420,.055,.018,'square',1.25,x,.03);
+ }
+ function setScene(scene){
+  if(scene===lastScene)return;
+  lastScene=scene;
+  try{document.dispatchEvent(new CustomEvent('hwm:musicstate',{detail:{state:scene}}))}catch(_){}
+ }
+ function update(){
+  if(!enabled||!ctx||!state?.running||state.paused||state.finished)return;
+  const activeUnits=state.units.filter(u=>active(u));
+  const engaged=activeUnits.filter(u=>state.t-u.lastEngaged<1.5);
+  const moving=activeUnits.filter(u=>u.goal&&!u.withdraw&&state.t-u.lastEngaged>2.5);
+  const cavalry=moving.filter(u=>u.type==='cavalry');
+  const intensity=engaged.length/Math.max(4,activeUnits.length);
+  if(engaged.length){
+   battleBed(engaged,intensity);
+   const allyCrisis=activeUnits.some(u=>u.side==='ally'&&(u.routed||u.morale/u.maxMorale<.28||u.cohesion<26));
+   setScene(allyCrisis?'crisis':'combat');
+  }else{
+   if(moving.length>=2)march(moving,false);
+   if(cavalry.length)march(cavalry,true);
+   setScene(state.phase==='deploy'?'deploy':'approach');
+  }
  }
  function updateButton(){
   const b=document.getElementById('sfxBtn');if(!b)return;
   b.textContent=enabled?'FX':'FX×';b.classList.toggle('speedOn',enabled);b.setAttribute('aria-pressed',enabled?'true':'false');
-  b.title=enabled?'Efectos de sonido activados · clic para silenciar':'Efectos de sonido silenciados · clic para activar';
+  b.title=enabled?'Efectos activados · clic para silenciar':'Efectos silenciados · clic para activar';
  }
  function toggle(){
   enabled=!enabled;try{localStorage.setItem('hwm-sfx',enabled?'1':'0')}catch(_){}
   if(enabled)ensure();updateButton();return enabled;
  }
- function init(){updateButton()}
- return{ensure,order,melee,ranged,projectileHit,rout,battleStart,battleEnd,toggle,init};
-})();
+ function init(){updateButton();setScene('menu')}
+ return{ensure,order,melee,ranged,projectileHit,rout,battleStart,battleEnd,breach,update,setScene,toggle,init};
+})()
 const COMBAT={pace:.64,damage:.39,flankShock:2.15,rearShock:3.1,routMorale:19,routCohesion:15};
 const SKIRMISH={archer:{retreat:150,clear:195,panic:59,shotSlow:.55,accuracy:.55},peltast:{retreat:112,clear:157,panic:57,shotSlow:.74,accuracy:.75}};
 const TYPES={hoplite:{name:'Hoplitas',hp:140,armor:.34,damage:16,range:42,speed:43,delay:1.05,morale:100,rad:22},archer:{name:'Arqueros',hp:78,armor:.06,damage:10,range:180,speed:49,delay:1.55,morale:75,rad:19},peltast:{name:'Peltastas',hp:94,armor:.12,damage:11,range:132,speed:56,delay:1.38,morale:86,rad:20},cavalry:{name:'Caballería',hp:123,armor:.18,damage:24,range:49,speed:79,delay:1.2,morale:90,rad:23},persian:{name:'Infantería persa',hp:105,armor:.14,damage:12,range:39,speed:47,delay:1.12,morale:80,rad:21}};
@@ -259,12 +362,12 @@ function nearestTarget(u,range=Infinity){let found=null,score=Infinity;for(const
 function phase(u){if(u.routed)return 'En fuga';if(u.withdraw)return 'Reagrupamiento';if(state.t-u.lastAttacked<1.5||state.t-u.lastEngaged<5){if(u.flankUntil>state.t)return 'Crisis de flanco';return u.engagedTime<6?'Contacto':'Desgaste'}return u.goal?'En marcha':'En reserva'}
 function safeRetreat(u){return findSafe({x:u.side==='ally'?90:1190,y:clamp(u.y,80,640)})}
 function active(u){return u.hp>0&&!u.routed&&!u.disengaged}
-function issueRetreat(u,forced=false){if(!u||u.hp<=0)return;if(forced)SFX.rout(u.side);u.attackTarget=null;u.goal=null;u.path=[];u.routed=!!forced;u.withdraw=true;u.attackMove=false;setGoal(u,safeRetreat(u),false);u.withdraw=true;u.routed=!!forced;u.stance=forced?'rout':'withdraw';u.recover=0;if(forced)battleEvent(`${u.side==='ally'?'Aliados':'Enemigos'}: escuadrón ${u.id} se desbanda (${u.breakCause||'moral o cohesión'}).`);if(forced){u.morale=Math.min(u.morale,COMBAT.routMorale);u.cohesion=Math.min(u.cohesion,COMBAT.routCohesion);for(const v of state.units){if(v.side===u.side&&v.id!==u.id&&active(v)&&dist(u,v)<118){v.morale=Math.max(0,v.morale-4);v.cohesion=Math.max(0,v.cohesion-3)}}if(u.side==='ally')notify('¡Escuadrón en fuga! La línea perdió moral.')} }
+function issueRetreat(u,forced=false){if(!u||u.hp<=0)return;if(forced)SFX.rout(u);u.attackTarget=null;u.goal=null;u.path=[];u.routed=!!forced;u.withdraw=true;u.attackMove=false;setGoal(u,safeRetreat(u),false);u.withdraw=true;u.routed=!!forced;u.stance=forced?'rout':'withdraw';u.recover=0;if(forced)battleEvent(`${u.side==='ally'?'Aliados':'Enemigos'}: escuadrón ${u.id} se desbanda (${u.breakCause||'moral o cohesión'}).`);if(forced){u.morale=Math.min(u.morale,COMBAT.routMorale);u.cohesion=Math.min(u.cohesion,COMBAT.routCohesion);for(const v of state.units){if(v.side===u.side&&v.id!==u.id&&active(v)&&dist(u,v)<118){v.morale=Math.max(0,v.morale-4);v.cohesion=Math.max(0,v.cohesion-3)}}if(u.side==='ally')notify('¡Escuadrón en fuga! La línea perdió moral.')} }
 function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.atan2(Math.sin(angle-v.facing),Math.cos(angle-v.facing));return Math.abs(d)>2.3?'rear':Math.abs(d)>1.02?'flank':'front'}
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
 function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.5 AUDIO: conserva la jugabilidad 0.8.4 y añade una primera capa de efectos de batalla sintetizados. Botón FX arriba para activar o silenciar.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('menu');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.5 AUDIO: conserva la jugabilidad 0.8.4 y añade sonido adaptativo por formación: marcha, combate, proyectiles, caballería, desbandadas y ruptura del frente. Botón FX arriba para silenciar.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
@@ -272,7 +375,7 @@ function start(mode='free'){
  notify(mode==='pressure'?'El enemigo se aproxima. Organizá las filas durante el avance.':'Batalla iniciada. Protegé tus flancos y mantené las reservas.');
 }
 function enterDeployment(){
- state.phase='deploy';state.running=false;state.paused=false;state.deployMode='free';
+ state.phase='deploy';state.running=false;state.paused=false;state.deployMode='free';SFX.setScene('deploy');
  ui.overlay.classList.add('hidden');el('deployTools').classList.remove('hidden');el('stage').classList.add('deploying');
  state.selection.clear();state.units.filter(u=>u.side==='ally'&&active(u)).forEach(u=>state.selection.add(u.id));
  updateHud();notify('Despliegue libre: organizá escuadrones dentro del área azul. El enemigo está detenido.');
@@ -325,7 +428,7 @@ function dealDamage(att,victim,effectiveness=1){
  if(!active(victim)||att.hp<=0||att.routed)return;
  const as=TYPES[att.type],vs=TYPES[victim.type];
  const angle=facingImpact(victim,att),melee=as.range<70;
- if(melee)SFX.melee(att.type==='cavalry');else SFX.projectileHit(att.type);
+ if(melee)SFX.melee(att);else SFX.projectileHit(att.type,victim);
  const tactical=melee&&(angle==='flank'||angle==='rear');
  const flankMultiplier=!melee?1:angle==='rear'?1.4:angle==='flank'?1.24:1;
  const formationDefense=victim.formation==='line'?.89:victim.formation==='column'?1.22:1.08;
@@ -351,7 +454,7 @@ function dealDamage(att,victim,effectiveness=1){
 }
 function firing(u,v,movingShot=false){
  if(u.type!=='archer'&&u.type!=='peltast'){dealDamage(u,v);return}
- SFX.ranged(u.type);
+ SFX.ranged(u);
  const isBow=u.type==='archer',shots=isBow?4:3,distShot=dist(u,v),angle=Math.atan2(v.y-u.y,v.x-u.x);
  const movingPenalty=movingShot?SKIRMISH[u.type].accuracy:1;
  u.lastShot=state.t;
@@ -438,7 +541,7 @@ function thinkAI(u){
 let brain=0;
 function update(dt){
  if(!state.running||state.paused||state.finished)return;
- state.t+=dt;brain+=dt;maintainGroups(dt);
+ state.t+=dt;brain+=dt;maintainGroups(dt);SFX.update();
  if(brain>2.0){brain=0;for(const u of state.units)if(u.side==='enemy'&&active(u))thinkAI(u)}
  const units=state.units;
  for(const u of units){
@@ -501,7 +604,7 @@ function update(dt){
   for(const u of units){
    if(u.side!=='enemy'||!active(u)||state.breachedIds.has(u.id))continue;
    if(u.x<=b.breachX&&thermoWalkable(u.x,u.y)){
-     state.breachedIds.add(u.id);state.breaches++;
+     state.breachedIds.add(u.id);state.breaches++;SFX.breach(u.x);
      battleEvent(`¡Penetración persa! ${state.breaches}/${b.breachLimit} formaciones cruzaron la línea.`);
      u.disengaged=true;u.path=[];u.attackTarget=null;
    }
