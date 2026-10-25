@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>HWM 0.8.5 · Movimiento y audio preparado</title>
+<title>HWM 0.8.6 · Música dinámica</title>
 <style>
 
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
@@ -114,9 +114,9 @@
 <div class="app">
 <header class="top"><div class="brand"><div class="monogram">HWM</div><div class="toptext"><strong>Grandes batallas de la historia</strong><span>Historical Warfare · Biblioteca Grecia</span></div></div>
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
-<div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
+<div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.5</b><p>Dos velocidades por formación y arquitectura preparada para música y efectos de alta calidad.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.6</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -131,8 +131,8 @@
 const WORLD={w:1280,h:720};const TILE=32;const canvas=document.getElementById('field'),ctx=canvas.getContext('2d',{alpha:false});
 const el=id=>document.getElementById(id);const ui={list:el('battlelist'),sidebar:el('sidebar'),mapTitle:el('mapTitle'),mapSubtitle:el('mapSubtitle'),allyCount:el('allyCount'),enemyCount:el('enemyCount'),timer:el('timer'),selectedPanel:el('selectedPanel'),overlay:el('overlay'),overlayKicker:el('overlayKicker'),overlayTitle:el('overlayTitle'),overlayDesc:el('overlayDesc'),overlayMission:el('overlayMission'),startBtn:el('startBtn'),chooseBtn:el('chooseBtn'),overlayNote:el('overlayNote'),signal:el('signal'),pauseBtn:el('pauseBtn'),attackBtn:el('attackBtn'),footerHint:{set textContent(v){}}};
 
-// HWM 0.8.5 — efectos de batalla sintetizados en tiempo real.
-// No usa archivos de audio: la música podrá añadirse después como una capa independiente.
+// HWM 0.8.6 — estados de audio sin SFX sintéticos.
+// La música usa pistas del proyecto; durante la batalla queda deliberadamente en silencio.
 const SFX=(()=>{
  let lastScene='';
  function ensure(){return null}
@@ -155,6 +155,76 @@ const SFX=(()=>{
  }
  function init(){setScene('menu')}
  return{ensure,order:noop,melee:noop,ranged:noop,projectileHit:noop,rout:noop,battleStart,battleEnd,breach:noop,update,setScene,toggle:()=>false,init};
+})();
+
+const MUSIC=(()=>{
+ const TRACKS={
+  briefing:{src:['assets/audio/Shadows of War(2).mp3','assets/audio/Shadows of War (3).mp3','assets/audio/shadows-of-war.mp3'],loop:false,volume:.62},
+  deploy:{src:['assets/audio/Omniscient Evil.mp3','assets/audio/omniscient-evil.mp3'],loop:true,volume:.52},
+  result:{src:['assets/audio/What History Remembers - usesuno.com.mp3','assets/audio/what-history-remembers.mp3'],loop:false,volume:.64}
+ };
+ let enabled=true,unlocked=false,currentState='briefing',audio=null,fadeTimer=null,sourceIndex=0;
+ try{enabled=localStorage.getItem('hwm-music')!=='0'}catch(_){}
+ function updateButton(){
+  const b=document.getElementById('musicBtn');if(!b)return;
+  b.textContent=enabled?'♫':'♫×';b.classList.toggle('speedOn',enabled);b.setAttribute('aria-pressed',enabled?'true':'false');
+  b.title=enabled?'Música activada · clic para silenciar':'Música silenciada · clic para activar';
+ }
+ function clearFade(){if(fadeTimer){clearInterval(fadeTimer);fadeTimer=null}}
+ function fadeOut(ms=500,done=null){
+  clearFade();
+  if(!audio){if(done)done();return}
+  const a=audio,start=a.volume,steps=10,step=Math.max(25,ms/steps);let n=0;
+  fadeTimer=setInterval(()=>{n++;if(audio!==a){clearFade();return}a.volume=Math.max(0,start*(1-n/steps));if(n>=steps){clearFade();try{a.pause();a.currentTime=0}catch(_){};if(audio===a)audio=null;if(done)done()}},step);
+ }
+ function startTrack(state){
+  const cfg=TRACKS[state];if(!cfg||!enabled||!unlocked)return;
+  sourceIndex=0;
+  const a=new Audio();audio=a;a.dataset.state=state;a.preload='auto';a.loop=cfg.loop;a.volume=0;
+  const trySource=()=>{
+   if(sourceIndex>=cfg.src.length){if(audio===a)audio=null;return}
+   a.src=cfg.src[sourceIndex++];a.load();
+  };
+  a.addEventListener('error',()=>{if(audio===a)trySource()});
+  a.addEventListener('canplay',()=>{
+   if(audio!==a||!enabled||currentState!==state)return;
+   a.play().then(()=>{
+    clearFade();const target=cfg.volume,steps=12;let n=0;
+    fadeTimer=setInterval(()=>{n++;if(audio!==a){clearFade();return}a.volume=Math.min(target,target*n/steps);if(n>=steps)clearFade()},45);
+   }).catch(()=>{});
+  });
+  trySource();
+ }
+ function mapped(state){
+  if(state==='menu')return'briefing';
+  if(state==='victory'||state==='defeat')return'result';
+  return state;
+ }
+ function setState(state){
+  currentState=state;
+  const m=mapped(state);
+  if(m==='combat'||m==='approach'||m==='crisis'||m==='battle'){fadeOut(380);return}
+  if(!TRACKS[m]){fadeOut(380);return}
+  if(audio&&audio.dataset.state===m&&!audio.paused)return;
+  fadeOut(380,()=>{if(enabled&&unlocked)startTrack(m)});
+ }
+ function unlock(){
+  if(unlocked)return;unlocked=true;
+  if(enabled){const m=mapped(currentState);if(TRACKS[m])startTrack(m)}
+ }
+ function toggle(){
+  enabled=!enabled;try{localStorage.setItem('hwm-music',enabled?'1':'0')}catch(_){}
+  if(enabled){unlock();setState(currentState)}else fadeOut(220);
+  updateButton();return enabled;
+ }
+ function init(){
+  updateButton();
+  document.addEventListener('pointerdown',unlock,{once:true,capture:true});
+  document.addEventListener('keydown',unlock,{once:true,capture:true});
+  document.addEventListener('hwm:musicstate',e=>setState(e.detail?.state||'briefing'));
+  setState('briefing');
+ }
+ return{init,setState,toggle,unlock};
 })();
 
 const COMBAT={pace:.64,damage:.39,flankShock:2.15,rearShock:3.1,routMorale:19,routCohesion:15};
@@ -216,11 +286,11 @@ function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.at
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
 function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('menu');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.5: dos velocidades de formación y estados de audio preparados. Los efectos sintéticos de prueba fueron retirados hasta integrar muestras de calidad.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.6: Shadows of War en briefing, Omniscient Evil en despliegue y What History Remembers al finalizar. Durante la batalla no hay música.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
- SFX.ensure();SFX.battleStart();
+ SFX.ensure();SFX.setScene('battle');
  notify(mode==='pressure'?'El enemigo se aproxima. Organizá las filas durante el avance.':'Batalla iniciada. Protegé tus flancos y mantené las reservas.');
 }
 function enterDeployment(){
@@ -795,6 +865,7 @@ el('paceBtn').addEventListener('click',()=>{
 });
 el('formationBtn').addEventListener('click',()=>{const sel=selectedUnits();if(!sel.length){notify('Primero seleccioná uno o más escuadrones.');return}state.formation=state.formation==='line'?'wedge':state.formation==='wedge'?'column':'line';sel.forEach(u=>{if(!u.routed)u.formation=state.formation});notify('Formación: '+(state.formation==='line'?'línea':state.formation==='wedge'?'cuña':'columna'));updateHud()});
 el('retreatBtn').addEventListener('click',()=>{if(state.phase==='deploy'){notify('Para reservar un escuadrón, ubicalo detrás de la primera línea.');return}const sel=selectedUnits();if(!sel.length){notify('Primero seleccioná escuadrones.');return}sel.forEach(u=>issueRetreat(u,false));notify('Retirada ordenada: fuera de peligro recuperarán cohesión y moral')});
+el('musicBtn').addEventListener('click',()=>{const on=MUSIC.toggle();notify(on?'Música activada':'Música silenciada')});
 el('speedBtn').addEventListener('click',()=>{if(state.phase==='deploy'){notify('El reloj está detenido hasta iniciar la batalla.');return}state.simSpeed=state.simSpeed===2?1:2;el('speedBtn').classList.toggle('speedOn',state.simSpeed===2);el('speedBtn').textContent=state.simSpeed===2?'×2':'»';notify('Velocidad '+state.simSpeed+'×')});
 el('helpBtn').addEventListener('click',()=>{const overlay=ui.overlay;const open=overlay.classList.contains('hidden');if(open){state.helpWasPaused=state.paused;state.paused=true;ui.pauseBtn.textContent='▶';ui.overlayKicker.textContent='HWM · AYUDA';ui.overlayTitle.textContent='Controles de batalla';ui.overlayDesc.textContent='Seleccioná con un clic o arrastrando un cuadro; clic derecho para mover o atacar. Ahora importan tres valores: soldados, cohesión y moral. Una unidad puede huir antes de morir. Conservá reservas y protegé los flancos.';ui.overlayMission.textContent='Formación: línea, cuña o columna dentro del escuadrón. Velocidad: Marcha o Rápido; el avance rápido consume cohesión mientras se mantiene. Agrupar 6 crea un grupo persistente; 3+3 coloca tres formaciones adelante y tres detrás. Ctrl+1: guardar Grupo 1 · 1: recuperarlo. Clic sobre una ficha: órdenes individuales. A: atacar · S: mantener posición (sin retirada automática) · Clic derecho: reactivar maniobras · Espacio: pausa · Ctrl+A: todas.';ui.startBtn.textContent=state.phase==='deploy'?'Volver al despliegue':'Volver al combate';el('pressureBtn').classList.add('hidden');overlay.classList.remove('hidden')}else{overlay.classList.add('hidden');state.paused=state.helpWasPaused;ui.pauseBtn.textContent=state.paused?'▶':'Ⅱ'}});
 function cameraZoom(delta,clientX=null,clientY=null){
@@ -841,7 +912,7 @@ window.addEventListener('keydown',e=>{
 },true);
 window.HWM_DEBUG={state:()=>({battle:BATTLES[state.battle].id,time:state.t,zoom:state.zoom,panX:state.panX,panY:state.panY,running:state.running,paused:state.paused,finished:state.finished,phase:state.phase,deployMode:state.deployMode,allies:state.units.filter(u=>u.side==='ally'&&active(u)).length,enemies:state.units.filter(u=>u.side==='enemy'&&active(u)).length,routedAllies:state.units.filter(u=>u.side==='ally'&&u.routed).length,routedEnemies:state.units.filter(u=>u.side==='enemy'&&u.routed).length,breaches:state.breaches,objective:BATTLES[state.battle].goal,reason:state.endReason||null,events:state.events}),start:(mode='free')=>start(mode),deploy:()=>enterDeployment(),preset:(kind)=>deployFormation(kind,true),moveDeploy:(x,y)=>moveDeployedSquads({x,y}),selectAll:()=>{for(const u of state.units)if(u.side==='ally'&&active(u))state.selection.add(u.id);updateHud()},command:(x,y)=>command({x,y}),load:idx=>loadBattle(idx),step:seconds=>{for(let i=0;i<Math.ceil(seconds/.04);i++)update(.04)},walkable:(x,y)=>walkable(x,y),thermoBounds:(x)=>thermoBounds(x),battles:()=>BATTLES.map(b=>({id:b.id,name:b.name})),unitPositions:()=>state.units.filter(u=>u.hp>0).map(u=>({id:u.id,side:u.side,x:Math.round(u.x),y:Math.round(u.y),soldiers:u.soldiers,hp:Math.round(u.hp),cohesion:Math.round(u.cohesion),morale:Math.round(u.morale),type:u.type,phase:phase(u),routed:u.routed,withdraw:u.withdraw,disengaged:u.disengaged,path:u.path.length,individualOrder:u.groupOverride,skirmish:u.skirmishActive,panic:u.skirmishPanic,shotSlowUntil:Number(u.shotSlowUntil.toFixed(2)),aiRole:u.aiRole})),setPosition:(id,x,y)=>{const u=state.units.find(u=>u.id===id);if(u&&walkable(x,y)){u.x=x;u.y=y;u.goal=null;u.path=[];u.pathIndex=0;return true}return false},retreat:()=>{for(const u of selectedUnits()){u.groupOverride=true;issueRetreat(u,false)}updateHud()},formation:()=>state.formation,groups:()=>[...state.groups.entries()].map(([id,g])=>({id,ids:g.ids,layout:g.layout,offsets:g.offsets})),projectiles:()=>state.projectiles.map(p=>({kind:p.kind,hit:p.hit,age:p.age,duration:p.dur,effectiveness:p.effectiveness})),selectIds:ids=>{state.selection.clear();ids.forEach(id=>state.selection.add(id));updateHud()},createGroup:()=>makeGroup(),recallGroup:()=>recallGroup(),arrangeSix:()=>arrangeSix(),selectedIds:()=>[...state.selection]};
 
-SFX.init();resize();loadBattle(0);requestAnimationFrame(frame);
+SFX.init();MUSIC.init();resize();loadBattle(0);requestAnimationFrame(frame);
 })();
 </script>
 </body></html>
