@@ -125,7 +125,7 @@
 <div class="battleViewport" id="battleViewport"><canvas aria-label="Campo de batalla táctico" id="field" title="Clic: seleccionar. Clic derecho: mover o atacar"></canvas><div aria-label="Organizar ejército antes de la batalla" class="deployTools hidden" id="deployTools" role="group">
 <div class="deployTitle"><b>DESPLIEGUE PREVIO</b><span>Seleccioná, arrastrá o clic derecho para colocar escuadrones en la zona azul</span></div>
 <div class="deployButtons"><button id="deployGridBtn">▦ 3×3 (todos)</button><button id="deploySixBtn">▦ 3 + 3 (seis)</button><button id="deployLineBtn">▬ Línea</button><button id="deployWingsBtn">◇ Alas reforzadas</button><button class="deployReady" id="deployReadyBtn">⚔ Iniciar batalla</button></div>
-</div><div class="battlelabel" id="battleLabel">LLANURA DE MARATÓN</div><div class="missionStatus" id="missionStatus"></div><button class="helpBubble mobileControls" id="mapsBtn">☰ Batallas</button><div class="signal" id="signal"></div><div class="overlay" id="overlay"><div class="modal"><div class="kicker" id="overlayKicker">HWM · Archivo histórico</div><h1 id="overlayTitle">Maratón</h1><p id="overlayDesc"></p><div class="mission" id="overlayMission"></div><div class="actions"><button class="btn primary" id="startBtn">Comenzar batalla</button><button class="second" id="pressureBtn">Jugar bajo presión</button><button class="second hidden" id="chooseBtn">Elegir otra batalla</button></div><div class="note" id="overlayNote">Una interpretación táctica de la historia. Los efectivos y formaciones están simplificados para esta alfa.</div></div></div></div><div class="commandDock" id="commandDock"><div class="selectedPanel" id="selectedPanel"><div class="name">Elegí tus tropas</div><div class="detail">Seleccioná un escuadrón aliado para consultar su estado.</div></div><div class="actionTray"><button class="btn" id="allBtn"><span class="ico">▧</span>Seleccionar todo</button><button class="btn" id="moveBtn"><span class="ico">➜</span>Mover</button><button class="btn" id="attackBtn"><span class="ico">⚔</span>Atacar [A]</button><button class="btn" id="stopBtn"><span class="ico">✋</span>Detener [S]</button><button class="btn" id="squadGridBtn"><span class="ico">▦</span>3 frente + 3 detrás</button><button class="btn" id="formationBtn"><span class="ico">⠿</span>Formación</button><button class="btn" id="retreatBtn"><span class="ico">↶</span>Retirar</button><button class="btn" id="groupCreateBtn" title="Seleccioná exactamente 6 escuadrones y agrupá"><span class="ico">⚑</span>Agrupar 6</button><button class="btn" id="groupRecallBtn" title="Volver a seleccionar los seis escuadrones"><span class="ico">1</span>Grupo 1 [1]</button><button class="btn" id="groupReleaseBtn" title="Eliminar agrupación sin perder tropas"><span class="ico">✕</span>Disolver</button></div><div class="mapDock"><div class="cameraTools"><button id="zoomOutBtn" title="Alejar">−</button><button id="zoomResetBtn" title="Restablecer cámara"><span id="zoomLabel">100%</span></button><button id="zoomInBtn" title="Acercar">+</button></div><div class="minimapWrap"><canvas height="135" id="minimap" title="Clic para enfocar zona del mapa" width="240"></canvas></div></div></div></main></div></div>
+</div><div class="battlelabel" id="battleLabel">LLANURA DE MARATÓN</div><div class="missionStatus" id="missionStatus"></div><button class="helpBubble mobileControls" id="mapsBtn">☰ Batallas</button><div class="signal" id="signal"></div><div class="overlay" id="overlay"><div class="modal"><div class="kicker" id="overlayKicker">HWM · Archivo histórico</div><h1 id="overlayTitle">Maratón</h1><p id="overlayDesc"></p><div class="mission" id="overlayMission"></div><div class="actions"><button class="btn primary" id="startBtn">Comenzar batalla</button><button class="second" id="pressureBtn">Jugar bajo presión</button><button class="second hidden" id="chooseBtn">Elegir otra batalla</button></div><div class="note" id="overlayNote">Una interpretación táctica de la historia. Los efectivos y formaciones están simplificados para esta alfa.</div></div></div></div><div class="commandDock" id="commandDock"><div class="selectedPanel" id="selectedPanel"><div class="name">Elegí tus tropas</div><div class="detail">Seleccioná un escuadrón aliado para consultar su estado.</div></div><div class="actionTray"><button class="btn" id="allBtn"><span class="ico">▧</span>Seleccionar todo</button><button class="btn" id="moveBtn"><span class="ico">➜</span>Mover</button><button class="btn" id="paceBtn" title="Alternar velocidad de las formaciones seleccionadas"><span class="ico">⇈</span><span id="paceLabel">Marcha</span></button><button class="btn" id="attackBtn"><span class="ico">⚔</span>Atacar [A]</button><button class="btn" id="stopBtn"><span class="ico">✋</span>Detener [S]</button><button class="btn" id="squadGridBtn"><span class="ico">▦</span>3 frente + 3 detrás</button><button class="btn" id="formationBtn"><span class="ico">⠿</span>Formación</button><button class="btn" id="retreatBtn"><span class="ico">↶</span>Retirar</button><button class="btn" id="groupCreateBtn" title="Seleccioná exactamente 6 escuadrones y agrupá"><span class="ico">⚑</span>Agrupar 6</button><button class="btn" id="groupRecallBtn" title="Volver a seleccionar los seis escuadrones"><span class="ico">1</span>Grupo 1 [1]</button><button class="btn" id="groupReleaseBtn" title="Eliminar agrupación sin perder tropas"><span class="ico">✕</span>Disolver</button></div><div class="mapDock"><div class="cameraTools"><button id="zoomOutBtn" title="Alejar">−</button><button id="zoomResetBtn" title="Restablecer cámara"><span id="zoomLabel">100%</span></button><button id="zoomInBtn" title="Acercar">+</button></div><div class="minimapWrap"><canvas height="135" id="minimap" title="Clic para enfocar zona del mapa" width="240"></canvas></div></div></div></main></div></div>
 <script>
 (()=>{'use strict';
 const WORLD={w:1280,h:720};const TILE=32;const canvas=document.getElementById('field'),ctx=canvas.getContext('2d',{alpha:false});
@@ -195,12 +195,21 @@ const SFX=(()=>{
   noise(.045,.025,'bandpass',1600,1.4,null,.02);
  }
  function melee(attacker=null){
-  if(!gate('melee',85))return;
+  if(!gate('melee',92))return;
   const x=attacker?.x,cavalry=attacker?.type==='cavalry';
-  noise(cavalry?.18:.095,cavalry?.15:.105,'bandpass',cavalry?430:980,cavalry?1.0:1.7,x);
-  tone(cavalry?82:540,cavalry?.17:.065,cavalry?.09:.045,cavalry?'triangle':'square',cavalry?.55:1.34,x);
-  if(!cavalry&&Math.random()<.42)tone(1420+Math.random()*420,.052,.025,'sine',.70,x,.008);
-  if(cavalry){drum(x,.075,.015);noise(.12,.055,'lowpass',270,.5,x,.045)}
+  if(cavalry){
+   // Masa + escudos + madera. Sin tono definido: buscamos un golpe físico, no un "beep".
+   noise(.16,.145,'lowpass',330,.42,x,0);
+   noise(.085,.090,'bandpass',760,1.35,x,.008);
+   noise(.045,.055,'highpass',2100,.55,x,.018);
+   if(Math.random()<.45)noise(.055,.045,'bandpass',1250,2.4,x,.035);
+  }else{
+   const metal=820+Math.random()*1150;
+   noise(.072,.088,'bandpass',metal,2.0+Math.random()*1.7,x,0);
+   noise(.050,.050,'highpass',2400+Math.random()*1700,.65,x,.006);
+   if(Math.random()<.55)noise(.095,.055,'lowpass',410+Math.random()*210,.5,x,.012);
+   if(Math.random()<.33)noise(.040,.032,'bandpass',3200+Math.random()*1000,3.5,x,.018);
+  }
  }
  function ranged(u){
   const kind=u?.type||u;if(!gate('ranged-'+kind,145))return;
@@ -218,14 +227,18 @@ const SFX=(()=>{
   }
  }
  function projectileHit(kind,target=null){
-  if(!gate('hit-'+kind,105))return;
+  if(!gate('hit-'+kind,112))return;
   const x=target?.x;
   if(kind==='archer'){
-   noise(.045,.047,'bandpass',1850,1.2,x);
-   tone(980,.04,.018,'triangle',.72,x);
+   // Flecha: golpe seco + roce corto, sin oscilador tonal.
+   noise(.032,.042,'highpass',2500+Math.random()*1300,.5,x);
+   noise(.058,.050,'bandpass',1050+Math.random()*850,1.5,x,.006);
+   if(Math.random()<.35)noise(.070,.025,'lowpass',520,.45,x,.012);
   }else{
-   noise(.07,.060,'bandpass',820,.85,x);
-   tone(190,.065,.025,'triangle',.64,x);
+   // Jabalina: impacto más grave, madera/escudo y una punta metálica breve.
+   noise(.078,.060,'lowpass',520+Math.random()*180,.55,x);
+   noise(.055,.055,'bandpass',930+Math.random()*650,1.3,x,.006);
+   if(Math.random()<.40)noise(.040,.033,'highpass',2600,.7,x,.015);
   }
  }
  function rout(u){
@@ -272,7 +285,7 @@ const SFX=(()=>{
   const p=.018+.040*Math.min(1,intensity);
   noise(.34,p,'bandpass',620,.45,x);
   if(intensity>.35&&Math.random()<.70)noise(.09,p*.9,'bandpass',1250,1.3,x,.07);
-  if(intensity>.62&&Math.random()<.45)tone(690+Math.random()*420,.055,.018,'square',1.25,x,.03);
+  if(intensity>.62&&Math.random()<.45)noise(.055,.024,'bandpass',1500+Math.random()*1200,2.0,x,.03);
  }
  function setScene(scene){
   if(scene===lastScene)return;
@@ -355,7 +368,7 @@ function makeGrid(){const rows=Math.ceil(WORLD.h/TILE),cols=Math.ceil(WORLD.w/TI
 let grid=null;
 function findSafe(p){if(walkable(p.x,p.y))return p;for(let r=12;r<280;r+=12){for(let a=0;a<16;a++){let th=a/16*Math.PI*2;let q={x:clamp(p.x+Math.cos(th)*r,22,1258),y:clamp(p.y+Math.sin(th)*r,22,698)};if(walkable(q.x,q.y))return q}}return{x:200,y:360}}
 function route(start,end){const goal=findSafe(end);if(!grid)return [goal];const sc=clamp(Math.floor(start.x/TILE),0,grid.cols-1),sr=clamp(Math.floor(start.y/TILE),0,grid.rows-1),ec=clamp(Math.floor(goal.x/TILE),0,grid.cols-1),er=clamp(Math.floor(goal.y/TILE),0,grid.rows-1);const si=sr*grid.cols+sc,ei=er*grid.cols+ec;const nodes=grid.cols*grid.rows;const seen=new Uint8Array(nodes),parent=new Int32Array(nodes).fill(-1),scores=new Float32Array(nodes).fill(Infinity);let open=[si];scores[si]=0;let loops=0;while(open.length&&loops++<3000){let bi=0,bv=Infinity;for(let i=0;i<open.length;i++){let id=open[i],c=id%grid.cols,r=(id/grid.cols)|0,v=scores[id]+Math.abs(c-ec)+Math.abs(r-er);if(v<bv){bv=v;bi=i}}const cur=open.splice(bi,1)[0];if(cur===ei){const pts=[];let at=cur;while(at!==si&&at!==-1){pts.push({x:(at%grid.cols+.5)*TILE,y:(((at/grid.cols)|0)+.5)*TILE});at=parent[at]}pts.reverse();pts.push(goal);return pts}seen[cur]=1;const c=cur%grid.cols,r=(cur/grid.cols)|0;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]]){let nx=c+dx,ny=r+dy;if(nx<0||ny<0||nx>=grid.cols||ny>=grid.rows||grid.blocked[ny][nx])continue;if(dx&&dy&&(grid.blocked[r][nx]||grid.blocked[ny][c]))continue;const next=ny*grid.cols+nx,nd=scores[cur]+(dx&&dy?1.414:1);if(nd<scores[next]){scores[next]=nd;parent[next]=cur;if(!seen[next]&&!open.includes(next))open.push(next)}}}return[]}
-function addUnit(side,type,x,y,level=1){let stat=TYPES[type];const u={id:state.nextId++,side,type,x,y,hp:stat.hp*(1+(level-1)*.08),maxHp:stat.hp*(1+(level-1)*.08),soldiers:100,maxSoldiers:100,morale:stat.morale,maxMorale:stat.morale,cohesion:100,level,cooldown:Math.random()*.9,attackTarget:null,goal:null,path:[],pathIndex:0,pathT:0,lastGoal:null,attackMove:false,stance:'hold',formation:'line',facing:side==='ally'?0:Math.PI,flash:0,retreat:false,withdraw:false,routed:false,disengaged:false,engagedTime:0,lastEngaged:-100,lastAttacked:-100,lastThreat:-100,flankUntil:0,recover:0,speedPenalty:1,breakCause:'',lastTacticalNote:'',aiLane:y,aiRole:type==='cavalry'?'flank':type==='archer'?'support':'front',skirmishActive:false,skirmishPanic:false,skirmishGoal:null,skirmishSaved:null,skirmishNext:0,lastShot:-99,shotSlowUntil:-99,shotSlowFactor:1,regimentId:0,groupOverride:false};state.units.push(u);return u}
+function addUnit(side,type,x,y,level=1){let stat=TYPES[type];const u={id:state.nextId++,side,type,x,y,hp:stat.hp*(1+(level-1)*.08),maxHp:stat.hp*(1+(level-1)*.08),soldiers:100,maxSoldiers:100,morale:stat.morale,maxMorale:stat.morale,cohesion:100,level,cooldown:Math.random()*.9,attackTarget:null,goal:null,path:[],pathIndex:0,pathT:0,lastGoal:null,attackMove:false,stance:'hold',formation:'line',facing:side==='ally'?0:Math.PI,flash:0,retreat:false,withdraw:false,routed:false,disengaged:false,engagedTime:0,lastEngaged:-100,lastAttacked:-100,lastThreat:-100,flankUntil:0,recover:0,speedPenalty:1,breakCause:'',lastTacticalNote:'',aiLane:y,aiRole:type==='cavalry'?'flank':type==='archer'?'support':'front',skirmishActive:false,skirmishPanic:false,skirmishGoal:null,skirmishSaved:null,skirmishNext:0,lastShot:-99,shotSlowUntil:-99,shotSlowFactor:1,regimentId:0,groupOverride:false,movePace:'march'};state.units.push(u);return u}
 function setGoal(u,p,attackMove=false){u.skirmishActive=false;u.skirmishPanic=false;u.skirmishSaved=null;p=findSafe({x:clamp(p.x,22,1258),y:clamp(p.y,22,698)});u.goal=p;u.attackTarget=null;u.attackMove=attackMove;u.retreat=false;u.withdraw=false;u.path=route(u,p);u.pathIndex=0;u.pathT=0;u.lastGoal=p;u.stance='move'}
 function chase(u,target){if(!target||target.hp<=0)return;u.attackTarget=target;u.stance='attack';u.attackMove=false;const s=TYPES[u.type],d=dist(u,target),goal={x:target.x+(u.x-target.x)/Math.max(1,d)*Math.max(s.range*.65,25),y:target.y+(u.y-target.y)/Math.max(1,d)*Math.max(s.range*.65,25)};if(!u.lastGoal||Math.hypot(goal.x-u.lastGoal.x,goal.y-u.lastGoal.y)>32||u.pathT>1.8){u.path=route(u,goal);u.pathIndex=0;u.pathT=0;u.lastGoal=goal}}
 function nearestTarget(u,range=Infinity){let found=null,score=Infinity;for(const v of state.units){if(v.side===u.side||v.hp<=0||v.routed||v.disengaged)continue;const d=dist(u,v);if(d<score&&d<range){found=v;score=d}}return found}
@@ -367,7 +380,7 @@ function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.at
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
 function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('menu');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.5 AUDIO: conserva la jugabilidad 0.8.4 y añade sonido adaptativo por formación: marcha, combate, proyectiles, caballería, desbandadas y ruptura del frente. Botón FX arriba para silenciar.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('menu');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.5 AUDIO: impactos menos electrónicos, sonido adaptativo por formación y dos velocidades de marcha. El avance rápido aumenta la velocidad a costa de cohesión. Botón FX arriba para silenciar.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
@@ -413,7 +426,9 @@ function insideRect(x,y,r){return x>r.x&&y>r.y&&x<r.x+r.w&&y<r.y+r.h}
 function soilModifier(u){let m=1;for(const s of state.terrain.marsh)if(insideRect(u.x,u.y,s))m*=.56;for(const s of state.terrain.river)if(insideRect(u.x,u.y,s))m*=.77;for(const h of state.terrain.hills)if(insideRect(u.x,u.y,h))m*=.86;return m}
 function terrainDefense(u){for(const h of state.terrain.hills)if(insideRect(u.x,u.y,h))return 1.12;return 1}
 function moveUnit(u,dt){if(!u.path.length||u.pathIndex>=u.path.length)return;let p=u.path[u.pathIndex],dx=p.x-u.x,dy=p.y-u.y,d=Math.hypot(dx,dy);if(d<5){u.pathIndex++;return}let form=u.formation==='column'?1.18:u.formation==='line'?.95:1;
- let speed=TYPES[u.type].speed*COMBAT.pace*form*soilModifier(u)*(u.cohesion<40?.85:1)*(u.routed?1.2:1);
+ const pace=(u.side==='ally'&&u.movePace==='fast'&&!u.withdraw&&!u.routed)?1.42:1;
+ let speed=TYPES[u.type].speed*COMBAT.pace*form*pace*soilModifier(u)*(u.cohesion<40?.85:1)*(u.routed?1.2:1);
+ if(pace>1&&state.t-u.lastEngaged>1.5)u.cohesion=clamp(u.cohesion-dt*1.15,35,100);
  if(u.skirmishActive&&state.t<u.shotSlowUntil)speed*=u.shotSlowFactor;
  // A moving command group waits for its slowest squad instead of stretching into a long column.
  if(u.side==='ally'&&!u.withdraw&&!u.groupOverride){for(const g of state.groups.values())if(g.marching&&g.ids.includes(u.id)&&g.destination){
@@ -629,10 +644,18 @@ function updateHud(){
  const ms=el('missionStatus'),mission=BATTLES[state.battle];
  if(ms)ms.textContent=mission.goal==='survive'?`DEFENDER EL PASO · ${Math.max(0,Math.ceil(mission.duration-state.t))} s restantes · Penetraciones ${state.breaches}/${mission.breachLimit}`:state.events.length?state.events[0].msg:'PROTEGÉ LOS FLANCOS · MANTENÉ TROPAS DE RESERVA';
  const sel=selectedUnits(),gid=selectedGroup(),gr=gid?state.groups.get(gid):null;
+ const paceLabel=el('paceLabel');
+ if(paceLabel){
+  if(!sel.length)paceLabel.textContent='Marcha';
+  else{
+   const fastCount=sel.filter(u=>u.movePace==='fast').length;
+   paceLabel.textContent=fastCount===sel.length?'Rápido':fastCount===0?'Marcha':'Mixto';
+  }
+ }
  ui.selectedPanel.classList.toggle('hasSquads',sel.length>1);
  ui.selectedPanel.classList.toggle('hasSingle',sel.length===1);
  if(!sel.length){ui.selectedPanel.innerHTML='<div class="panelHeading">Sin unidades seleccionadas</div><p class="panelHint">Elegí un escuadrón, o seis para formar un grupo. Ctrl+1: crear · 1: recuperar.</p>'}
- else if(sel.length===1){const u=sel[0],spec=TYPES[u.type];ui.selectedPanel.innerHTML=`<div class="panelHeading">${spec.name} <small>${statusClass(u)==='critical'?'● CRÍTICO':hudBadge(u)}</small></div><div class="unitPhase">Escuadrón ${u.id} · ${u.formation==='line'?'Línea':u.formation==='wedge'?'Cuña':'Columna'} · ${phase(u)}</div>${uiBars(100*u.hp/u.maxHp,u.cohesion,100*u.morale/u.maxMorale)}${u.flankUntil>state.t?'<div class="unitReason">Peligro: flanco expuesto</div>':''}`}
+ else if(sel.length===1){const u=sel[0],spec=TYPES[u.type];ui.selectedPanel.innerHTML=`<div class="panelHeading">${spec.name} <small>${statusClass(u)==='critical'?'● CRÍTICO':hudBadge(u)}</small></div><div class="unitPhase">Escuadrón ${u.id} · ${u.formation==='line'?'Línea':u.formation==='wedge'?'Cuña':'Columna'} · ${u.movePace==='fast'?'Rápido':'Marcha'} · ${phase(u)}</div>${uiBars(100*u.hp/u.maxHp,u.cohesion,100*u.morale/u.maxMorale)}${u.flankUntil>state.t?'<div class="unitReason">Peligro: flanco expuesto</div>':''}`}
  else{
   const struggling=sel.filter(u=>statusClass(u)==='critical'||statusClass(u)==='warning').length;
   const rows=sel.map(u=>`<button class="squadEntry ${statusClass(u)}" data-squad-id="${u.id}" title="Clic: seleccionar esta formación; Mayús + clic: combinar selección"><span class="squadId">${u.id}</span><span class="squadType">${TYPES[u.type].name}</span><span class="squadMeters"><i class="hp" style="width:${100*u.hp/u.maxHp}%"></i><i class="cohesion" style="width:${u.cohesion}%"></i><i class="morale" style="width:${100*u.morale/u.maxMorale}%"></i></span><span class="squadState">${struggling&&statusClass(u)==='critical'?'!':statusClass(u)==='warning'?'•':Math.round(u.morale/u.maxMorale*100)}</span></button>`).join('');
@@ -927,11 +950,18 @@ el('deploySixBtn').addEventListener('click',arrangeSix);
 function selectedUnits(){return state.units.filter(u=>active(u)&&state.selection.has(u.id))}
 function arm(mode){if(state.phase==='deploy'&&mode==='attack'){notify('Primero iniciá la batalla para poder atacar.');return}state.mode=mode;state.armedCommand=mode;updateHud();notify((mode==='move'?'Mover':'Atacar')+': elegí un destino con clic izquierdo, o clic derecho directamente.')}
 el('moveBtn').addEventListener('click',()=>arm('move'));
+el('paceBtn').addEventListener('click',()=>{
+ const sel=selectedUnits();if(!sel.length){notify('Seleccioná una o más formaciones para cambiar su velocidad.');return}
+ const allFast=sel.every(u=>u.movePace==='fast'),next=allFast?'march':'fast';
+ sel.forEach(u=>{u.movePace=next});
+ SFX.ensure();SFX.order();updateHud();
+ notify(next==='fast'?'Avance rápido: +42% de velocidad, consume cohesión mientras marcha.':'Velocidad normal: la formación vuelve a marcha.');
+});
 el('formationBtn').addEventListener('click',()=>{const sel=selectedUnits();if(!sel.length){notify('Primero seleccioná uno o más escuadrones.');return}state.formation=state.formation==='line'?'wedge':state.formation==='wedge'?'column':'line';sel.forEach(u=>{if(!u.routed)u.formation=state.formation});notify('Formación: '+(state.formation==='line'?'línea':state.formation==='wedge'?'cuña':'columna'));updateHud()});
 el('retreatBtn').addEventListener('click',()=>{if(state.phase==='deploy'){notify('Para reservar un escuadrón, ubicalo detrás de la primera línea.');return}const sel=selectedUnits();if(!sel.length){notify('Primero seleccioná escuadrones.');return}sel.forEach(u=>issueRetreat(u,false));notify('Retirada ordenada: fuera de peligro recuperarán cohesión y moral')});
 el('sfxBtn').addEventListener('click',()=>{const on=SFX.toggle();notify(on?'Efectos de sonido activados':'Efectos de sonido silenciados')});
 el('speedBtn').addEventListener('click',()=>{if(state.phase==='deploy'){notify('El reloj está detenido hasta iniciar la batalla.');return}state.simSpeed=state.simSpeed===2?1:2;el('speedBtn').classList.toggle('speedOn',state.simSpeed===2);el('speedBtn').textContent=state.simSpeed===2?'×2':'»';notify('Velocidad '+state.simSpeed+'×')});
-el('helpBtn').addEventListener('click',()=>{const overlay=ui.overlay;const open=overlay.classList.contains('hidden');if(open){state.helpWasPaused=state.paused;state.paused=true;ui.pauseBtn.textContent='▶';ui.overlayKicker.textContent='HWM · AYUDA';ui.overlayTitle.textContent='Controles de batalla';ui.overlayDesc.textContent='Seleccioná con un clic o arrastrando un cuadro; clic derecho para mover o atacar. Ahora importan tres valores: soldados, cohesión y moral. Una unidad puede huir antes de morir. Conservá reservas y protegé los flancos.';ui.overlayMission.textContent='Formación: línea, cuña o columna dentro del escuadrón. Agrupar 6 crea un grupo persistente; 3+3 coloca tres formaciones adelante y tres detrás. Ctrl+1: guardar Grupo 1 · 1: recuperarlo. Clic sobre una ficha: órdenes individuales. A: atacar · S: mantener posición (sin retirada automática) · Clic derecho: reactivar maniobras · Espacio: pausa · Ctrl+A: todas.';ui.startBtn.textContent=state.phase==='deploy'?'Volver al despliegue':'Volver al combate';el('pressureBtn').classList.add('hidden');overlay.classList.remove('hidden')}else{overlay.classList.add('hidden');state.paused=state.helpWasPaused;ui.pauseBtn.textContent=state.paused?'▶':'Ⅱ'}});
+el('helpBtn').addEventListener('click',()=>{const overlay=ui.overlay;const open=overlay.classList.contains('hidden');if(open){state.helpWasPaused=state.paused;state.paused=true;ui.pauseBtn.textContent='▶';ui.overlayKicker.textContent='HWM · AYUDA';ui.overlayTitle.textContent='Controles de batalla';ui.overlayDesc.textContent='Seleccioná con un clic o arrastrando un cuadro; clic derecho para mover o atacar. Ahora importan tres valores: soldados, cohesión y moral. Una unidad puede huir antes de morir. Conservá reservas y protegé los flancos.';ui.overlayMission.textContent='Formación: línea, cuña o columna dentro del escuadrón. Velocidad: Marcha o Rápido; el avance rápido consume cohesión mientras se mantiene. Agrupar 6 crea un grupo persistente; 3+3 coloca tres formaciones adelante y tres detrás. Ctrl+1: guardar Grupo 1 · 1: recuperarlo. Clic sobre una ficha: órdenes individuales. A: atacar · S: mantener posición (sin retirada automática) · Clic derecho: reactivar maniobras · Espacio: pausa · Ctrl+A: todas.';ui.startBtn.textContent=state.phase==='deploy'?'Volver al despliegue':'Volver al combate';el('pressureBtn').classList.add('hidden');overlay.classList.remove('hidden')}else{overlay.classList.add('hidden');state.paused=state.helpWasPaused;ui.pauseBtn.textContent=state.paused?'▶':'Ⅱ'}});
 function cameraZoom(delta,clientX=null,clientY=null){
  mapping();const px=clientX===null?view.w/2:clientX,py=clientY===null?view.h/2:clientY;
  const targetX=(px-view.ox)/view.s,targetY=(py-view.oy)/view.s;
