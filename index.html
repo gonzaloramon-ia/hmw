@@ -187,7 +187,7 @@ const MUSIC=(()=>{
   };
   a.addEventListener('error',()=>{if(audio===a)trySource()});
   a.addEventListener('canplay',()=>{
-   if(audio!==a||!enabled||currentState!==state)return;
+   if(audio!==a||!enabled||mapped(currentState)!==state)return;
    a.play().then(()=>{
     clearFade();const target=cfg.volume,steps=12;let n=0;
     fadeTimer=setInterval(()=>{n++;if(audio!==a){clearFade();return}a.volume=Math.min(target,target*n/steps);if(n>=steps)clearFade()},45);
