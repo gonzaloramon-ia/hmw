@@ -1,4 +1,4 @@
-# HWM alfa 0.8.7
+# HWM alfa 0.8.8
 
 HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
 
@@ -37,3 +37,10 @@ Cada formación aliada tiene dos velocidades:
 - polvo discreto en avance rápido;
 - feedback visual breve en choques cuerpo a cuerpo;
 - corrección de la transición musical hacia la pantalla de resultado.
+
+## Formaciones visuales 0.8.8
+
+- Línea, Cuña y Columna ahora tienen disposiciones visibles distintas dentro de cada escuadrón.
+- El contorno de selección adopta la huella real de la formación.
+- La etiqueta de una unidad seleccionada muestra también su formación.
+- No se modificaron daño, moral, cohesión, IA ni duración del combate.
