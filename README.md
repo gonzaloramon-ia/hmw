@@ -1,6 +1,6 @@
-# HWM alfa 0.8.6
+# HWM alfa 0.8.7
 
-HWM 0.8.6 conserva la jugabilidad de 0.8.5 y agrega la arquitectura musical definitiva por fases.
+HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
 
 ## Música
 
@@ -28,3 +28,12 @@ Cada formación aliada tiene dos velocidades:
 
 - `baseline-0.8.4`: primera versión estable de referencia.
 - `baseline-0.8.5`: versión estable anterior a la integración musical.
+
+## Pulido visual 0.8.7
+
+- selección de formaciones más clara, con base translúcida y dirección de frente;
+- estandartes con mayor contraste y marca visual según tipo de unidad;
+- sombras de formación más sólidas para anclar mejor las tropas al terreno;
+- polvo discreto en avance rápido;
+- feedback visual breve en choques cuerpo a cuerpo;
+- corrección de la transición musical hacia la pantalla de resultado.
