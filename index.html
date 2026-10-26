@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>HWM 0.8.6 · Música dinámica</title>
+<title>HWM 0.8.7 · Pulido visual</title>
 <style>
 
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
@@ -116,7 +116,7 @@
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
 <div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.6</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.7</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -274,7 +274,7 @@ function makeGrid(){const rows=Math.ceil(WORLD.h/TILE),cols=Math.ceil(WORLD.w/TI
 let grid=null;
 function findSafe(p){if(walkable(p.x,p.y))return p;for(let r=12;r<280;r+=12){for(let a=0;a<16;a++){let th=a/16*Math.PI*2;let q={x:clamp(p.x+Math.cos(th)*r,22,1258),y:clamp(p.y+Math.sin(th)*r,22,698)};if(walkable(q.x,q.y))return q}}return{x:200,y:360}}
 function route(start,end){const goal=findSafe(end);if(!grid)return [goal];const sc=clamp(Math.floor(start.x/TILE),0,grid.cols-1),sr=clamp(Math.floor(start.y/TILE),0,grid.rows-1),ec=clamp(Math.floor(goal.x/TILE),0,grid.cols-1),er=clamp(Math.floor(goal.y/TILE),0,grid.rows-1);const si=sr*grid.cols+sc,ei=er*grid.cols+ec;const nodes=grid.cols*grid.rows;const seen=new Uint8Array(nodes),parent=new Int32Array(nodes).fill(-1),scores=new Float32Array(nodes).fill(Infinity);let open=[si];scores[si]=0;let loops=0;while(open.length&&loops++<3000){let bi=0,bv=Infinity;for(let i=0;i<open.length;i++){let id=open[i],c=id%grid.cols,r=(id/grid.cols)|0,v=scores[id]+Math.abs(c-ec)+Math.abs(r-er);if(v<bv){bv=v;bi=i}}const cur=open.splice(bi,1)[0];if(cur===ei){const pts=[];let at=cur;while(at!==si&&at!==-1){pts.push({x:(at%grid.cols+.5)*TILE,y:(((at/grid.cols)|0)+.5)*TILE});at=parent[at]}pts.reverse();pts.push(goal);return pts}seen[cur]=1;const c=cur%grid.cols,r=(cur/grid.cols)|0;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]]){let nx=c+dx,ny=r+dy;if(nx<0||ny<0||nx>=grid.cols||ny>=grid.rows||grid.blocked[ny][nx])continue;if(dx&&dy&&(grid.blocked[r][nx]||grid.blocked[ny][c]))continue;const next=ny*grid.cols+nx,nd=scores[cur]+(dx&&dy?1.414:1);if(nd<scores[next]){scores[next]=nd;parent[next]=cur;if(!seen[next]&&!open.includes(next))open.push(next)}}}return[]}
-function addUnit(side,type,x,y,level=1){let stat=TYPES[type];const u={id:state.nextId++,side,type,x,y,hp:stat.hp*(1+(level-1)*.08),maxHp:stat.hp*(1+(level-1)*.08),soldiers:100,maxSoldiers:100,morale:stat.morale,maxMorale:stat.morale,cohesion:100,level,cooldown:Math.random()*.9,attackTarget:null,goal:null,path:[],pathIndex:0,pathT:0,lastGoal:null,attackMove:false,stance:'hold',formation:'line',facing:side==='ally'?0:Math.PI,flash:0,retreat:false,withdraw:false,routed:false,disengaged:false,engagedTime:0,lastEngaged:-100,lastAttacked:-100,lastThreat:-100,flankUntil:0,recover:0,speedPenalty:1,breakCause:'',lastTacticalNote:'',aiLane:y,aiRole:type==='cavalry'?'flank':type==='archer'?'support':'front',skirmishActive:false,skirmishPanic:false,skirmishGoal:null,skirmishSaved:null,skirmishNext:0,lastShot:-99,shotSlowUntil:-99,shotSlowFactor:1,regimentId:0,groupOverride:false,movePace:'march'};state.units.push(u);return u}
+function addUnit(side,type,x,y,level=1){let stat=TYPES[type];const u={id:state.nextId++,side,type,x,y,hp:stat.hp*(1+(level-1)*.08),maxHp:stat.hp*(1+(level-1)*.08),soldiers:100,maxSoldiers:100,morale:stat.morale,maxMorale:stat.morale,cohesion:100,level,cooldown:Math.random()*.9,attackTarget:null,goal:null,path:[],pathIndex:0,pathT:0,lastGoal:null,attackMove:false,stance:'hold',formation:'line',facing:side==='ally'?0:Math.PI,flash:0,retreat:false,withdraw:false,routed:false,disengaged:false,engagedTime:0,lastEngaged:-100,lastAttacked:-100,lastThreat:-100,flankUntil:0,recover:0,speedPenalty:1,breakCause:'',lastTacticalNote:'',aiLane:y,aiRole:type==='cavalry'?'flank':type==='archer'?'support':'front',skirmishActive:false,skirmishPanic:false,skirmishGoal:null,skirmishSaved:null,skirmishNext:0,lastShot:-99,shotSlowUntil:-99,shotSlowFactor:1,regimentId:0,groupOverride:false,movePace:'march',lastDust:-99,lastImpactFx:-99};state.units.push(u);return u}
 function setGoal(u,p,attackMove=false){u.skirmishActive=false;u.skirmishPanic=false;u.skirmishSaved=null;p=findSafe({x:clamp(p.x,22,1258),y:clamp(p.y,22,698)});u.goal=p;u.attackTarget=null;u.attackMove=attackMove;u.retreat=false;u.withdraw=false;u.path=route(u,p);u.pathIndex=0;u.pathT=0;u.lastGoal=p;u.stance='move'}
 function chase(u,target){if(!target||target.hp<=0)return;u.attackTarget=target;u.stance='attack';u.attackMove=false;const s=TYPES[u.type],d=dist(u,target),goal={x:target.x+(u.x-target.x)/Math.max(1,d)*Math.max(s.range*.65,25),y:target.y+(u.y-target.y)/Math.max(1,d)*Math.max(s.range*.65,25)};if(!u.lastGoal||Math.hypot(goal.x-u.lastGoal.x,goal.y-u.lastGoal.y)>32||u.pathT>1.8){u.path=route(u,goal);u.pathIndex=0;u.pathT=0;u.lastGoal=goal}}
 function nearestTarget(u,range=Infinity){let found=null,score=Infinity;for(const v of state.units){if(v.side===u.side||v.hp<=0||v.routed||v.disengaged)continue;const d=dist(u,v);if(d<score&&d<range){found=v;score=d}}return found}
@@ -286,7 +286,7 @@ function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.at
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
 function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.6: Shadows of War en briefing, Omniscient Evil en despliegue y What History Remembers al finalizar. Durante la batalla no hay música.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.7: mejora de lectura táctica y presencia visual. Selección, estandartes, sombras y contacto fueron pulidos sin alterar el combate.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
@@ -344,13 +344,20 @@ function moveUnit(u,dt){if(!u.path.length||u.pathIndex>=u.path.length)return;let
     if(average-own>95)speed*=.48;
    }
    break;
- }}let m=Math.min(d,speed*dt);let nx=u.x+dx/d*m,ny=u.y+dy/d*m;if(walkable(nx,ny)){u.x=nx;u.y=ny;u.facing=Math.atan2(dy,dx)}else{u.pathIndex++}}
+ }}let m=Math.min(d,speed*dt);let nx=u.x+dx/d*m,ny=u.y+dy/d*m;if(walkable(nx,ny)){u.x=nx;u.y=ny;u.facing=Math.atan2(dy,dx);
+  if(u.movePace==='fast'&&!u.withdraw&&state.t-u.lastDust>.32){u.lastDust=state.t;state.particles.push({x:u.x-Math.cos(u.facing)*20,y:u.y-Math.sin(u.facing)*20+9,age:0,kind:'dust',vx:(Math.random()-.5)*8,vy:-2-Math.random()*4})}
+ }else{u.pathIndex++}}
 function dealDamage(att,victim,effectiveness=1){
  if(!active(victim)||att.hp<=0||att.routed)return;
  const as=TYPES[att.type],vs=TYPES[victim.type];
  const angle=facingImpact(victim,att),melee=as.range<70;
  if(melee)SFX.melee(att);else SFX.projectileHit(att.type,victim);
  const tactical=melee&&(angle==='flank'||angle==='rear');
+ if(melee&&state.t-victim.lastImpactFx>.22){
+  victim.lastImpactFx=state.t;
+  const mx=(att.x+victim.x)/2,my=(att.y+victim.y)/2;
+  for(let n=0;n<3;n++)state.particles.push({x:mx+(Math.random()-.5)*20,y:my+(Math.random()-.5)*14,age:0,kind:'contact',vx:(Math.random()-.5)*12,vy:-4-Math.random()*8});
+ }
  const flankMultiplier=!melee?1:angle==='rear'?1.4:angle==='flank'?1.24:1;
  const formationDefense=victim.formation==='line'?.89:victim.formation==='column'?1.22:1.08;
  const formationAttack=att.formation==='wedge'&&melee?1.12:att.formation==='column'&&melee?.90:1;
@@ -392,7 +399,12 @@ function updateProjectiles(dt){
   const p=state.projectiles[i];p.age+=dt;const f=clamp(p.age/p.dur,0,1);p.x=lerp(p.startX,p.tx,f);p.y=lerp(p.startY,p.ty,f);
   if(f>=1){if(p.hit&&active(p.target)&&Math.hypot(p.x-p.target.x,p.y-p.target.y)<62)dealDamage(p.owner,p.target,p.effectiveness);state.projectiles.splice(i,1)}
  }
- for(let i=state.particles.length-1;i>=0;i--){state.particles[i].age+=dt;if(state.particles[i].age>1.2)state.particles.splice(i,1)}
+ for(let i=state.particles.length-1;i>=0;i--){
+  const p=state.particles[i];p.age+=dt;
+  if(p.vx!=null){p.x+=p.vx*dt;p.y+=(p.vy||0)*dt;p.vy=(p.vy||0)+3*dt}
+  const life=p.kind==='contact'?.58:p.kind==='dust'?.72:1.2;
+  if(p.age>life)state.particles.splice(i,1)
+ }
 }
 // Choose a point away from nearby enemies, using only traversable terrain.
 function evasionPoint(u,threat){
@@ -593,10 +605,14 @@ const vignette=ctx.createRadialGradient(640,360,220,640,360,740);vignette.addCol
 }
 function drawStandard(u){
  ctx.save();const left=u.x-30,top=u.y-62;
- ctx.strokeStyle='#3d2f1a';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(left,top+50);ctx.lineTo(left,top-12);ctx.stroke();
- ctx.fillStyle=u.side==='ally'?'#166092':'#9a2727';ctx.strokeStyle='#d4af6c';ctx.lineWidth=1.4;
- ctx.beginPath();ctx.moveTo(left-1,top-12);ctx.lineTo(left+28,top-7);ctx.lineTo(left+28,top+21);ctx.lineTo(left-1,top+16);ctx.closePath();ctx.fill();ctx.stroke();
- ctx.fillStyle='#eadba5';ctx.font='bold 18px Georgia';ctx.textAlign='center';ctx.fillText(u.side==='ally'?'Λ':'✦',left+13,top+10);
+ ctx.shadowColor='#000a';ctx.shadowBlur=4;ctx.shadowOffsetX=2;ctx.shadowOffsetY=3;
+ ctx.strokeStyle='#332719';ctx.lineWidth=3.2;ctx.beginPath();ctx.moveTo(left,top+50);ctx.lineTo(left,top-12);ctx.stroke();
+ ctx.fillStyle=u.side==='ally'?'#155f91':'#9e302b';ctx.strokeStyle='#ead095';ctx.lineWidth=1.6;
+ ctx.beginPath();ctx.moveTo(left-1,top-12);ctx.lineTo(left+29,top-7);ctx.lineTo(left+29,top+21);ctx.lineTo(left-1,top+16);ctx.closePath();ctx.fill();ctx.stroke();
+ ctx.shadowColor='transparent';
+ ctx.fillStyle='#f0ddb0';ctx.font='bold 18px Georgia';ctx.textAlign='center';ctx.fillText(u.side==='ally'?'Λ':'✦',left+13,top+9);
+ const mark=u.type==='archer'?'↟':u.type==='peltast'?'•':u.type==='cavalry'?'◆':'—';
+ ctx.font='bold 9px Georgia';ctx.fillStyle='#f7e9c9';ctx.fillText(mark,left+14,top+18);
  ctx.restore();
 }
 function soldier(u,x,y,i){
@@ -611,9 +627,15 @@ function drawSquad(u){
  const alive=clamp(Math.ceil(u.soldiers/u.maxSoldiers*12),1,12);
  const selected=state.selection.has(u.id);
  const underFire=u.flash>0;
- if(selected){ctx.strokeStyle='#f4daa1';ctx.lineWidth=2;ctx.setLineDash([6,4]);ctx.beginPath();ctx.ellipse(u.x,u.y,34,30,u.facing,0,Math.PI*2);ctx.stroke();ctx.setLineDash([])}
+ if(selected){
+  const selColor=u.side==='ally'?'rgba(94,190,240,.16)':'rgba(230,92,70,.14)';
+  ctx.fillStyle=selColor;ctx.beginPath();ctx.ellipse(u.x,u.y+4,36,27,u.facing,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#f4daa1';ctx.lineWidth=2.2;ctx.setLineDash([7,4]);ctx.beginPath();ctx.ellipse(u.x,u.y+4,36,27,u.facing,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+  const fx=u.x+Math.cos(u.facing)*42,fy=u.y+4+Math.sin(u.facing)*42;
+  ctx.strokeStyle='#ffe4aa';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(u.x+Math.cos(u.facing)*29,u.y+4+Math.sin(u.facing)*29);ctx.lineTo(fx,fy);ctx.stroke();
+ }
  if(underFire){ellipse(u.x,u.y,30,25,'#fff2ad38');ctx.strokeStyle='#f5cf80b3';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(u.x,u.y,26+(1-u.flash/.25)*7,0,Math.PI*2);ctx.stroke();}
- ellipse(u.x+3,u.y+12,32,11,'#151b134c');
+ ellipse(u.x+4,u.y+13,34,12,'#10150f62');
  const perp={x:-Math.sin(u.facing),y:Math.cos(u.facing)};
  const forward={x:Math.cos(u.facing),y:Math.sin(u.facing)};
  const isMoving=u.pathIndex<u.path.length;
@@ -667,7 +689,18 @@ function drawProjectiles(){for(const p of state.projectiles){
  ctx.fillStyle=p.kind==='archer'?'#f6efd3':'#ecedeb';ctx.beginPath();ctx.moveTo(len*.52,0);ctx.lineTo(len*.20,-3.4);ctx.lineTo(len*.20,3.4);ctx.closePath();ctx.fill();
  if(p.kind==='archer'){ctx.strokeStyle='#f2f3db';ctx.lineWidth=1.2;for(const side of [-1,1]){ctx.beginPath();ctx.moveTo(-len*.56,0);ctx.lineTo(-len*.79,side*3.4);ctx.stroke()}}
  ctx.restore();}
-for(const p of state.particles){const r=p.age*24;ctx.strokeStyle=`rgba(240,215,172,${(1-p.age/1.2)*.75})`;ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.stroke()}}
+for(const p of state.particles){
+ if(p.kind==='contact'){
+  const life=.58,a=Math.max(0,1-p.age/life),r=3+p.age*15;
+  ctx.fillStyle=`rgba(174,151,112,${a*.26})`;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle=`rgba(225,206,169,${a*.48})`;ctx.lineWidth=.9;ctx.beginPath();ctx.arc(p.x,p.y,r*.72,0,Math.PI*2);ctx.stroke();
+ }else if(p.kind==='dust'){
+  const life=.72,a=Math.max(0,1-p.age/life),r=4+p.age*18;
+  ctx.fillStyle=`rgba(157,139,102,${a*.20})`;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
+ }else{
+  const r=p.age*24;ctx.strokeStyle=`rgba(240,215,172,${(1-p.age/1.2)*.75})`;ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.stroke();
+ }
+}}
 function drawDefensiveLine(){
  const b=BATTLES[state.battle];if(b.goal!=='survive')return;
  ctx.save();ctx.strokeStyle='#f4d286db';ctx.setLineDash([14,7]);ctx.lineWidth=3;
