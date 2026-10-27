@@ -1,4 +1,4 @@
-# HWM alfa 0.8.9
+# HWM alfa 0.8.10
 
 HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
 
@@ -57,3 +57,14 @@ Cada formación aliada tiene dos velocidades:
 - barras de estado reposicionadas según la profundidad de la formación.
 
 La lógica de daño, moral, cohesión, IA y duración del combate permanece sin cambios.
+
+## Limpieza visual 0.8.10
+
+- formaciones ligeramente más compactas;
+- estandartes más pequeños y menos invasivos;
+- barra de vida visible siempre;
+- cohesión y moral visibles sólo al seleccionar, pasar el cursor, combatir o entrar en riesgo;
+- alerta crítica más discreta;
+- selección con menor opacidad para dejar ver mejor soldados y terreno.
+
+La lógica táctica y el balance permanecen sin cambios.
