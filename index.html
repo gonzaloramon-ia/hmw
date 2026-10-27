@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>HWM 0.8.9 · Lectura táctica</title>
+<title>HWM 0.8.10 · Limpieza visual</title>
 <style>
 
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
@@ -116,7 +116,7 @@
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
 <div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.9</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.10</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -286,7 +286,7 @@ function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.at
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.hoverId=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
 function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.9: lectura táctica mejorada — órdenes de movimiento/ataque diferenciadas, selección más precisa, alertas de crisis y mejor separación visual entre formaciones.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.10: limpieza visual — formaciones más compactas, estandartes reducidos y barras secundarias sólo cuando aportan información.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
@@ -604,15 +604,15 @@ for(const d of state.trees){ctx.save();ctx.translate(d.x,d.y);ctx.rotate(d.rot);
 const vignette=ctx.createRadialGradient(640,360,220,640,360,740);vignette.addColorStop(0,'#0000');vignette.addColorStop(1,'#18221c55');ctx.fillStyle=vignette;ctx.fillRect(0,0,1280,720);
 }
 function drawStandard(u){
- ctx.save();const left=u.x-30,top=u.y-62;
- ctx.shadowColor='#000a';ctx.shadowBlur=4;ctx.shadowOffsetX=2;ctx.shadowOffsetY=3;
- ctx.strokeStyle='#332719';ctx.lineWidth=3.2;ctx.beginPath();ctx.moveTo(left,top+50);ctx.lineTo(left,top-12);ctx.stroke();
- ctx.fillStyle=u.side==='ally'?'#155f91':'#9e302b';ctx.strokeStyle='#ead095';ctx.lineWidth=1.6;
- ctx.beginPath();ctx.moveTo(left-1,top-12);ctx.lineTo(left+29,top-7);ctx.lineTo(left+29,top+21);ctx.lineTo(left-1,top+16);ctx.closePath();ctx.fill();ctx.stroke();
+ ctx.save();const left=u.x-27,top=u.y-57;
+ ctx.shadowColor='#0009';ctx.shadowBlur=3;ctx.shadowOffsetX=1.5;ctx.shadowOffsetY=2;
+ ctx.strokeStyle='#332719';ctx.lineWidth=2.7;ctx.beginPath();ctx.moveTo(left,top+45);ctx.lineTo(left,top-10);ctx.stroke();
+ ctx.fillStyle=u.side==='ally'?'#155f91':'#9e302b';ctx.strokeStyle='#ead095';ctx.lineWidth=1.4;
+ ctx.beginPath();ctx.moveTo(left-1,top-10);ctx.lineTo(left+25,top-6);ctx.lineTo(left+25,top+17);ctx.lineTo(left-1,top+13);ctx.closePath();ctx.fill();ctx.stroke();
  ctx.shadowColor='transparent';
- ctx.fillStyle='#f0ddb0';ctx.font='bold 18px Georgia';ctx.textAlign='center';ctx.fillText(u.side==='ally'?'Λ':'✦',left+13,top+9);
+ ctx.fillStyle='#f0ddb0';ctx.font='bold 15px Georgia';ctx.textAlign='center';ctx.fillText(u.side==='ally'?'Λ':'✦',left+11,top+7);
  const mark=u.type==='archer'?'↟':u.type==='peltast'?'•':u.type==='cavalry'?'◆':'—';
- ctx.font='bold 9px Georgia';ctx.fillStyle='#f7e9c9';ctx.fillText(mark,left+14,top+18);
+ ctx.font='bold 8px Georgia';ctx.fillStyle='#f7e9c9';ctx.fillText(mark,left+12,top+15);
  ctx.restore();
 }
 function soldier(u,x,y,i){
@@ -641,12 +641,12 @@ function formationOffset(u,i,alive){
  const rowCount=row===0?cols:Math.max(1,usedLast);
  const center=(rowCount-1)/2;
  const posInRow=row===0?col:i-cols;
- return {a:(posInRow-center)*16.5,b:row===0?8:-10};
+ return {a:(posInRow-center)*15,b:row===0?8:-9};
 }
 function formationFootprint(u){
- if(u.formation==='column')return {rx:27,ry:39};
- if(u.formation==='wedge')return {rx:42,ry:40};
- return {rx:50,ry:25};
+ if(u.formation==='column')return {rx:26,ry:37};
+ if(u.formation==='wedge')return {rx:39,ry:37};
+ return {rx:46,ry:24};
 }
 function drawSquad(u){
  if(u.hp<=0||u.disengaged)return;
@@ -657,7 +657,7 @@ function drawSquad(u){
  const underFire=u.flash>0;
  const footprint=formationFootprint(u);
  if(selected){
-  const selColor=u.side==='ally'?'rgba(94,190,240,.16)':'rgba(230,92,70,.14)';
+  const selColor=u.side==='ally'?'rgba(94,190,240,.11)':'rgba(230,92,70,.10)';
   ctx.fillStyle=selColor;ctx.beginPath();ctx.ellipse(u.x,u.y+4,footprint.rx,footprint.ry,u.facing,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle='#f4daa1';ctx.lineWidth=2.2;ctx.setLineDash([7,4]);ctx.beginPath();ctx.ellipse(u.x,u.y+4,footprint.rx,footprint.ry,u.facing,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
   const fx=u.x+Math.cos(u.facing)*42,fy=u.y+4+Math.sin(u.facing)*42;
@@ -668,8 +668,8 @@ function drawSquad(u){
   ctx.lineWidth=1.5;ctx.setLineDash([4,5]);ctx.beginPath();ctx.ellipse(u.x,u.y+4,footprint.rx+4,footprint.ry+4,u.facing,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
  }
  if(u.side==='ally'&&!u.routed&&(u.cohesion<32||u.morale/u.maxMorale<.32)){
-  const pulse=.55+.35*Math.sin(state.t*6);
-  ctx.strokeStyle=`rgba(255,105,79,${pulse})`;ctx.lineWidth=2.2;ctx.beginPath();ctx.ellipse(u.x,u.y+4,footprint.rx+7,footprint.ry+7,u.facing,0,Math.PI*2);ctx.stroke();
+  const pulse=.38+.22*Math.sin(state.t*5);
+  ctx.strokeStyle=`rgba(255,105,79,${pulse})`;ctx.lineWidth=1.7;ctx.beginPath();ctx.ellipse(u.x,u.y+4,footprint.rx+7,footprint.ry+7,u.facing,0,Math.PI*2);ctx.stroke();
  }
  if(underFire){ellipse(u.x,u.y,30,25,'#fff2ad38');ctx.strokeStyle='#f5cf80b3';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(u.x,u.y,26+(1-u.flash/.25)*7,0,Math.PI*2);ctx.stroke();}
  ellipse(u.x+4,u.y+13,footprint.rx*.92,Math.max(10,footprint.ry*.38),'#10150f62');
@@ -697,13 +697,16 @@ function drawSquad(u){
    ctx.restore();
  }
  drawStandard(u);
- const bw=50,bx=u.x-bw/2,by=u.y-Math.max(43,footprint.ry+12);
+ const bw=44,bx=u.x-bw/2,by=u.y-Math.max(40,footprint.ry+10);
  ctx.fillStyle='#080d09c9';ctx.fillRect(bx-1,by-1,bw+2,7);
  ctx.fillStyle=u.hp/u.maxHp<.3?'#df6848':u.hp/u.maxHp<.6?'#dcb961':'#96d65d';ctx.fillRect(bx,by,bw*(u.hp/u.maxHp),5);
- ctx.strokeStyle=u.side==='ally'?'#abdfc8':'#ffc6ae';ctx.lineWidth=.9;ctx.strokeRect(bx-.5,by-.5,bw+1,6);
- ctx.fillStyle='#101415b9';ctx.fillRect(bx,by+8,bw,3);ctx.fillStyle='#7bd0ed';ctx.fillRect(bx,by+8,bw*u.cohesion/100,3);
- ctx.fillStyle='#101415b9';ctx.fillRect(bx,by+13,bw,3);ctx.fillStyle='#eccc7d';ctx.fillRect(bx,by+13,bw*u.morale/u.maxMorale,3);
- if(u.routed||u.withdraw){ctx.fillStyle=u.routed?'#ffb0a0':'#f7e5a9';ctx.font='bold 11px system-ui';ctx.textAlign='center';ctx.fillText(u.routed?'EN FUGA':'RETIRADA',u.x,u.y-47)}
+ ctx.strokeStyle=u.side==='ally'?'#abdfc8':'#ffc6ae';ctx.lineWidth=.8;ctx.strokeRect(bx-.5,by-.5,bw+1,6);
+ const detailed=selected||hovered||u.routed||u.withdraw||state.t-u.lastEngaged<4||u.cohesion<55||u.morale/u.maxMorale<.53;
+ if(detailed){
+  ctx.fillStyle='#101415b9';ctx.fillRect(bx,by+8,bw,3);ctx.fillStyle='#7bd0ed';ctx.fillRect(bx,by+8,bw*u.cohesion/100,3);
+  ctx.fillStyle='#101415b9';ctx.fillRect(bx,by+13,bw,3);ctx.fillStyle='#eccc7d';ctx.fillRect(bx,by+13,bw*u.morale/u.maxMorale,3);
+ }
+ if(u.routed||u.withdraw){ctx.fillStyle=u.routed?'#ffb0a0':'#f7e5a9';ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText(u.routed?'EN FUGA':'RETIRADA',u.x,by-5)}
  if(selected){ctx.fillStyle='#fff5d8';ctx.font='bold 10px system-ui';ctx.textAlign='center';const fName=u.formation==='line'?'LÍNEA':u.formation==='wedge'?'CUÑA':'COLUMNA';ctx.fillText(TYPES[u.type].name+' · '+fName,u.x,u.y+Math.max(42,footprint.ry+11))}
  ctx.restore();
 }
