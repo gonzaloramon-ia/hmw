@@ -1,4 +1,4 @@
-# HWM alfa 0.8.8
+# HWM alfa 0.8.9
 
 HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
 
@@ -44,3 +44,16 @@ Cada formación aliada tiene dos velocidades:
 - El contorno de selección adopta la huella real de la formación.
 - La etiqueta de una unidad seleccionada muestra también su formación.
 - No se modificaron daño, moral, cohesión, IA ni duración del combate.
+
+## Lectura táctica 0.8.9
+
+- órdenes de movimiento y ataque con marcadores visuales distintos;
+- rutas de ataque y movimiento diferenciadas por color;
+- línea directa al objetivo cuando una formación tiene blanco asignado;
+- selección/hitbox ajustada a la huella visual de Línea, Cuña y Columna;
+- resaltado al pasar el cursor sobre formaciones;
+- alerta visual discreta en formaciones aliadas con moral o cohesión críticas;
+- mayor separación entre formaciones cuando se ordena mover varias a la vez;
+- barras de estado reposicionadas según la profundidad de la formación.
+
+La lógica de daño, moral, cohesión, IA y duración del combate permanece sin cambios.
