@@ -1,4 +1,4 @@
-# HWM alfa 0.8.10
+# HWM alfa 0.8.11
 
 HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
 
@@ -68,3 +68,16 @@ La lógica de daño, moral, cohesión, IA y duración del combate permanece sin 
 - selección con menor opacidad para dejar ver mejor soldados y terreno.
 
 La lógica táctica y el balance permanecen sin cambios.
+
+## Banda sonora 0.8.11
+
+Asignación actual:
+
+- **Briefing:** `Shadows of War(3).mp3`
+- **Briefing alternativo:** `Shadows of War (2)(1).mp3`
+- **Despliegue:** `Omniscient Evil - usesuno.com.mp3`
+- **Batalla:** sin música por ahora
+- **Resultado principal:** `hhhhhhhh.mp3` (What History Remembers)
+- **Resultado alternativo:** `uuuu(1).mp3` (What History Remembers)
+
+El reproductor hace transiciones suaves y mantiene la batalla sin música hasta cerrar la capa de efectos de sonido.
