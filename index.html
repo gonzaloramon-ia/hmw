@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>HWM 0.8.16 · Intro cinematográfica</title>
+<title>HWM 0.8.17 · Combate humano</title>
 <style>
 
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
@@ -124,7 +124,7 @@
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
 <div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="fxBtn" title="Activar / silenciar efectos" aria-pressed="true">FX</button><button class="headButton" id="introBtn" title="Reproducir intro">▶</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.16</b><p>Intro cinematográfica + música dinámica + ambiente de batalla. HWM = History War Moments.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.17</b><p>Intro cinematográfica + música dinámica + ambiente de batalla. HWM = History War Moments.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -144,10 +144,11 @@ const el=id=>document.getElementById(id);const ui={list:el('battlelist'),sidebar
 const SFX=(()=>{
  const SRC={
   ambience:['https://assets.mixkit.co/active_storage/sfx/458/458-preview.mp3'],
-  melee:['https://assets.mixkit.co/active_storage/sfx/2765/2765-preview.mp3'],
+  melee:['https://assets.mixkit.co/active_storage/sfx/2765/2765-preview.mp3','https://assets.mixkit.co/active_storage/sfx/2768/2768-preview.mp3'],
   arrow:['https://assets.mixkit.co/active_storage/sfx/2771/2771-preview.mp3'],
   cavalry:['https://assets.mixkit.co/active_storage/sfx/77/77-preview.mp3'],
-  rout:['https://assets.mixkit.co/active_storage/sfx/2766/2766-preview.mp3','https://assets.mixkit.co/active_storage/sfx/2767/2767-preview.mp3']
+  battleCry:['https://assets.mixkit.co/active_storage/sfx/2767/2767-preview.mp3'],
+  rout:['https://assets.mixkit.co/active_storage/sfx/2766/2766-preview.mp3']
  };
  let enabled=true,unlocked=false,lastScene='',last={},bed=null;
  try{enabled=localStorage.getItem('hwm-fx')!=='0'}catch(_){}
@@ -176,9 +177,22 @@ const SFX=(()=>{
  }
  function order(){}
  function melee(att){
-  if(!gate(att?.type==='cavalry'?'cavalry-hit':'melee',att?.type==='cavalry'?1800:190))return;
-  if(att?.type==='cavalry')play('cavalry',.20,.95+Math.random()*.08);
-  play('melee',att?.type==='cavalry'?.27:.22,.90+Math.random()*.18);
+  const cav=att?.type==='cavalry';
+  if(!gate(cav?'cavalry-hit':'melee',cav?1500:115))return;
+  if(cav)play('cavalry',.24,.94+Math.random()*.10);
+  // Hoplites/infantry need a clearly audible bronze/wood impact.
+  const base=att?.type==='hoplite'?.42:att?.type==='persian'?.34:cav?.31:.28;
+  play('melee',base,.88+Math.random()*.22);
+  if(!cav&&Math.random()<.28)setTimeout(()=>play('melee',base*.62,.82+Math.random()*.25),55+Math.random()*90);
+ }
+ function contactCry(u){
+  if(!u||!gate('contactCry',3600))return;
+  // Short collective battle cry at first contact; allied formations are slightly more prominent.
+  play('battleCry',u.side==='ally'?.34:.24,u.side==='ally'?.94:.88);
+ }
+ function rallyCry(){
+  if(!gate('rallyCry',6500))return;
+  play('battleCry',.30,.98+Math.random()*.05);
  }
  function ranged(u){
   if(!gate(u?.type==='archer'?'arrow':'javelin',u?.type==='archer'?420:520))return;
@@ -187,7 +201,7 @@ const SFX=(()=>{
  function projectileHit(){}
  function rout(){
   if(!gate('rout',900))return;
-  play('rout',.24,.92+Math.random()*.12);
+  play('rout',.30,.88+Math.random()*.10);
  }
  function breach(){rout()}
  function setScene(scene){
@@ -228,7 +242,7 @@ const SFX=(()=>{
   document.addEventListener('pointerdown',()=>{unlocked=true},{once:true,capture:true});
   document.addEventListener('keydown',()=>{unlocked=true},{once:true,capture:true});
  }
- return{ensure,order,melee,ranged,projectileHit,rout,battleStart,battleEnd,breach,update,setScene,toggle,init};
+ return{ensure,order,melee,ranged,projectileHit,rout,contactCry,rallyCry,battleStart,battleEnd,breach,update,setScene,toggle,init};
 })()
 
 const MUSIC=(()=>{
@@ -364,19 +378,19 @@ function makeGrid(){const rows=Math.ceil(WORLD.h/TILE),cols=Math.ceil(WORLD.w/TI
 let grid=null;
 function findSafe(p){if(walkable(p.x,p.y))return p;for(let r=12;r<280;r+=12){for(let a=0;a<16;a++){let th=a/16*Math.PI*2;let q={x:clamp(p.x+Math.cos(th)*r,22,1258),y:clamp(p.y+Math.sin(th)*r,22,698)};if(walkable(q.x,q.y))return q}}return{x:200,y:360}}
 function route(start,end){const goal=findSafe(end);if(!grid)return [goal];const sc=clamp(Math.floor(start.x/TILE),0,grid.cols-1),sr=clamp(Math.floor(start.y/TILE),0,grid.rows-1),ec=clamp(Math.floor(goal.x/TILE),0,grid.cols-1),er=clamp(Math.floor(goal.y/TILE),0,grid.rows-1);const si=sr*grid.cols+sc,ei=er*grid.cols+ec;const nodes=grid.cols*grid.rows;const seen=new Uint8Array(nodes),parent=new Int32Array(nodes).fill(-1),scores=new Float32Array(nodes).fill(Infinity);let open=[si];scores[si]=0;let loops=0;while(open.length&&loops++<3000){let bi=0,bv=Infinity;for(let i=0;i<open.length;i++){let id=open[i],c=id%grid.cols,r=(id/grid.cols)|0,v=scores[id]+Math.abs(c-ec)+Math.abs(r-er);if(v<bv){bv=v;bi=i}}const cur=open.splice(bi,1)[0];if(cur===ei){const pts=[];let at=cur;while(at!==si&&at!==-1){pts.push({x:(at%grid.cols+.5)*TILE,y:(((at/grid.cols)|0)+.5)*TILE});at=parent[at]}pts.reverse();pts.push(goal);return pts}seen[cur]=1;const c=cur%grid.cols,r=(cur/grid.cols)|0;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]]){let nx=c+dx,ny=r+dy;if(nx<0||ny<0||nx>=grid.cols||ny>=grid.rows||grid.blocked[ny][nx])continue;if(dx&&dy&&(grid.blocked[r][nx]||grid.blocked[ny][c]))continue;const next=ny*grid.cols+nx,nd=scores[cur]+(dx&&dy?1.414:1);if(nd<scores[next]){scores[next]=nd;parent[next]=cur;if(!seen[next]&&!open.includes(next))open.push(next)}}}return[]}
-function addUnit(side,type,x,y,level=1){let stat=TYPES[type];const u={id:state.nextId++,side,type,x,y,hp:stat.hp*(1+(level-1)*.08),maxHp:stat.hp*(1+(level-1)*.08),soldiers:100,maxSoldiers:100,morale:stat.morale,maxMorale:stat.morale,cohesion:100,level,cooldown:Math.random()*.9,attackTarget:null,goal:null,path:[],pathIndex:0,pathT:0,lastGoal:null,attackMove:false,stance:'hold',formation:'line',facing:side==='ally'?0:Math.PI,flash:0,retreat:false,withdraw:false,routed:false,disengaged:false,engagedTime:0,lastEngaged:-100,lastAttacked:-100,lastThreat:-100,flankUntil:0,recover:0,speedPenalty:1,breakCause:'',lastTacticalNote:'',aiLane:y,aiRole:type==='cavalry'?'flank':type==='archer'?'support':'front',skirmishActive:false,skirmishPanic:false,skirmishGoal:null,skirmishSaved:null,skirmishNext:0,lastShot:-99,shotSlowUntil:-99,shotSlowFactor:1,regimentId:0,groupOverride:false,movePace:'march',lastDust:-99,lastImpactFx:-99};state.units.push(u);return u}
+function addUnit(side,type,x,y,level=1){let stat=TYPES[type];const u={id:state.nextId++,side,type,x,y,hp:stat.hp*(1+(level-1)*.08),maxHp:stat.hp*(1+(level-1)*.08),soldiers:100,maxSoldiers:100,morale:stat.morale,maxMorale:stat.morale,cohesion:100,level,cooldown:Math.random()*.9,attackTarget:null,goal:null,path:[],pathIndex:0,pathT:0,lastGoal:null,attackMove:false,stance:'hold',formation:'line',facing:side==='ally'?0:Math.PI,flash:0,retreat:false,withdraw:false,routed:false,disengaged:false,engagedTime:0,lastEngaged:-100,lastAttacked:-100,lastThreat:-100,flankUntil:0,recover:0,speedPenalty:1,breakCause:'',lastTacticalNote:'',aiLane:y,aiRole:type==='cavalry'?'flank':type==='archer'?'support':'front',skirmishActive:false,skirmishPanic:false,skirmishGoal:null,skirmishSaved:null,skirmishNext:0,lastShot:-99,shotSlowUntil:-99,shotSlowFactor:1,regimentId:0,groupOverride:false,movePace:'march',lastDust:-99,lastImpactFx:-99,lastContactCry:-99};state.units.push(u);return u}
 function setGoal(u,p,attackMove=false){u.skirmishActive=false;u.skirmishPanic=false;u.skirmishSaved=null;p=findSafe({x:clamp(p.x,22,1258),y:clamp(p.y,22,698)});u.goal=p;u.attackTarget=null;u.attackMove=attackMove;u.retreat=false;u.withdraw=false;u.path=route(u,p);u.pathIndex=0;u.pathT=0;u.lastGoal=p;u.stance='move'}
 function chase(u,target){if(!target||target.hp<=0)return;u.attackTarget=target;u.stance='attack';u.attackMove=false;const s=TYPES[u.type],d=dist(u,target),goal={x:target.x+(u.x-target.x)/Math.max(1,d)*Math.max(s.range*.65,25),y:target.y+(u.y-target.y)/Math.max(1,d)*Math.max(s.range*.65,25)};if(!u.lastGoal||Math.hypot(goal.x-u.lastGoal.x,goal.y-u.lastGoal.y)>32||u.pathT>1.8){u.path=route(u,goal);u.pathIndex=0;u.pathT=0;u.lastGoal=goal}}
 function nearestTarget(u,range=Infinity){let found=null,score=Infinity;for(const v of state.units){if(v.side===u.side||v.hp<=0||v.routed||v.disengaged)continue;const d=dist(u,v);if(d<score&&d<range){found=v;score=d}}return found}
 function phase(u){if(u.routed)return 'En fuga';if(u.withdraw)return 'Reagrupamiento';if(state.t-u.lastAttacked<1.5||state.t-u.lastEngaged<5){if(u.flankUntil>state.t)return 'Crisis de flanco';return u.engagedTime<6?'Contacto':'Desgaste'}return u.goal?'En marcha':'En reserva'}
 function safeRetreat(u){return findSafe({x:u.side==='ally'?90:1190,y:clamp(u.y,80,640)})}
 function active(u){return u.hp>0&&!u.routed&&!u.disengaged}
-function issueRetreat(u,forced=false){if(!u||u.hp<=0)return;if(forced)SFX.rout(u);u.attackTarget=null;u.goal=null;u.path=[];u.routed=!!forced;u.withdraw=true;u.attackMove=false;setGoal(u,safeRetreat(u),false);u.withdraw=true;u.routed=!!forced;u.stance=forced?'rout':'withdraw';u.recover=0;if(forced)battleEvent(`${u.side==='ally'?'Aliados':'Enemigos'}: escuadrón ${u.id} se desbanda (${u.breakCause||'moral o cohesión'}).`);if(forced){u.morale=Math.min(u.morale,COMBAT.routMorale);u.cohesion=Math.min(u.cohesion,COMBAT.routCohesion);for(const v of state.units){if(v.side===u.side&&v.id!==u.id&&active(v)&&dist(u,v)<118){v.morale=Math.max(0,v.morale-4);v.cohesion=Math.max(0,v.cohesion-3)}}if(u.side==='ally')notify('¡Escuadrón en fuga! La línea perdió moral.')} }
+function issueRetreat(u,forced=false){if(!u||u.hp<=0)return;if(forced){SFX.rout(u);if(u.side==='enemy'&&state.units.some(v=>v.side==='ally'&&active(v)&&dist(v,u)<150))SFX.rallyCry();}u.attackTarget=null;u.goal=null;u.path=[];u.routed=!!forced;u.withdraw=true;u.attackMove=false;setGoal(u,safeRetreat(u),false);u.withdraw=true;u.routed=!!forced;u.stance=forced?'rout':'withdraw';u.recover=0;if(forced)battleEvent(`${u.side==='ally'?'Aliados':'Enemigos'}: escuadrón ${u.id} se desbanda (${u.breakCause||'moral o cohesión'}).`);if(forced){u.morale=Math.min(u.morale,COMBAT.routMorale);u.cohesion=Math.min(u.cohesion,COMBAT.routCohesion);for(const v of state.units){if(v.side===u.side&&v.id!==u.id&&active(v)&&dist(u,v)<118){v.morale=Math.max(0,v.morale-4);v.cohesion=Math.max(0,v.cohesion-3)}}if(u.side==='ally')notify('¡Escuadrón en fuga! La línea perdió moral.')} }
 function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.atan2(Math.sin(angle-v.facing),Math.cos(angle-v.facing));return Math.abs(d)>2.3?'rear':Math.abs(d)>1.02?'flank':'front'}
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.hoverId=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
 function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.16: intro cinematográfica integrada con subtítulos castellanos, tiempos de lectura ampliados y opción de saltar/repetir.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.17: combate más humano — choques de hoplitas mucho más presentes, doble capa ocasional de metal y gritos colectivos en primer contacto/ruptura.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
@@ -599,7 +613,12 @@ function update(dt){
    }else if(u.attackTarget){if(u.pathIndex>=u.path.length)chase(u,target);moveUnit(u,dt)}
    else if(u.attackMove&&u.goal)moveUnit(u,dt);
   }else moveUnit(u,dt);
-  if(engaged){u.engagedTime+=dt;u.lastEngaged=state.t;
+  if(engaged){
+   const renewedContact=state.t-u.lastEngaged>3.2;
+   if(renewedContact&&(u.type==='hoplite'||u.type==='persian'||u.type==='cavalry')&&state.t-u.lastContactCry>8){
+    u.lastContactCry=state.t;SFX.contactCry(u);
+   }
+   u.engagedTime+=dt;u.lastEngaged=state.t;
    const friends=units.filter(v=>v.side===u.side&&v.id!==u.id&&active(v)&&dist(u,v)<112).length;
    if(friends&&u.formation==='line')u.cohesion=clamp(u.cohesion+dt*Math.min(.32,friends*.13),0,100);
   }else if(state.t-u.lastAttacked>5)u.engagedTime=Math.max(0,u.engagedTime-dt*1.5);
