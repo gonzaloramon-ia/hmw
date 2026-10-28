@@ -1,4 +1,4 @@
-# HWM alfa 0.8.11
+# HWM alfa 0.8.13
 
 HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
 
@@ -81,3 +81,14 @@ Asignación actual:
 - **Resultado alternativo:** `uuuu(1).mp3` (What History Remembers)
 
 El reproductor hace transiciones suaves y mantiene la batalla sin música hasta cerrar la capa de efectos de sonido.
+
+## Música dinámica 0.8.13
+
+`Omniscient Evil` continúa sin reiniciarse desde el despliegue hacia la batalla. El volumen se adapta al estado táctico:
+
+- despliegue: 52%;
+- aproximación / inicio de batalla: 32%;
+- combate: 25%;
+- crisis: 20%.
+
+Al finalizar, la pista hace transición hacia `What History Remembers`. Este ducking deja espacio para la futura capa de ambiente y efectos de batalla.
