@@ -1,4 +1,4 @@
-# HWM alfa 0.8.16
+# HWM alfa 0.8.17
 
 HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
 
@@ -119,3 +119,11 @@ El juego espera el archivo `HWM-intro.mp4` en la raíz del repositorio.
 - si el archivo no existe o falla, HWM continúa normalmente al briefing.
 
 La intro sigue siendo reemplazable: basta sustituir `HWM-intro.mp4` por una nueva versión manteniendo el mismo nombre.
+
+## Combate humano 0.8.17
+
+- choques de hoplitas reforzados y con segunda capa ocasional de metal;
+- grito colectivo al primer contacto de una formación;
+- grito de impulso cuando una formación enemiga cercana se desbanda;
+- desbandada con voz distinta del grito ofensivo;
+- enfriamientos globales y por formación para evitar repetición constante.
