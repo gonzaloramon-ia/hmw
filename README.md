@@ -1,4 +1,4 @@
-# HWM alfa 0.8.13
+# HWM alfa 0.8.15
 
 HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
 
@@ -92,3 +92,17 @@ El reproductor hace transiciones suaves y mantiene la batalla sin música hasta 
 - crisis: 20%.
 
 Al finalizar, la pista hace transición hacia `What History Remembers`. Este ducking deja espacio para la futura capa de ambiente y efectos de batalla.
+
+## Sonido de batalla 0.8.15
+
+Primera capa de SFX reales, separada de la música:
+
+- ambiente de tropa/crowd durante la batalla;
+- choque cuerpo a cuerpo;
+- descarga de arqueros / proyectiles;
+- carga/impacto de caballería;
+- desbandada / ruptura.
+
+Los efectos se disparan desde el estado real de la simulación y tienen límites de frecuencia para evitar saturación. El botón **FX** permite silenciarlos sin afectar la música.
+
+Fuentes iniciales: Mixkit (Mixkit License), incluyendo Sword Strikes Armor, Arrow Shot Through Air, Horse Fast Gallop in the Dirt y crowd ambience. En esta fase se consumen desde el CDN de Mixkit; más adelante conviene guardar copias locales versionadas en el repositorio para eliminar dependencias externas.
