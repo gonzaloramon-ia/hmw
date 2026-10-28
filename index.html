@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>HWM 0.8.11 · Banda sonora</title>
+<title>HWM 0.8.12 · Banda sonora activa</title>
 <style>
 
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
@@ -116,7 +116,7 @@
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
 <div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.11</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.12</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -159,9 +159,9 @@ const SFX=(()=>{
 
 const MUSIC=(()=>{
  const TRACKS={
-  briefing:{src:['assets/audio/Shadows of War(3).mp3','assets/audio/Shadows of War (2)(1).mp3'],loop:false,volume:.62},
-  deploy:{src:['assets/audio/Omniscient Evil - usesuno.com.mp3'],loop:true,volume:.52},
-  result:{src:['assets/audio/hhhhhhhh.mp3','assets/audio/uuuu(1).mp3'],loop:false,volume:.64}
+  briefing:{src:['Shadows of War (1).mp3','Shadows of War.mp3'],loop:false,volume:.62},
+  deploy:{src:['Omniscient Evil - usesuno.com.mp3','Omniscient Evil.mp3'],loop:true,volume:.52},
+  result:{src:['hhhhhhhh.mp3','What History Remembers - usesuno.com(1).mp3','uuuu.mp3'],loop:false,volume:.64}
  };
  let enabled=true,unlocked=false,currentState='briefing',audio=null,fadeTimer=null,sourceIndex=0;
  try{enabled=localStorage.getItem('hwm-music')!=='0'}catch(_){}
@@ -286,7 +286,7 @@ function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.at
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.hoverId=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
 function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.11: banda sonora enlazada a los archivos definitivos: Shadows of War en briefing, Omniscient Evil en despliegue y What History Remembers al resultado. La batalla permanece sin música.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.12: banda sonora activa desde los archivos reales del repositorio. Shadows of War en briefing, Omniscient Evil en despliegue y What History Remembers al resultado. La batalla permanece sin música.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
