@@ -1,4 +1,4 @@
-# HWM alfa 0.8.15
+# HWM alfa 0.8.16
 
 HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
 
@@ -106,3 +106,16 @@ Primera capa de SFX reales, separada de la música:
 Los efectos se disparan desde el estado real de la simulación y tienen límites de frecuencia para evitar saturación. El botón **FX** permite silenciarlos sin afectar la música.
 
 Fuentes iniciales: Mixkit (Mixkit License), incluyendo Sword Strikes Armor, Arrow Shot Through Air, Horse Fast Gallop in the Dirt y crowd ambience. En esta fase se consumen desde el CDN de Mixkit; más adelante conviene guardar copias locales versionadas en el repositorio para eliminar dependencias externas.
+
+## Intro cinematográfica 0.8.16
+
+El juego espera el archivo `HWM-intro.mp4` en la raíz del repositorio.
+
+- se reproduce una vez por sesión;
+- puede saltarse;
+- puede repetirse desde el botón ▶ de la barra superior;
+- subtítulos castellanos superpuestos desde el juego;
+- pausa adicional de 1,9 s en el primer cartel reflexivo y de 1,5 s en el cierre para mejorar lectura;
+- si el archivo no existe o falla, HWM continúa normalmente al briefing.
+
+La intro sigue siendo reemplazable: basta sustituir `HWM-intro.mp4` por una nueva versión manteniendo el mismo nombre.
