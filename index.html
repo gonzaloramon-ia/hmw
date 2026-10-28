@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>HWM 0.8.15 · Ambiente de batalla</title>
+<title>HWM 0.8.16 · Intro cinematográfica</title>
 <style>
 
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
@@ -108,15 +108,23 @@
 .unitReason{color:#f7c28a;font:11px/1.4 Segoe UI,Arial,sans-serif;margin-top:3px}
 @media(max-width:1100px){.missionStatus{font-size:10px;top:35px;right:8px;max-width:50%}}
 @media(max-width:750px){.missionStatus{top:44px;max-width:72%;font-size:9px}}
+
+.introLayer{position:fixed;inset:0;z-index:9999;background:#020303;display:flex;align-items:center;justify-content:center;overflow:hidden}.introLayer.hidden{display:none}.introLayer video{width:100%;height:100%;object-fit:contain;background:#000}.introSub{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);width:min(900px,88vw);padding:10px 18px;text-align:center;color:#fff5df;font:700 22px/1.35 Georgia,serif;text-shadow:0 2px 5px #000,0 0 12px #000;background:linear-gradient(90deg,transparent,#0007 15%,#0007 85%,transparent);pointer-events:none;opacity:0;transition:opacity .18s}.introSub.show{opacity:1}.introSkip,.introPlay{position:absolute;z-index:2;border:1px solid #b8955c;background:#0b1214d9;color:#f3dfb8;border-radius:4px;font:bold 12px Georgia,serif;padding:9px 13px}.introSkip{top:18px;right:18px}.introPlay{left:50%;top:50%;transform:translate(-50%,-50%);font-size:16px;padding:13px 20px}.introPlay.hidden{display:none}
 </style>
 </head>
 <body>
+<div class="introLayer hidden" id="introLayer" aria-label="Intro de HWM">
+  <video id="introVideo" preload="metadata" playsinline src="HWM-intro.mp4"></video>
+  <div class="introSub" id="introSub"></div>
+  <button class="introSkip" id="introSkip">Saltar intro</button>
+  <button class="introPlay hidden" id="introPlay">▶ Reproducir intro</button>
+</div>
 <div class="app">
 <header class="top"><div class="brand"><div class="monogram">HWM</div><div class="toptext"><strong>Grandes batallas de la historia</strong><span>Historical Warfare · Biblioteca Grecia</span></div></div>
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
-<div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="fxBtn" title="Activar / silenciar efectos" aria-pressed="true">FX</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
+<div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="fxBtn" title="Activar / silenciar efectos" aria-pressed="true">FX</button><button class="headButton" id="introBtn" title="Reproducir intro">▶</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.15</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.16</b><p>Intro cinematográfica + música dinámica + ambiente de batalla. HWM = History War Moments.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -368,7 +376,7 @@ function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.at
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.hoverId=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
 function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.15: ambiente de batalla y SFX reales: tropa de fondo, choques, flechas, caballería y desbandadas. FX y música se controlan por separado.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.16: intro cinematográfica integrada con subtítulos castellanos, tiempos de lectura ampliados y opción de saltar/repetir.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
@@ -1099,7 +1107,49 @@ window.addEventListener('keydown',e=>{
 },true);
 window.HWM_DEBUG={state:()=>({battle:BATTLES[state.battle].id,time:state.t,zoom:state.zoom,panX:state.panX,panY:state.panY,running:state.running,paused:state.paused,finished:state.finished,phase:state.phase,deployMode:state.deployMode,allies:state.units.filter(u=>u.side==='ally'&&active(u)).length,enemies:state.units.filter(u=>u.side==='enemy'&&active(u)).length,routedAllies:state.units.filter(u=>u.side==='ally'&&u.routed).length,routedEnemies:state.units.filter(u=>u.side==='enemy'&&u.routed).length,breaches:state.breaches,objective:BATTLES[state.battle].goal,reason:state.endReason||null,events:state.events}),start:(mode='free')=>start(mode),deploy:()=>enterDeployment(),preset:(kind)=>deployFormation(kind,true),moveDeploy:(x,y)=>moveDeployedSquads({x,y}),selectAll:()=>{for(const u of state.units)if(u.side==='ally'&&active(u))state.selection.add(u.id);updateHud()},command:(x,y)=>command({x,y}),load:idx=>loadBattle(idx),step:seconds=>{for(let i=0;i<Math.ceil(seconds/.04);i++)update(.04)},walkable:(x,y)=>walkable(x,y),thermoBounds:(x)=>thermoBounds(x),battles:()=>BATTLES.map(b=>({id:b.id,name:b.name})),unitPositions:()=>state.units.filter(u=>u.hp>0).map(u=>({id:u.id,side:u.side,x:Math.round(u.x),y:Math.round(u.y),soldiers:u.soldiers,hp:Math.round(u.hp),cohesion:Math.round(u.cohesion),morale:Math.round(u.morale),type:u.type,phase:phase(u),routed:u.routed,withdraw:u.withdraw,disengaged:u.disengaged,path:u.path.length,individualOrder:u.groupOverride,skirmish:u.skirmishActive,panic:u.skirmishPanic,shotSlowUntil:Number(u.shotSlowUntil.toFixed(2)),aiRole:u.aiRole})),setPosition:(id,x,y)=>{const u=state.units.find(u=>u.id===id);if(u&&walkable(x,y)){u.x=x;u.y=y;u.goal=null;u.path=[];u.pathIndex=0;return true}return false},retreat:()=>{for(const u of selectedUnits()){u.groupOverride=true;issueRetreat(u,false)}updateHud()},formation:()=>state.formation,groups:()=>[...state.groups.entries()].map(([id,g])=>({id,ids:g.ids,layout:g.layout,offsets:g.offsets})),projectiles:()=>state.projectiles.map(p=>({kind:p.kind,hit:p.hit,age:p.age,duration:p.dur,effectiveness:p.effectiveness})),selectIds:ids=>{state.selection.clear();ids.forEach(id=>state.selection.add(id));updateHud()},createGroup:()=>makeGroup(),recallGroup:()=>recallGroup(),arrangeSix:()=>arrangeSix(),selectedIds:()=>[...state.selection]};
 
-SFX.init();MUSIC.init();resize();loadBattle(0);requestAnimationFrame(frame);
+const INTRO=(()=>{
+ const layer=el('introLayer'),video=el('introVideo'),sub=el('introSub'),skip=el('introSkip'),playBtn=el('introPlay');
+ let hold1=false,hold2=false,holding=false,active=false;
+ const subtitleFor=t=>{
+  if(t>=6.0&&t<9.2)return 'La historia recuerda lo que ocurrió. Rara vez recuerda lo que estuvo a punto de ocurrir.';
+  if(t>=9.2&&t<14.2)return 'Cambiá la batalla. Cambiá la historia.';
+  if(t>=26.8&&t<30.1)return 'Cambiá la batalla. Cambiá la historia.';
+  return '';
+ };
+ function updateSub(){
+  const txt=subtitleFor(video.currentTime||0);sub.textContent=txt;sub.classList.toggle('show',!!txt);
+ }
+ function hold(ms){
+  if(holding)return;holding=true;video.pause();setTimeout(()=>{holding=false;if(active)video.play().catch(()=>showPlay())},ms);
+ }
+ function onTime(){
+  updateSub();const t=video.currentTime||0;
+  if(!hold1&&t>=8.55&&t<9.15){hold1=true;hold(1900)}
+  if(!hold2&&t>=28.0&&t<29.5){hold2=true;hold(1500)}
+ }
+ function showPlay(){playBtn.classList.remove('hidden')}
+ function finish(markSeen=true){
+  active=false;try{video.pause();video.currentTime=0}catch(_){}
+  layer.classList.add('hidden');playBtn.classList.add('hidden');sub.classList.remove('show');
+  if(markSeen)try{sessionStorage.setItem('hwm-intro-seen','1')}catch(_){}
+  SFX.setScene('briefing');
+ }
+ function start(force=false){
+  if(!force){try{if(sessionStorage.getItem('hwm-intro-seen')==='1')return}catch(_){}}
+  active=true;hold1=false;hold2=false;holding=false;layer.classList.remove('hidden');playBtn.classList.add('hidden');
+  MUSIC.setState('intro');video.currentTime=0;video.volume=.92;
+  const p=video.play();if(p&&p.catch)p.catch(()=>showPlay());
+ }
+ video.addEventListener('timeupdate',onTime);
+ video.addEventListener('ended',()=>finish(true));
+ video.addEventListener('error',()=>finish(false));
+ skip.addEventListener('click',()=>finish(true));
+ playBtn.addEventListener('click',()=>{playBtn.classList.add('hidden');video.play().catch(()=>{})});
+ el('introBtn').addEventListener('click',()=>start(true));
+ return{start,finish};
+})();
+
+SFX.init();MUSIC.init();resize();loadBattle(0);requestAnimationFrame(frame);setTimeout(()=>INTRO.start(false),120);
 })();
 </script>
 </body></html>
