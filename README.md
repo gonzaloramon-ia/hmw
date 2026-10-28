@@ -1,4 +1,4 @@
-# HWM alfa 0.8.17
+# HWM alfa 0.8.18
 
 HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
 
@@ -127,3 +127,14 @@ La intro sigue siendo reemplazable: basta sustituir `HWM-intro.mp4` por una nuev
 - grito de impulso cuando una formación enemiga cercana se desbanda;
 - desbandada con voz distinta del grito ofensivo;
 - enfriamientos globales y por formación para evitar repetición constante.
+
+## Campo ampliado 0.8.18
+
+- área fuera del mundo jugable representada en negro absoluto;
+- dock inferior reducido de ~178 px a ~86 px en escritorio;
+- órdenes en una sola fila compacta, estilo taskbar;
+- panel de unidad y minimapa reducidos sin quitar funciones;
+- etiquetas de órdenes abreviadas para ganar espacio;
+- en pantallas chicas se conserva un layout adaptativo más alto.
+
+No se modificó combate, IA, moral, cohesión ni balance.
