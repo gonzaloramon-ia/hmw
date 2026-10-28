@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>HWM 0.8.13 · Música dinámica de batalla</title>
+<title>HWM 0.8.14 · Mapa y estandartes</title>
 <style>
 
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
@@ -116,7 +116,7 @@
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
 <div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.13</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.14</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -302,7 +302,7 @@ function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.at
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.hoverId=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
 function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.13: Omniscient Evil continúa durante la batalla con volumen dinámico: baja al comenzar el combate y desciende aún más en contacto/crisis para dejar espacio al sonido ambiental.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.14: estandartes H/A/J/C/I por tipo de unidad y márgenes inaccesibles del mapa integrados visualmente con el terreno. La lógica táctica no cambia.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
@@ -626,9 +626,8 @@ function drawStandard(u){
  ctx.fillStyle=u.side==='ally'?'#155f91':'#9e302b';ctx.strokeStyle='#ead095';ctx.lineWidth=1.4;
  ctx.beginPath();ctx.moveTo(left-1,top-10);ctx.lineTo(left+25,top-6);ctx.lineTo(left+25,top+17);ctx.lineTo(left-1,top+13);ctx.closePath();ctx.fill();ctx.stroke();
  ctx.shadowColor='transparent';
- ctx.fillStyle='#f0ddb0';ctx.font='bold 15px Georgia';ctx.textAlign='center';ctx.fillText(u.side==='ally'?'Λ':'✦',left+11,top+7);
- const mark=u.type==='archer'?'↟':u.type==='peltast'?'•':u.type==='cavalry'?'◆':'—';
- ctx.font='bold 8px Georgia';ctx.fillStyle='#f7e9c9';ctx.fillText(mark,left+12,top+15);
+ const letter=u.type==='hoplite'?'H':u.type==='archer'?'A':u.type==='peltast'?'J':u.type==='cavalry'?'C':u.type==='persian'?'I':'?';
+ ctx.fillStyle='#f7e9c9';ctx.font='bold 16px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(letter,left+12,top+5);
  ctx.restore();
 }
 function soldier(u,x,y,i){
@@ -784,7 +783,10 @@ function mapping(){
  view.ox=(view.w-bw)/2+state.panX;view.oy=(view.h-bh)/2+state.panY;
 }
 function drawThermopylaeNarrowPass(){ if(BATTLES[state.battle].id!=='thermopylae')return; }
-function draw(){mapping();const ratio=view.dpr||1;ctx.setTransform(ratio,0,0,ratio,0,0);ctx.fillStyle='#18231b';ctx.fillRect(0,0,view.w,view.h);const terrainPhoto=ASSETS.terrain[BATTLES[state.battle].id];if(terrainPhoto.complete&&terrainPhoto.naturalWidth){ctx.save();ctx.globalAlpha=.60;paintPhoto(ctx,terrainPhoto,0,0,view.w,view.h);ctx.restore()}ctx.translate(view.ox,view.oy);ctx.scale(view.s,view.s);background();drawThermopylaeNarrowPass();drawDecor();drawDefensiveLine();if(state.phase==='deploy')drawDeploymentZone();drawPath();state.units.filter(u=>u.hp>0).sort((a,b)=>a.y-b.y).forEach(drawSquad);drawProjectiles();if(state.drag&&state.drag.moved){let {x,y}=state.drag.from,{x:ex,y:ey}=state.drag.to;ctx.strokeStyle='#f0dfa8';ctx.fillStyle='#edd09322';ctx.lineWidth=1.5;ctx.fillRect(Math.min(x,ex),Math.min(y,ey),Math.abs(x-ex),Math.abs(y-ey));ctx.strokeRect(Math.min(x,ex),Math.min(y,ey),Math.abs(x-ex),Math.abs(y-ey))}if(state.cmdMarker&&state.t-state.cmdMarker.t<.9){
+function draw(){mapping();const ratio=view.dpr||1;ctx.setTransform(ratio,0,0,ratio,0,0);ctx.fillStyle='#263228';ctx.fillRect(0,0,view.w,view.h);const terrainPhoto=ASSETS.terrain[BATTLES[state.battle].id];if(terrainPhoto.complete&&terrainPhoto.naturalWidth){
+ ctx.save();ctx.globalAlpha=.84;paintPhoto(ctx,terrainPhoto,0,0,view.w,view.h);
+ const edgeShade=ctx.createLinearGradient(0,0,0,view.h);edgeShade.addColorStop(0,'rgba(17,25,21,.20)');edgeShade.addColorStop(.12,'rgba(17,25,21,.06)');edgeShade.addColorStop(.88,'rgba(17,25,21,.06)');edgeShade.addColorStop(1,'rgba(17,25,21,.20)');ctx.fillStyle=edgeShade;ctx.fillRect(0,0,view.w,view.h);ctx.restore()
+}ctx.translate(view.ox,view.oy);ctx.scale(view.s,view.s);background();drawThermopylaeNarrowPass();drawDecor();drawDefensiveLine();if(state.phase==='deploy')drawDeploymentZone();drawPath();state.units.filter(u=>u.hp>0).sort((a,b)=>a.y-b.y).forEach(drawSquad);drawProjectiles();if(state.drag&&state.drag.moved){let {x,y}=state.drag.from,{x:ex,y:ey}=state.drag.to;ctx.strokeStyle='#f0dfa8';ctx.fillStyle='#edd09322';ctx.lineWidth=1.5;ctx.fillRect(Math.min(x,ex),Math.min(y,ey),Math.abs(x-ex),Math.abs(y-ey));ctx.strokeRect(Math.min(x,ex),Math.min(y,ey),Math.abs(x-ex),Math.abs(y-ey))}if(state.cmdMarker&&state.t-state.cmdMarker.t<.9){
  let m=state.cmdMarker,age=state.t-m.t,a=Math.max(0,1-age/.9),r=12+age*22;
  ctx.save();ctx.globalAlpha=a;ctx.strokeStyle=m.kind==='attack'?'#ff8a73':'#efe7c5';ctx.fillStyle=m.kind==='attack'?'#ff8a7330':'#efe7c522';ctx.lineWidth=2;
  ctx.beginPath();ctx.arc(m.x,m.y,r,0,6.283);ctx.fill();ctx.stroke();
