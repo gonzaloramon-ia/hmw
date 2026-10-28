@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>HWM 0.8.14 · Mapa y estandartes</title>
+<title>HWM 0.8.15 · Ambiente de batalla</title>
 <style>
 
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
@@ -114,9 +114,9 @@
 <div class="app">
 <header class="top"><div class="brand"><div class="monogram">HWM</div><div class="toptext"><strong>Grandes batallas de la historia</strong><span>Historical Warfare · Biblioteca Grecia</span></div></div>
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
-<div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
+<div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="fxBtn" title="Activar / silenciar efectos" aria-pressed="true">FX</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.14</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.15</b><p>Música por fase: briefing, despliegue y resultado. La batalla queda sin música por ahora.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -134,28 +134,94 @@ const el=id=>document.getElementById(id);const ui={list:el('battlelist'),sidebar
 // HWM 0.8.6 — estados de audio sin SFX sintéticos.
 // La música usa pistas del proyecto; durante la batalla queda deliberadamente en silencio.
 const SFX=(()=>{
- let lastScene='';
- function ensure(){return null}
- function noop(){}
- function setScene(scene){
-  if(scene===lastScene)return;
-  lastScene=scene;
-  try{document.dispatchEvent(new CustomEvent('hwm:musicstate',{detail:{state:scene}}))}catch(_){}
+ const SRC={
+  ambience:['https://assets.mixkit.co/active_storage/sfx/458/458-preview.mp3'],
+  melee:['https://assets.mixkit.co/active_storage/sfx/2765/2765-preview.mp3'],
+  arrow:['https://assets.mixkit.co/active_storage/sfx/2771/2771-preview.mp3'],
+  cavalry:['https://assets.mixkit.co/active_storage/sfx/77/77-preview.mp3'],
+  rout:['https://assets.mixkit.co/active_storage/sfx/2766/2766-preview.mp3','https://assets.mixkit.co/active_storage/sfx/2767/2767-preview.mp3']
+ };
+ let enabled=true,unlocked=false,lastScene='',last={},bed=null;
+ try{enabled=localStorage.getItem('hwm-fx')!=='0'}catch(_){}
+ function gate(name,ms){const now=performance.now();if(now-(last[name]||0)<ms)return false;last[name]=now;return true}
+ function make(src,loop=false){const a=new Audio(src);a.preload='auto';a.loop=loop;return a}
+ function ensure(){
+  if(!unlocked)unlocked=true;
+  if(enabled&&state?.running)ensureBed();
+  return true;
  }
- function battleStart(){setScene('approach')}
- function battleEnd(victory){setScene(victory?'victory':'defeat')}
+ function ensureBed(){
+  if(!enabled||!unlocked)return;
+  if(!bed){bed=make(SRC.ambience[0],true);bed.volume=.035;bed.addEventListener('error',()=>{bed=null},{once:true})}
+  if(bed&&bed.paused)bed.play().catch(()=>{});
+ }
+ function stopBed(reset=false){
+  if(!bed)return;
+  try{bed.pause();if(reset)bed.currentTime=0}catch(_){}
+ }
+ function play(name,vol=.18,rate=1){
+  if(!enabled||!unlocked)return;
+  const arr=SRC[name];if(!arr?.length)return;
+  const a=make(arr[Math.floor(Math.random()*arr.length)]);
+  a.volume=vol;a.playbackRate=rate;
+  a.play().catch(()=>{});
+ }
+ function order(){}
+ function melee(att){
+  if(!gate(att?.type==='cavalry'?'cavalry-hit':'melee',att?.type==='cavalry'?1800:190))return;
+  if(att?.type==='cavalry')play('cavalry',.20,.95+Math.random()*.08);
+  play('melee',att?.type==='cavalry'?.27:.22,.90+Math.random()*.18);
+ }
+ function ranged(u){
+  if(!gate(u?.type==='archer'?'arrow':'javelin',u?.type==='archer'?420:520))return;
+  play('arrow',u?.type==='archer'?.18:.12,u?.type==='archer'?.96:.78);
+ }
+ function projectileHit(){}
+ function rout(){
+  if(!gate('rout',900))return;
+  play('rout',.24,.92+Math.random()*.12);
+ }
+ function breach(){rout()}
+ function setScene(scene){
+  if(scene!==lastScene){
+   lastScene=scene;
+   try{document.dispatchEvent(new CustomEvent('hwm:musicstate',{detail:{state:scene}}))}catch(_){}
+  }
+ }
+ function battleStart(){setScene('approach');ensureBed()}
+ function battleEnd(victory){stopBed(true);setScene(victory?'victory':'defeat')}
+ function updateButton(){
+  const b=document.getElementById('fxBtn');if(!b)return;
+  b.textContent=enabled?'FX':'FX×';b.classList.toggle('speedOn',enabled);b.setAttribute('aria-pressed',enabled?'true':'false');
+  b.title=enabled?'Efectos activados · clic para silenciar':'Efectos silenciados · clic para activar';
+ }
+ function toggle(){
+  enabled=!enabled;try{localStorage.setItem('hwm-fx',enabled?'1':'0')}catch(_){}
+  if(enabled){ensure();ensureBed()}else stopBed(false);
+  updateButton();return enabled;
+ }
  function update(){
-  if(!state?.running||state.paused||state.finished)return;
+  if(!state?.running||state.paused||state.finished){if(state?.finished)stopBed(false);return}
+  ensureBed();
   const activeUnits=state.units.filter(u=>active(u));
   const engaged=activeUnits.filter(u=>state.t-u.lastEngaged<1.5);
+  const moving=activeUnits.filter(u=>u.goal&&state.t-u.lastEngaged>2);
+  if(bed){
+   const target=engaged.length?Math.min(.13,.055+engaged.length*.007):moving.length>.25*activeUnits.length?.045:.025;
+   bed.volume+=(target-bed.volume)*.08;
+  }
   if(engaged.length){
    const allyCrisis=activeUnits.some(u=>u.side==='ally'&&(u.routed||u.morale/u.maxMorale<.28||u.cohesion<26));
    setScene(allyCrisis?'crisis':'combat');
   }else setScene(state.phase==='deploy'?'deploy':'approach');
  }
- function init(){setScene('menu')}
- return{ensure,order:noop,melee:noop,ranged:noop,projectileHit:noop,rout:noop,battleStart,battleEnd,breach:noop,update,setScene,toggle:()=>false,init};
-})();
+ function init(){
+  updateButton();setScene('menu');
+  document.addEventListener('pointerdown',()=>{unlocked=true},{once:true,capture:true});
+  document.addEventListener('keydown',()=>{unlocked=true},{once:true,capture:true});
+ }
+ return{ensure,order,melee,ranged,projectileHit,rout,battleStart,battleEnd,breach,update,setScene,toggle,init};
+})()
 
 const MUSIC=(()=>{
  const TRACKS={
@@ -302,11 +368,11 @@ function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.at
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.hoverId=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
 function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.14: estandartes H/A/J/C/I por tipo de unidad y márgenes inaccesibles del mapa integrados visualmente con el terreno. La lógica táctica no cambia.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.15: ambiente de batalla y SFX reales: tropa de fondo, choques, flechas, caballería y desbandadas. FX y música se controlan por separado.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
- SFX.ensure();SFX.setScene('battle');
+ SFX.ensure();SFX.battleStart();SFX.setScene('battle');
  notify(mode==='pressure'?'El enemigo se aproxima. Organizá las filas durante el avance.':'Batalla iniciada. Protegé tus flancos y mantené las reservas.');
 }
 function enterDeployment(){
@@ -986,6 +1052,7 @@ el('paceBtn').addEventListener('click',()=>{
 el('formationBtn').addEventListener('click',()=>{const sel=selectedUnits();if(!sel.length){notify('Primero seleccioná uno o más escuadrones.');return}state.formation=state.formation==='line'?'wedge':state.formation==='wedge'?'column':'line';sel.forEach(u=>{if(!u.routed)u.formation=state.formation});notify('Formación: '+(state.formation==='line'?'línea':state.formation==='wedge'?'cuña':'columna'));updateHud()});
 el('retreatBtn').addEventListener('click',()=>{if(state.phase==='deploy'){notify('Para reservar un escuadrón, ubicalo detrás de la primera línea.');return}const sel=selectedUnits();if(!sel.length){notify('Primero seleccioná escuadrones.');return}sel.forEach(u=>issueRetreat(u,false));notify('Retirada ordenada: fuera de peligro recuperarán cohesión y moral')});
 el('musicBtn').addEventListener('click',()=>{const on=MUSIC.toggle();notify(on?'Música activada':'Música silenciada')});
+el('fxBtn').addEventListener('click',()=>{const on=SFX.toggle();notify(on?'Efectos activados':'Efectos silenciados')});
 el('speedBtn').addEventListener('click',()=>{if(state.phase==='deploy'){notify('El reloj está detenido hasta iniciar la batalla.');return}state.simSpeed=state.simSpeed===2?1:2;el('speedBtn').classList.toggle('speedOn',state.simSpeed===2);el('speedBtn').textContent=state.simSpeed===2?'×2':'»';notify('Velocidad '+state.simSpeed+'×')});
 el('helpBtn').addEventListener('click',()=>{const overlay=ui.overlay;const open=overlay.classList.contains('hidden');if(open){state.helpWasPaused=state.paused;state.paused=true;ui.pauseBtn.textContent='▶';ui.overlayKicker.textContent='HWM · AYUDA';ui.overlayTitle.textContent='Controles de batalla';ui.overlayDesc.textContent='Seleccioná con un clic o arrastrando un cuadro; clic derecho para mover o atacar. Ahora importan tres valores: soldados, cohesión y moral. Una unidad puede huir antes de morir. Conservá reservas y protegé los flancos.';ui.overlayMission.textContent='Formación: línea, cuña o columna dentro del escuadrón. Velocidad: Marcha o Rápido; el avance rápido consume cohesión mientras se mantiene. Agrupar 6 crea un grupo persistente; 3+3 coloca tres formaciones adelante y tres detrás. Ctrl+1: guardar Grupo 1 · 1: recuperarlo. Clic sobre una ficha: órdenes individuales. A: atacar · S: mantener posición (sin retirada automática) · Clic derecho: reactivar maniobras · Espacio: pausa · Ctrl+A: todas.';ui.startBtn.textContent=state.phase==='deploy'?'Volver al despliegue':'Volver al combate';el('pressureBtn').classList.add('hidden');overlay.classList.remove('hidden')}else{overlay.classList.add('hidden');state.paused=state.helpWasPaused;ui.pauseBtn.textContent=state.paused?'▶':'Ⅱ'}});
 function cameraZoom(delta,clientX=null,clientY=null){
