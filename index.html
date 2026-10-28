@@ -189,16 +189,18 @@
 const WORLD={w:1280,h:720};const TILE=32;const canvas=document.getElementById('field'),ctx=canvas.getContext('2d',{alpha:false});
 const el=id=>document.getElementById(id);const ui={list:el('battlelist'),sidebar:el('sidebar'),mapTitle:el('mapTitle'),mapSubtitle:el('mapSubtitle'),allyCount:el('allyCount'),enemyCount:el('enemyCount'),timer:el('timer'),selectedPanel:el('selectedPanel'),overlay:el('overlay'),overlayKicker:el('overlayKicker'),overlayTitle:el('overlayTitle'),overlayDesc:el('overlayDesc'),overlayMission:el('overlayMission'),startBtn:el('startBtn'),chooseBtn:el('chooseBtn'),overlayNote:el('overlayNote'),signal:el('signal'),pauseBtn:el('pauseBtn'),attackBtn:el('attackBtn'),footerHint:{set textContent(v){}}};
 
-// HWM 0.8.6 — estados de audio sin SFX sintéticos.
+// FX locales y versionados: el combate no depende de un CDN externo.
 // La música usa pistas del proyecto; durante la batalla queda deliberadamente en silencio.
 const SFX=(()=>{
  const SRC={
-  ambience:['https://assets.mixkit.co/active_storage/sfx/458/458-preview.mp3'],
-  melee:['https://assets.mixkit.co/active_storage/sfx/2765/2765-preview.mp3','https://assets.mixkit.co/active_storage/sfx/2768/2768-preview.mp3'],
-  arrow:['https://assets.mixkit.co/active_storage/sfx/2771/2771-preview.mp3'],
-  cavalry:['https://assets.mixkit.co/active_storage/sfx/77/77-preview.mp3'],
-  battleCry:['https://assets.mixkit.co/active_storage/sfx/2767/2767-preview.mp3'],
-  rout:['https://assets.mixkit.co/active_storage/sfx/2766/2766-preview.mp3']
+  ambience:['assets/audio/battle-ambience.mp3'],
+  // Ambos son impactos de metal/escudo; priorizados por encima de voces.
+  melee:['assets/audio/melee-metal-1.mp3','assets/audio/rout-cry.mp3'],
+  wound:['assets/audio/wound-low.mp3','assets/audio/wound-mid.mp3','assets/audio/wound-sharp.mp3'],
+  arrow:['assets/audio/arrow-shot.mp3'],
+  cavalry:['assets/audio/cavalry.mp3'],
+  battleCry:['assets/audio/battle-cry.mp3'],
+  rout:['assets/audio/rout-cry.mp3']
  };
  let enabled=true,unlocked=false,lastScene='',last={},bed=null;
  try{enabled=localStorage.getItem('hwm-fx')!=='0'}catch(_){}
@@ -229,29 +231,32 @@ const SFX=(()=>{
  function melee(att){
   const cav=att?.type==='cavalry';
   if(!gate(cav?'cavalry-hit':'melee',cav?1500:115))return;
+  // Caballos sólo existen acústicamente cuando una unidad de caballería golpea.
   if(cav)play('cavalry',.24,.94+Math.random()*.10);
-  // Hoplites/infantry need a clearly audible bronze/wood impact.
-  const base=att?.type==='hoplite'?.42:att?.type==='persian'?.34:cav?.31:.28;
+  // Impactos metálicos: el doble de presencia frente a la mezcla anterior.
+  const base=att?.type==='hoplite'?.84:att?.type==='persian'?.68:cav?.62:.56;
   play('melee',base,.88+Math.random()*.22);
   if(!cav&&Math.random()<.28)setTimeout(()=>play('melee',base*.62,.82+Math.random()*.25),55+Math.random()*90);
+  // Heridas: escasas, a la mitad de volumen y con tres ecualizaciones del mismo original.
+  if(Math.random()<.16&&gate('wound',1450))setTimeout(()=>play('wound',.17,.90+Math.random()*.16),90+Math.random()*160);
  }
  function contactCry(u){
   if(!u||!gate('contactCry',3600))return;
   // Short collective battle cry at first contact; allied formations are slightly more prominent.
-  play('battleCry',u.side==='ally'?.34:.24,u.side==='ally'?.94:.88);
+  play('battleCry',u.side==='ally'?.51:.36,u.side==='ally'?.94:.88);
  }
  function rallyCry(){
   if(!gate('rallyCry',6500))return;
-  play('battleCry',.30,.98+Math.random()*.05);
+  play('battleCry',.45,.98+Math.random()*.05);
  }
  function ranged(u){
   if(!gate(u?.type==='archer'?'arrow':'javelin',u?.type==='archer'?420:520))return;
-  play('arrow',u?.type==='archer'?.18:.12,u?.type==='archer'?.96:.78);
+  play('arrow',u?.type==='archer'?.144:.096,u?.type==='archer'?.96:.78);
  }
  function projectileHit(){}
  function rout(){
   if(!gate('rout',900))return;
-  play('rout',.30,.88+Math.random()*.10);
+  play('rout',.60,.88+Math.random()*.10);
  }
  function breach(){rout()}
  function setScene(scene){
