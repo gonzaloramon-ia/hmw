@@ -1180,34 +1180,18 @@ window.HWM_DEBUG={state:()=>({battle:BATTLES[state.battle].id,time:state.t,zoom:
 
 const INTRO=(()=>{
  const layer=el('introLayer'),video=el('introVideo'),sub=el('introSub'),skip=el('introSkip'),playBtn=el('introPlay');
- let hold1=false,hold2=false,holding=false,active=false;
- const subtitleFor=t=>{
-  if(t>=6.0&&t<9.2)return 'La historia recuerda lo que ocurrió. Rara vez recuerda lo que estuvo a punto de ocurrir.';
-  if(t>=9.2&&t<14.2)return 'Cambiá la batalla. Cambiá la historia.';
-  if(t>=26.8&&t<30.1)return 'Cambiá la batalla. Cambiá la historia.';
-  return '';
- };
- function updateSub(){
-  const txt=subtitleFor(video.currentTime||0);sub.textContent=txt;sub.classList.toggle('show',!!txt);
- }
- function hold(ms){
-  if(holding)return;holding=true;video.pause();setTimeout(()=>{holding=false;if(active)video.play().catch(()=>showPlay())},ms);
- }
- function onTime(){
-  updateSub();const t=video.currentTime||0;
-  if(!hold1&&t>=8.55&&t<9.15){hold1=true;hold(1900)}
-  if(!hold2&&t>=28.0&&t<29.5){hold2=true;hold(1500)}
- }
+ let active=false;
+ // El texto ya está integrado en el corte de video: no duplicarlo con una capa HTML.
+ function updateSub(){sub.textContent='';sub.classList.remove('show')}
+ function onTime(){updateSub()}
  function showPlay(){playBtn.classList.remove('hidden')}
  function finish(markSeen=true){
   active=false;try{video.pause();video.currentTime=0}catch(_){}
   layer.classList.add('hidden');playBtn.classList.add('hidden');sub.classList.remove('show');
-  if(markSeen)try{sessionStorage.setItem('hwm-intro-seen','1')}catch(_){}
   SFX.setScene('briefing');
  }
- function start(force=false){
-  if(!force){try{if(sessionStorage.getItem('hwm-intro-seen')==='1')return}catch(_){}}
-  active=true;hold1=false;hold2=false;holding=false;layer.classList.remove('hidden');playBtn.classList.add('hidden');
+ function start(){
+  active=true;layer.classList.remove('hidden');playBtn.classList.add('hidden');
   MUSIC.setState('intro');video.currentTime=0;video.volume=.92;
   const p=video.play();if(p&&p.catch)p.catch(()=>showPlay());
  }
