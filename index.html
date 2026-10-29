@@ -164,7 +164,7 @@
 </head>
 <body>
 <div class="introLayer hidden" id="introLayer" aria-label="Intro de HWM">
-  <video id="introVideo" preload="metadata" playsinline src="HWM-intro.mp4"></video>
+  <video id="introVideo" preload="auto" playsinline src="HWM-intro-01.mp4"></video>
   <div class="introSub" id="introSub"></div>
   <button class="introSkip" id="introSkip">Saltar intro</button>
   <button class="introPlay hidden" id="introPlay">▶ Reproducir intro</button>
@@ -1180,23 +1180,37 @@ window.HWM_DEBUG={state:()=>({battle:BATTLES[state.battle].id,time:state.t,zoom:
 
 const INTRO=(()=>{
  const layer=el('introLayer'),video=el('introVideo'),sub=el('introSub'),skip=el('introSkip'),playBtn=el('introPlay');
- let active=false;
+ // Segmentos locales 720p: permiten conservar calidad sin descargar un video remoto.
+ const SEGMENTS=['HWM-intro-01.mp4','HWM-intro-02.mp4','HWM-intro-03.mp4','HWM-intro-04.mp4','HWM-intro-05.mp4','HWM-intro-06.mp4','HWM-intro-07.mp4','HWM-intro-08.mp4'];
+ let active=false,segment=0,nextClip=null;
  // El texto ya está integrado en el corte de video: no duplicarlo con una capa HTML.
  function updateSub(){sub.textContent='';sub.classList.remove('show')}
  function onTime(){updateSub()}
  function showPlay(){playBtn.classList.remove('hidden')}
+ function preloadNext(){
+  const src=SEGMENTS[segment+1];if(!src){nextClip=null;return}
+  nextClip=document.createElement('video');nextClip.preload='auto';nextClip.src=src;nextClip.load();
+ }
+ function playSegment(){
+  video.src=SEGMENTS[segment];video.load();
+  const p=video.play();if(p&&p.catch)p.catch(()=>showPlay());
+  preloadNext();
+ }
  function finish(markSeen=true){
   active=false;try{video.pause();video.currentTime=0}catch(_){}
   layer.classList.add('hidden');playBtn.classList.add('hidden');sub.classList.remove('show');
   SFX.setScene('briefing');
  }
  function start(){
-  active=true;layer.classList.remove('hidden');playBtn.classList.add('hidden');
-  MUSIC.setState('intro');video.currentTime=0;video.volume=.92;
-  const p=video.play();if(p&&p.catch)p.catch(()=>showPlay());
+  active=true;segment=0;layer.classList.remove('hidden');playBtn.classList.add('hidden');
+  MUSIC.setState('intro');video.volume=.92;playSegment();
  }
  video.addEventListener('timeupdate',onTime);
- video.addEventListener('ended',()=>finish(true));
+ video.addEventListener('ended',()=>{
+  if(!active)return;
+  if(segment>=SEGMENTS.length-1){finish(true);return}
+  segment++;playSegment();
+ });
  video.addEventListener('error',()=>finish(false));
  skip.addEventListener('click',()=>finish(true));
  playBtn.addEventListener('click',()=>{playBtn.classList.add('hidden');video.play().catch(()=>{})});
