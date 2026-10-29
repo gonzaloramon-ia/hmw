@@ -1180,24 +1180,38 @@ window.HWM_DEBUG={state:()=>({battle:BATTLES[state.battle].id,time:state.t,zoom:
 
 const INTRO=(()=>{
  const layer=el('introLayer'),video=el('introVideo'),sub=el('introSub'),skip=el('introSkip'),playBtn=el('introPlay');
- let active=false;
+ const VARIANTS=['HWM-intro-30.mp4','HWM-intro-40.mp4'],FALLBACK='HWM-intro.mp4',LAST_KEY='hwm:lastIntro';
+ let active=false,currentSrc=FALLBACK,fallbackTried=false;
  // El texto ya está integrado en el corte de video: no duplicarlo con una capa HTML.
  function updateSub(){sub.textContent='';sub.classList.remove('show')}
  function onTime(){updateSub()}
  function showPlay(){playBtn.classList.remove('hidden')}
+ function chooseVariant(){
+  let last='';try{last=localStorage.getItem(LAST_KEY)||''}catch(_){}
+  const choices=VARIANTS.filter(src=>src!==last),pool=choices.length?choices:VARIANTS;
+  const picked=pool[Math.floor(Math.random()*pool.length)]||VARIANTS[0];
+  try{localStorage.setItem(LAST_KEY,picked)}catch(_){}
+  return picked;
+ }
+ function loadAndPlay(src){
+  currentSrc=src;video.src=src;video.load();video.currentTime=0;
+  const p=video.play();if(p&&p.catch)p.catch(()=>showPlay());
+ }
  function finish(markSeen=true){
   active=false;try{video.pause();video.currentTime=0}catch(_){}
   layer.classList.add('hidden');playBtn.classList.add('hidden');sub.classList.remove('show');
   SFX.setScene('briefing');
  }
  function start(){
-  active=true;layer.classList.remove('hidden');playBtn.classList.add('hidden');
-  MUSIC.setState('intro');video.currentTime=0;video.volume=.92;
-  const p=video.play();if(p&&p.catch)p.catch(()=>showPlay());
+  active=true;fallbackTried=false;layer.classList.remove('hidden');playBtn.classList.add('hidden');
+  MUSIC.setState('intro');video.volume=.92;loadAndPlay(chooseVariant());
  }
  video.addEventListener('timeupdate',onTime);
  video.addEventListener('ended',()=>finish(true));
- video.addEventListener('error',()=>finish(false));
+ video.addEventListener('error',()=>{
+  if(active&&!fallbackTried&&currentSrc!==FALLBACK){fallbackTried=true;loadAndPlay(FALLBACK);return}
+  finish(false);
+ });
  skip.addEventListener('click',()=>finish(true));
  playBtn.addEventListener('click',()=>{playBtn.classList.add('hidden');video.play().catch(()=>{})});
  el('introBtn').addEventListener('click',()=>start(true));
