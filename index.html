@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>HWM 0.9.1 RC1 · Campaña del Comandante</title>
+<title>HWM 0.9.2 RC1 · Campaña del Comandante</title>
 <style>
 
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
@@ -174,7 +174,7 @@
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
 <div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="fxBtn" title="Activar / silenciar efectos" aria-pressed="true">FX</button><button class="headButton" id="introBtn" title="Reproducir intro">▶</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">CAMPAÑA DEL COMANDANTE</div><div class="campaignStatus" id="campaignStatus"></div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · 0.9.1 RC1</b><p>Intro cinematográfica + música dinámica + ambiente de batalla. HWM = History War Moments.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">CAMPAÑA DEL COMANDANTE</div><div class="campaignStatus" id="campaignStatus"></div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · 0.9.2 RC1</b><p>Intro cinematográfica + música dinámica + ambiente de batalla. HWM = History War Moments.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -623,7 +623,7 @@ function renderBattleList(){
  });
  renderCampaignStatus();
 }
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent=b.campaign===false?'Archivo táctico · Prueba':'Campaña del Comandante · '+campaignRank();ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='HWM 0.9.1 RC1 · Campaña del Comandante: 10 batallas, progreso, medallas, refuerzos y objetivos tácticos diferenciados.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent=b.campaign===false?'Archivo táctico · Prueba':'Campaña del Comandante · '+campaignRank();ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='HWM 0.9.2 RC1 · Campaña del Comandante: 10 batallas, progreso, medallas, refuerzos y objetivos tácticos diferenciados.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
