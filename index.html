@@ -10,7 +10,7 @@
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
 *{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden;background:#080e10;color:var(--text);font-family:Segoe UI,Arial,sans-serif}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #ebc885;outline-offset:2px}button:disabled{opacity:.45;cursor:not-allowed}.app{height:100dvh;display:grid;grid-template-rows:60px minmax(0,1fr)}
 .top{position:relative;z-index:5;display:flex;align-items:center;gap:9px;background:linear-gradient(180deg,#151c20,#070c0e);border-bottom:2px solid #987448;box-shadow:0 2px 14px #000a;padding:0 12px 0 16px;min-width:0}.brand{display:flex;align-items:center;gap:12px;min-width:375px}.monogram{font-family:Georgia,serif;color:var(--gold);font-size:33px;font-weight:bold;letter-spacing:1.5px;text-shadow:0 2px 2px #000}.toptext{display:flex;flex-direction:column;gap:1px}.toptext strong{font:bold 20px Georgia,serif;white-space:nowrap}.toptext span{font:9px Segoe UI,Arial,sans-serif;letter-spacing:2px;color:#c7bda5;text-transform:uppercase}.battleHead{position:absolute;left:42%;width:30%;top:4px;text-align:center;pointer-events:none;white-space:nowrap}.battleHead h1{font:bold 26px Georgia,serif;margin:0;text-shadow:0 2px 3px #000}.battleHead small{font:13px Georgia,serif;color:#e9d2ae}.battleHead:before,.battleHead:after{content:'❧';position:absolute;top:7px;color:var(--gold);font-size:24px}.battleHead:before{left:-3px}.battleHead:after{right:-3px;transform:scaleX(-1)}.topright{margin-left:auto;display:flex;align-items:center;gap:7px;height:100%}.counter{min-width:77px;text-align:center;padding:5px 8px;background:#0a1114;border:1px solid #6a5340;border-radius:4px;box-shadow:0 2px 7px #0008}.counter label{display:block;letter-spacing:.65px;font:11px Georgia,serif;color:#e2decf}.counter b{font:bold 22px Georgia,serif}.counter.ally{border-color:#17618e;box-shadow:inset 0 0 16px #0b45737a}.counter.enemy{border-color:#89392e;box-shadow:inset 0 0 16px #8b2d2875}.counter.ally b{color:#c5eafa}.counter.enemy b{color:#ffd0c1}.counter.time{border:none;background:none;box-shadow:none}.headButton{height:37px;min-width:40px;border:1px solid #a98b5b;background:linear-gradient(#273135,#10191b);color:#f1d6a0;border-radius:5px;box-shadow:inset 0 0 0 1px #000,0 2px 5px #0009;font-size:19px}.headButton:hover,.headButton.speedOn{background:#4c4533;color:#fff2c1}
-.workspace{min-height:0;min-width:0;display:grid;grid-template-columns:242px minmax(0,1fr)}.sidebar{z-index:3;background:linear-gradient(100deg,#141b1c,#070d0f);border-right:2px solid #9b7543;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:8px;padding:12px 8px}.eyebrow{font:bold 12px Georgia,serif;letter-spacing:.8px;color:var(--gold);margin:0 7px 5px}.sidetitle,.intro{display:none}.battlelist{display:flex;flex-direction:column;gap:5px}.battle{height:70px;width:100%;display:flex;align-items:center;gap:11px;text-align:left;background:linear-gradient(100deg,#10191de8,#121816f5);color:#e8e1d3;border:1px solid #393a35;border-radius:4px;padding:5px 7px;position:relative;overflow:hidden}.battle:hover{border-color:#a78959;background:#202523}.battle.active{border:2px solid #eac079;box-shadow:inset 0 0 11px #b68a2640,0 0 8px #d5ad384a}.battle img{height:52px;width:72px;object-fit:cover;border:1px solid #84724f;border-radius:3px}.battle .bcopy{display:flex;flex-direction:column;min-width:0}.battle small{font-size:11px;color:#deb96a;order:2}.battle strong{font:bold 18px Georgia,serif;white-space:nowrap}.battle .btinfo{display:none}.sidefoot{margin-top:auto;color:#ae9b78;font:11px/1.45 Georgia,serif;border-top:1px solid #7f633a;padding:11px 7px}.sidefoot b{color:#edd0a2}
+.workspace{min-height:0;min-width:0;display:grid;grid-template-columns:242px minmax(0,1fr)}.sidebar{z-index:3;background:linear-gradient(100deg,#141b1c,#070d0f);border-right:2px solid #9b7543;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:8px;padding:12px 8px}.eyebrow{font:bold 12px Georgia,serif;letter-spacing:.8px;color:var(--gold);margin:0 7px 5px}.sidetitle,.intro{display:none}.battlelist{display:flex;flex-direction:column;gap:5px}.battle{height:70px;width:100%;display:flex;align-items:center;gap:11px;text-align:left;background:linear-gradient(100deg,#10191de8,#121816f5);color:#e8e1d3;border:1px solid #393a35;border-radius:4px;padding:5px 7px;position:relative;overflow:hidden}.battle:hover{border-color:#a78959;background:#202523}.battle.active{border:2px solid #eac079;box-shadow:inset 0 0 11px #b68a2640,0 0 8px #d5ad384a}.battle img{height:52px;width:72px;object-fit:cover;border:1px solid #84724f;border-radius:3px}.battle .bcopy{display:flex;flex-direction:column;min-width:0}.battle small{font-size:11px;color:#deb96a;order:2}.battle strong{font:bold 18px Georgia,serif;white-space:nowrap}.battle .btinfo{display:none}.campaignStatus{margin:0 3px 6px;padding:7px 8px;border:1px solid #65543b;background:#0b1315;color:#d9c49d;border-radius:4px;font:11px/1.35 Georgia,serif}.campaignStatus b{color:#f0d49a}.battle .medal{margin-left:auto;min-width:46px;text-align:center;font:bold 10px Georgia,serif;color:#d4bd91}.battle.archive{opacity:.72}.battle.archive .medal{color:#98a19c}.sidefoot{margin-top:auto;color:#ae9b78;font:11px/1.45 Georgia,serif;border-top:1px solid #7f633a;padding:11px 7px}.sidefoot b{color:#edd0a2}
 .stage{position:relative;min-height:0;overflow:hidden;background:#000;isolation:isolate}.stage:before{display:none}#field{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}.battlelabel{position:absolute;top:12px;left:18px;padding:5px 10px;font:italic 15px Georgia,serif;letter-spacing:2px;color:#faf0d0c4;text-shadow:0 2px 3px #000e;pointer-events:none}.selectedPanel{position:absolute;z-index:2;left:8px;bottom:11px;width:315px;height:138px;background:linear-gradient(135deg,#151c1beb,#090f11f5);border:2px ridge #b58b49;border-radius:5px;box-shadow:inset 0 0 0 3px #27231a,0 4px 16px #0009;padding:9px 9px 8px 100px;pointer-events:none}.selectedPanel:before{content:'';position:absolute;top:-20px;bottom:0;left:-17px;width:116px;background:url('assets/hoplite-portrait.webp') left bottom/contain no-repeat;filter:drop-shadow(2px 2px 3px #000b)}.selectedPanel .name{font:20px Georgia,serif;font-weight:bold;border-bottom:1px solid #695a42;padding:2px 0 6px;line-height:1.1;white-space:nowrap}.selectedPanel .detail{font:12px/1.55 Georgia,serif;color:#e0d7bd;margin-top:8px}.selectedPanel .bar{background:#40372b;border:1px solid #a38a56;height:7px;margin-top:5px}.selectedPanel .bar div{height:100%;background:linear-gradient(90deg,#236d32,#9dd354)}
 .actionTray{position:absolute;z-index:2;display:flex;gap:5px;left:50%;bottom:10px;transform:translateX(-50%);align-items:center;max-width:calc(100% - 520px)}.btn{padding:11px 12px;background:linear-gradient(#273036,#0b1517);color:#f5e6ca;border:1px solid #a28557;border-radius:5px;box-shadow:inset 0 0 0 2px #0a1013,0 3px 7px #0009;font:bold 12px Georgia,serif;white-space:nowrap}.btn:hover{background:linear-gradient(#61573c,#212522);color:white}.btn.primary{color:#171a19;background:linear-gradient(#f3d399,#b18b4c);border-color:#ecca85}.btn.activeMode{background:linear-gradient(#7c602b,#2a2315);color:#fff0be}.btn .ico{font:20px Segoe UI Symbol,sans-serif;display:block;color:#e5c68f;margin-bottom:4px}.btn.compact{padding:6px 8px}.smallAction{display:none}
 .minimapWrap{position:absolute;z-index:2;right:11px;bottom:10px;width:221px;padding:5px;background:#0b1617ed;border:2px solid #b38c50;border-radius:5px;box-shadow:inset 0 0 0 2px #2b312c,0 3px 12px #0009}.minimapWrap:after{content:'N ↑';position:absolute;right:11px;top:9px;color:#f8e7bd;font:12px Georgia,serif;text-shadow:0 2px 2px black}#minimap{width:100%;height:auto;display:block;cursor:pointer;max-height:132px;object-fit:fill}
@@ -174,7 +174,7 @@
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
 <div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="fxBtn" title="Activar / silenciar efectos" aria-pressed="true">FX</button><button class="headButton" id="introBtn" title="Reproducir intro">▶</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">BIBLIOTECA · GRECIA</div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.19</b><p>Intro cinematográfica + música dinámica + ambiente de batalla. HWM = History War Moments.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">CAMPAÑA DEL COMANDANTE</div><div class="campaignStatus" id="campaignStatus"></div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · ALFA 0.8.19</b><p>Intro cinematográfica + música dinámica + ambiente de batalla. HWM = History War Moments.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -397,12 +397,55 @@ plataea:{seed:48,ground:['#798969','#8a9876'],hills:[{x:110,y:70,w:290,h:155},{x
 mantinea:{seed:61,ground:['#85895e','#959970'],hills:[{x:370,y:50,w:310,h:90},{x:760,y:525,w:330,h:150}],marsh:[],rocks:[{x:590,y:150,r:20},{x:645,y:195,r:18},{x:520,y:560,r:28},{x:560,y:600,r:19}],river:[],cliffs:[]}};
 const BATTLES=[
 {id:'marathon1',name:'Maratón 1',year:'490 a. C.',subtitle:'Atenas y Platea contra Persia · Vista amplia',kind:'Foto 1 · Vista amplia',desc:'Las fuerzas atenienses y plateas enfrentan al ejército persa en la llanura de Maratón. Una batalla decisiva de las Guerras Médicas.',mission:'Objetivo: derrotar o desbandar al ejército persa. El mar queda fuera de la zona transitable y el ejército persa despliega sobre tierra firme junto a la costa.',ally:'Atenas',enemy:'Persia',goal:'destroy',squads:[['ally','hoplite',112,245,4],['ally','hoplite',167,395,3],['ally','archer',82,495,2],['ally','peltast',155,595,2],['enemy','persian',805,255,4],['enemy','persian',900,417,3],['enemy','archer',930,542,2],['enemy','cavalry',960,620,1]]},
-{id:'marathon2',name:'Maratón 2',year:'490 a. C.',subtitle:'Atenas y Platea contra Persia · Vista cercana',kind:'Foto 2 · Vista cercana',desc:'Las fuerzas atenienses y plateas enfrentan al ejército persa en la llanura de Maratón. Una batalla decisiva de las Guerras Médicas.',mission:'Objetivo: derrotar o desbandar al ejército persa. Ahora empezás más lejos de la costa: aprovechá la aproximación para organizar tu ataque.',ally:'Atenas',enemy:'Persia',goal:'destroy',squads:[['ally','hoplite',112,245,4],['ally','hoplite',167,395,3],['ally','archer',82,495,2],['ally','peltast',155,595,2],['enemy','persian',1028,255,4],['enemy','persian',1034,417,3],['enemy','archer',1003,542,2],['enemy','cavalry',970,620,1]]},
-{id:'thermopylae',name:'Termópilas',year:'480 a. C.',subtitle:'Defensores griegos contra Persia',kind:'Paso montañoso · Defensa',desc:'Un contingente griego sostiene el estrecho paso de las Termópilas ante sucesivas fuerzas persas. El terreno es la principal ventaja defensiva.',mission:'Objetivo: defender el paso. Si dos formaciones persas cruzan la línea (x = 300), perdés. Volvemos al mapa original y sólo estrechamos el corredor jugable. Conservamos las reglas y los 90 segundos de esta alfa.',ally:'Griegos',enemy:'Persia',goal:'survive',duration:90,breachX:300,breachLimit:2,waveSchedule:[18,39,59],squads:[['ally','hoplite',410,335,3],['ally','hoplite',315,385,2],['ally','archer',192,270,2],['ally','peltast',185,443,1],['enemy','persian',1025,315,3],['enemy','persian',1065,440,2],['enemy','archer',1105,505,1]]},
-{id:'plataea',name:'Platea',year:'479 a. C.',subtitle:'Coalición griega contra Persia',kind:'Llanura y colinas · Guerras Médicas',desc:'La alianza de ciudades griegas se enfrenta a las fuerzas persas en Beocia. Los flancos y el terreno vuelven crítica la coordinación.',mission:'Objetivo: quebrar o desbandar al ejército persa. Las colinas favorecen a la defensa; conservá una reserva y atacá por los flancos.',ally:'Coalición griega',enemy:'Persia',goal:'destroy',squads:[['ally','hoplite',180,235,3],['ally','hoplite',235,365,3],['ally','peltast',170,520,2],['ally','archer',265,605,2],['enemy','persian',990,210,3],['enemy','persian',1080,330,3],['enemy','archer',1090,515,2],['enemy','cavalry',970,600,1]]},
+{id:'marathon2',campaign:false,name:'Maratón 2',year:'490 a. C.',subtitle:'Atenas y Platea contra Persia · Vista cercana',kind:'Foto 2 · Vista cercana',desc:'Las fuerzas atenienses y plateas enfrentan al ejército persa en la llanura de Maratón. Una batalla decisiva de las Guerras Médicas.',mission:'Objetivo: derrotar o desbandar al ejército persa. Ahora empezás más lejos de la costa: aprovechá la aproximación para organizar tu ataque.',ally:'Atenas',enemy:'Persia',goal:'destroy',squads:[['ally','hoplite',112,245,4],['ally','hoplite',167,395,3],['ally','archer',82,495,2],['ally','peltast',155,595,2],['enemy','persian',1028,255,4],['enemy','persian',1034,417,3],['enemy','archer',1003,542,2],['enemy','cavalry',970,620,1]]},
+{id:'thermopylae',name:'Termópilas',year:'480 a. C.',subtitle:'Defensores griegos contra Persia',kind:'Paso montañoso · Defensa',desc:'Un contingente griego sostiene el estrecho paso de las Termópilas ante sucesivas fuerzas persas. El terreno es la principal ventaja defensiva.',mission:'Objetivo: defender el paso. Si dos formaciones persas cruzan la línea (x = 300), perdés. Volvemos al mapa original y sólo estrechamos el corredor jugable. Conservamos las reglas y los 90 segundos de esta alfa.',ally:'Griegos',enemy:'Persia',goal:'survive',duration:90,breachX:300,breachLimit:2,reinforcements:[
+ {at:18,label:'Refuerzos persas · I',squads:[['enemy','persian',1115,300,1],['enemy','persian',1178,340,1],['enemy','persian',1115,380,1]]},
+ {at:39,label:'Refuerzos persas · II',squads:[['enemy','persian',1115,300,1],['enemy','persian',1178,340,1],['enemy','persian',1115,380,1],['enemy','persian',1178,420,1]]},
+ {at:59,label:'Refuerzos persas · III',squads:[['enemy','archer',1115,300,1],['enemy','persian',1178,340,1],['enemy','persian',1115,380,1],['enemy','persian',1178,420,1]]}
+],squads:[['ally','hoplite',410,335,3],['ally','hoplite',315,385,2],['ally','archer',192,270,2],['ally','peltast',185,443,1],['enemy','persian',1025,315,3],['enemy','persian',1065,440,2],['enemy','archer',1105,505,1]]},
+{id:'plataea',name:'Platea',year:'479 a. C.',subtitle:'Coalición griega contra Persia',kind:'Llanura y colinas · Guerras Médicas',desc:'La alianza de ciudades griegas se enfrenta a las fuerzas persas en Beocia. Los flancos y el terreno vuelven crítica la coordinación.',mission:'Objetivo: quebrar o desbandar al ejército persa. Las colinas favorecen a la defensa; conservá una reserva y atacá por los flancos.',ally:'Coalición griega',enemy:'Persia',goal:'destroy',reinforcements:[
+ {at:60,label:'Reserva griega entra en combate',squads:[['ally','hoplite',95,520,1],['ally','peltast',92,620,1]]}
+],squads:[['ally','hoplite',180,235,3],['ally','hoplite',235,365,3],['ally','peltast',170,520,2],['ally','archer',265,605,2],['enemy','persian',990,210,3],['enemy','persian',1080,330,3],['enemy','archer',1090,515,2],['enemy','cavalry',970,600,1]]},
 {id:'mantinea',name:'Mantinea',year:'418 a. C.',subtitle:'Esparta contra la coalición argiva',kind:'Falanges enfrentadas · Peloponeso',desc:'Los espartanos y sus aliados combaten contra una coalición encabezada por Argos y apoyada por Atenas y Mantinea.',mission:'Objetivo: romper la moral enemiga. Formaciones compactas en línea resisten mejor; un ataque sobre el flanco puede decidir el combate.',ally:'Esparta',enemy:'Coalición argiva',goal:'destroy',squads:[['ally','hoplite',165,190,4],['ally','hoplite',240,360,3],['ally','hoplite',205,520,2],['ally','peltast',120,605,1],['enemy','hoplite',1015,200,4],['enemy','hoplite',1060,390,3],['enemy','hoplite',1040,535,2],['enemy','archer',1130,630,1]]}
 ];
 
+const CAMPAIGN_KEY='hwm:campaign:v1';
+const MEDAL_ORDER={none:0,bronze:1,silver:2,gold:3};
+const MEDAL_XP={none:0,bronze:100,silver:175,gold:250};
+const MEDAL_LABEL={none:'—',bronze:'BRONCE',silver:'PLATA',gold:'ORO'};
+function blankCampaign(){return{results:{}}}
+function loadCampaign(){try{const raw=localStorage.getItem(CAMPAIGN_KEY);if(!raw)return blankCampaign();const data=JSON.parse(raw);return data&&data.results?data:blankCampaign()}catch(_){return blankCampaign()}}
+function saveCampaign(){try{localStorage.setItem(CAMPAIGN_KEY,JSON.stringify(campaign))}catch(_){}}
+let campaign=loadCampaign();
+function campaignBattles(){return BATTLES.filter(b=>b.campaign!==false)}
+function campaignXP(){return Object.values(campaign.results).reduce((sum,r)=>sum+(MEDAL_XP[r.bestMedal]||0),0)}
+function campaignRank(xp=campaignXP()){return xp>=1800?'Mariscal':xp>=1100?'General':xp>=600?'Comandante':xp>=250?'Capitán':'Cadete'}
+function campaignWins(){return campaignBattles().filter(b=>campaign.results[b.id]?.wins>0).length}
+function resultMedal(score,victory){if(!victory)return'none';return score>=850?'gold':score>=700?'silver':'bronze'}
+function scoreBattle(victory,allies){
+ const total=Math.max(1,allies.length),firm=allies.filter(active).length,routed=allies.filter(u=>u.routed).length;
+ const preservation=firm/total;
+ const morale=allies.reduce((n,u)=>n+Math.max(0,u.morale)/Math.max(1,u.maxMorale),0)/total;
+ return Math.max(0,Math.round((victory?500:0)+preservation*300+morale*150-routed*20));
+}
+function recordCampaignResult(victory,b,allies){
+ if(b.campaign===false)return null;
+ const score=scoreBattle(victory,allies),medal=resultMedal(score,victory);
+ const prev=campaign.results[b.id]||{attempts:0,wins:0,bestScore:0,bestMedal:'none'};
+ const next={...prev,attempts:(prev.attempts||0)+1,wins:(prev.wins||0)+(victory?1:0),bestScore:Math.max(prev.bestScore||0,score),bestMedal:MEDAL_ORDER[medal]>MEDAL_ORDER[prev.bestMedal||'none']?medal:(prev.bestMedal||'none')};
+ campaign.results[b.id]=next;saveCampaign();
+ return{score,medal,bestMedal:next.bestMedal,xp:campaignXP(),rank:campaignRank()};
+}
+function renderCampaignStatus(){
+ const box=el('campaignStatus');if(!box)return;
+ const available=campaignBattles().length,wins=campaignWins(),xp=campaignXP();
+ box.innerHTML=`<b>${campaignRank(xp)}</b> · ${xp} XP<br>${wins}/${available} victorias · ${available}/10 batallas disponibles`;
+}
+function nextCampaignIndex(from){
+ const campaignIdx=BATTLES.map((b,i)=>b.campaign===false?null:i).filter(i=>i!==null);
+ if(!campaignIdx.length)return from;
+ const pos=campaignIdx.indexOf(from);return campaignIdx[(pos<0?0:pos+1)%campaignIdx.length];
+}
 const SPRITE_CELL=204;
 const ASSETS={units:new Image(),terrain:{}};
 ASSETS.units.src='assets/units-atlas.webp';
@@ -443,9 +486,46 @@ function active(u){return u.hp>0&&!u.routed&&!u.disengaged}
 function issueRetreat(u,forced=false){if(!u||u.hp<=0)return;if(forced){SFX.rout(u);if(u.side==='enemy'&&state.units.some(v=>v.side==='ally'&&active(v)&&dist(v,u)<150))SFX.rallyCry();}u.attackTarget=null;u.goal=null;u.path=[];u.routed=!!forced;u.withdraw=true;u.attackMove=false;setGoal(u,safeRetreat(u),false);u.withdraw=true;u.routed=!!forced;u.stance=forced?'rout':'withdraw';u.recover=0;if(forced)battleEvent(`${u.side==='ally'?'Aliados':'Enemigos'}: escuadrón ${u.id} se desbanda (${u.breakCause||'moral o cohesión'}).`);if(forced){u.morale=Math.min(u.morale,COMBAT.routMorale);u.cohesion=Math.min(u.cohesion,COMBAT.routCohesion);for(const v of state.units){if(v.side===u.side&&v.id!==u.id&&active(v)&&dist(u,v)<118){v.morale=Math.max(0,v.morale-4);v.cohesion=Math.max(0,v.cohesion-3)}}if(u.side==='ally')notify('¡Escuadrón en fuga! La línea perdió moral.')} }
 function facingImpact(v,a){const angle=Math.atan2(a.y-v.y,a.x-v.x);let d=Math.atan2(Math.sin(angle-v.facing),Math.cos(angle-v.facing));return Math.abs(d)>2.3?'rear':Math.abs(d)>1.02?'flank':'front'}
 function terrainAdvantage(u){return terrainDefense(u)*(BATTLES[state.battle].id==='thermopylae'&&u.x>350&&u.x<580&&u.y>260&&u.y<470?1.12:1)}
+function spawnReinforcementEvent(b,ev,index){
+ const arrivals=[];
+ for(const spec of ev.squads||[]){
+  const [side,type,x,y,count=1,level=1]=spec;
+  for(let i=0;i<count;i++){
+   const pos=findSafe({x:x+(side==='ally'?-1:1)*(i%2)*48,y:y+((i/2)|0)*44});
+   const u=addUnit(side,type,pos.x,pos.y,level);u.aiLane=pos.y;
+   if(b.id==='thermopylae'&&side==='enemy'&&type==='persian'){
+    const persians=arrivals.filter(v=>v.side==='enemy'&&v.type==='persian').length;
+    u.aiRole=persians%2===0?'breach':'front';u.aiLane=clamp(pos.y,318,401);
+   }
+   arrivals.push(u);
+  }
+ }
+ for(const u of arrivals)if(u.side==='enemy')thinkAI(u);
+ state.lastWave=state.t;
+ const allyCount=arrivals.filter(u=>u.side==='ally').length,enemyCount=arrivals.length-allyCount;
+ battleEvent(ev.label||`Refuerzos: ${allyCount} aliados · ${enemyCount} enemigos`);
+ if(allyCount){SFX.rallyCry();notify(`¡Llegan refuerzos aliados! ${allyCount} formaciones disponibles.`)}
+ return arrivals;
+}
+function processReinforcements(b){
+ const schedule=b.reinforcements||[];
+ while(schedule[state.wave]&&state.t>=schedule[state.wave].at){
+  const ev=schedule[state.wave],index=state.wave;state.wave++;
+  spawnReinforcementEvent(b,ev,index);
+ }
+}
 function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.hoverId=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN';document.querySelector('.stage').style.setProperty('--battle-bg',`url('${ASSETS.terrain[battle.id].src}')`);showIntro();updateHud()}
-function renderBattleList(){ui.list.innerHTML='';BATTLES.forEach((b,i)=>{let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'');e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span>`;e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e)})}
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent='Biblioteca 01 · Grecia clásica';ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.19: área exterior no jugable en negro y dock inferior todavía más bajo, tipo barra de tareas, sin cambios de jugabilidad.';}
+function renderBattleList(){
+ ui.list.innerHTML='';
+ BATTLES.forEach((b,i)=>{
+  const result=campaign.results[b.id],medal=b.campaign===false?'ARCHIVO':MEDAL_LABEL[result?.bestMedal||'none'];
+  let e=document.createElement('button');e.className='battle'+(i===state.battle?' active':'')+(b.campaign===false?' archive':'');
+  e.innerHTML=`<img src="${{marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id]}" alt=""><span class="bcopy"><strong>${b.name}</strong><small>${b.year}</small><span class="btinfo">${b.kind}</span></span><span class="medal">${medal}</span>`;
+  e.addEventListener('click',()=>{loadBattle(i);ui.sidebar.classList.remove('shown')});ui.list.append(e);
+ });
+ renderCampaignStatus();
+}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent=b.campaign===false?'Archivo táctico · Prueba':'Campaña del Comandante · '+campaignRank();ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='Versión 0.8.19: área exterior no jugable en negro y dock inferior todavía más bajo, tipo barra de tareas, sin cambios de jugabilidad.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
@@ -466,6 +546,7 @@ function finish(victory,reason=''){if(state.finished)return;state.endReason=reas
  const b=BATTLES[state.battle],allies=state.units.filter(u=>u.side==='ally'),enemies=state.units.filter(u=>u.side==='enemy');
  const aFirm=allies.filter(active).length,eFirm=enemies.filter(active).length;
  const aRouted=allies.filter(u=>u.routed).length,eRouted=enemies.filter(u=>u.routed).length;
+ const campaignReward=recordCampaignResult(victory,b,allies);
  ui.overlay.classList.remove('hidden');
  ui.overlayKicker.textContent=victory?'Victoria táctica':'Derrota táctica';
  if(b.goal==='survive'){
@@ -478,7 +559,10 @@ function finish(victory,reason=''){if(state.finished)return;state.endReason=reas
   ui.overlayMission.textContent=`Tiempo ${formatTime(state.t)} · Aliados firmes ${aFirm} · Aliados desbandados ${aRouted} · Enemigos firmes ${eFirm} · Enemigos desbandados ${eRouted}`;
  }
  ui.startBtn.textContent='Repetir batalla';ui.chooseBtn.classList.remove('hidden');
- ui.overlayNote.textContent='Simulación contrafáctica: resultado determinado por los objetivos y la situación táctica, no una reconstrucción exacta.';
+ ui.overlayNote.textContent=campaignReward
+  ?`Campaña · ${victory?'Medalla '+MEDAL_LABEL[campaignReward.medal]:'Sin medalla'} · Puntaje ${campaignReward.score} · Rango ${campaignReward.rank} · ${campaignReward.xp} XP`
+  :'Simulación de archivo: no modifica el progreso de campaña.';
+ renderBattleList();
 }
 function battleEvent(msg){
  state.events.unshift({t:state.t,msg});if(state.events.length>7)state.events.length=7;
@@ -687,15 +771,7 @@ function update(dt){
  for(let i=0;i<units.length;i++){const a=units[i];if(a.hp<=0||a.disengaged)continue;for(let j=i+1;j<units.length;j++){const b=units[j];if(b.hp<=0||b.disengaged)continue;const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.1,min=(TYPES[a.type].rad+TYPES[b.type].rad)*.85;if(d<min){const push=(min-d)*.065,px=dx/d*push,py=dy/d*push;if(walkable(a.x-px,a.y-py)){a.x-=px;a.y-=py}if(walkable(b.x+px,b.y+py)){b.x+=px;b.y+=py}}}}
  updateProjectiles(dt);
  const b=BATTLES[state.battle];
- if(b.goal==='survive'&&b.waveSchedule[state.wave]!==undefined&&state.t>=b.waveSchedule[state.wave]){
-  state.wave++;state.lastWave=state.t;
-  for(let i=0;i<2+Math.min(state.wave,2);i++){
-   const type=i===0&&state.wave>2?'archer':'persian';
-   const x=Math.min(1210,1115+(i%2)*63),y=300+(i%4)*40;
-   const u=addUnit('enemy',type,x,y,1);u.aiLane=y;if(type==='persian'&&i%2===0)u.aiRole='breach';thinkAI(u);
-  }
-  battleEvent(`Refuerzos persas: oleada ${state.wave}/3`);
- }
+ processReinforcements(b);
  if(b.goal==='survive'){
   // Explicit defense objective. A fleeing, withdrawing, or broken enemy unit does not count as a breach.
   for(const u of units){
@@ -724,7 +800,13 @@ function updateHud(){
  ui.enemyCount.textContent=state.units.filter(u=>u.side==='enemy'&&active(u)).length;
  ui.timer.textContent=BATTLES[state.battle].goal==='survive'&&state.running?formatTime(Math.max(0,BATTLES[state.battle].duration-state.t)):formatTime(state.t);
  const ms=el('missionStatus'),mission=BATTLES[state.battle];
- if(ms)ms.textContent=mission.goal==='survive'?`DEFENDER EL PASO · ${Math.max(0,Math.ceil(mission.duration-state.t))} s restantes · Penetraciones ${state.breaches}/${mission.breachLimit}`:state.events.length?state.events[0].msg:'PROTEGÉ LOS FLANCOS · MANTENÉ TROPAS DE RESERVA';
+ if(ms){
+  const nextReinforcement=(mission.reinforcements||[])[state.wave];
+  if(mission.goal==='survive')ms.textContent=`DEFENDER EL PASO · ${Math.max(0,Math.ceil(mission.duration-state.t))} s restantes · Penetraciones ${state.breaches}/${mission.breachLimit}`;
+  else if(state.events.length)ms.textContent=state.events[0].msg;
+  else if(nextReinforcement&&nextReinforcement.squads.some(q=>q[0]==='ally'))ms.textContent=`MANTENÉ LA LÍNEA · RESERVA EN ${formatTime(Math.max(0,nextReinforcement.at-state.t))}`;
+  else ms.textContent='PROTEGÉ LOS FLANCOS · MANTENÉ TROPAS DE RESERVA';
+ }
  const sel=selectedUnits(),gid=selectedGroup(),gr=gid?state.groups.get(gid):null;
  const paceLabel=el('paceLabel');
  if(paceLabel){
@@ -1052,7 +1134,7 @@ ui.startBtn.addEventListener('click',()=>{
  el('deployLineBtn').addEventListener('click',()=>deployFormation('line',false));
  el('deployWingsBtn').addEventListener('click',()=>deployFormation('wings',false));
  el('squadGridBtn').addEventListener('click',arrangeSix);
-ui.chooseBtn.addEventListener('click',()=>{loadBattle((state.battle+1)%BATTLES.length)});
+ui.chooseBtn.addEventListener('click',()=>{loadBattle(nextCampaignIndex(state.battle))});
 el('resetBtn').addEventListener('click',()=>loadBattle(state.battle));ui.pauseBtn.addEventListener('click',()=>{if(!state.running)return;state.paused=!state.paused;ui.pauseBtn.textContent=state.paused?'▶':'Ⅱ';notify(state.paused?'Batalla en pausa':'Batalla reanudada')});el('allBtn').addEventListener('click',()=>{state.selection.clear();for(const u of state.units)if(u.side==='ally'&&active(u))state.selection.add(u.id);updateHud()});ui.attackBtn.addEventListener('click',()=>arm('attack'));el('stopBtn').addEventListener('click',()=>{for(const u of state.units)if(state.selection.has(u.id)){u.goal=null;u.path=[];u.attackTarget=null;u.stance='stop';u.attackMove=false;u.skirmishActive=false;u.skirmishSaved=null;u.groupOverride=true}notify('Mantener posición: no habrá retirada automática (S). Clic derecho para reactivar hostigamiento.')});el('mapsBtn').addEventListener('click',()=>ui.sidebar.classList.toggle('shown'));
 
 ui.selectedPanel.addEventListener('click',e=>{const b=e.target.closest('[data-squad-id]');if(!b)return;const id=Number(b.dataset.squadId),u=state.units.find(x=>x.id===id);if(!u||!active(u))return;if(!e.shiftKey)state.selection.clear();if(e.shiftKey&&state.selection.has(id))state.selection.delete(id);else state.selection.add(id);updateHud()});
@@ -1176,7 +1258,7 @@ window.addEventListener('keydown',e=>{
  if((state.phase!=='battle'&&state.phase!=='deploy')||!/^1$/.test(e.key))return;
  e.preventDefault();e.stopImmediatePropagation();if(e.ctrlKey)makeGroup();else recallGroup();
 },true);
-window.HWM_DEBUG={state:()=>({battle:BATTLES[state.battle].id,time:state.t,zoom:state.zoom,panX:state.panX,panY:state.panY,running:state.running,paused:state.paused,finished:state.finished,phase:state.phase,deployMode:state.deployMode,allies:state.units.filter(u=>u.side==='ally'&&active(u)).length,enemies:state.units.filter(u=>u.side==='enemy'&&active(u)).length,routedAllies:state.units.filter(u=>u.side==='ally'&&u.routed).length,routedEnemies:state.units.filter(u=>u.side==='enemy'&&u.routed).length,breaches:state.breaches,objective:BATTLES[state.battle].goal,reason:state.endReason||null,events:state.events}),start:(mode='free')=>start(mode),deploy:()=>enterDeployment(),preset:(kind)=>deployFormation(kind,true),moveDeploy:(x,y)=>moveDeployedSquads({x,y}),selectAll:()=>{for(const u of state.units)if(u.side==='ally'&&active(u))state.selection.add(u.id);updateHud()},command:(x,y)=>command({x,y}),load:idx=>loadBattle(idx),step:seconds=>{for(let i=0;i<Math.ceil(seconds/.04);i++)update(.04)},walkable:(x,y)=>walkable(x,y),thermoBounds:(x)=>thermoBounds(x),battles:()=>BATTLES.map(b=>({id:b.id,name:b.name})),unitPositions:()=>state.units.filter(u=>u.hp>0).map(u=>({id:u.id,side:u.side,x:Math.round(u.x),y:Math.round(u.y),soldiers:u.soldiers,hp:Math.round(u.hp),cohesion:Math.round(u.cohesion),morale:Math.round(u.morale),type:u.type,phase:phase(u),routed:u.routed,withdraw:u.withdraw,disengaged:u.disengaged,path:u.path.length,individualOrder:u.groupOverride,skirmish:u.skirmishActive,panic:u.skirmishPanic,shotSlowUntil:Number(u.shotSlowUntil.toFixed(2)),aiRole:u.aiRole})),setPosition:(id,x,y)=>{const u=state.units.find(u=>u.id===id);if(u&&walkable(x,y)){u.x=x;u.y=y;u.goal=null;u.path=[];u.pathIndex=0;return true}return false},retreat:()=>{for(const u of selectedUnits()){u.groupOverride=true;issueRetreat(u,false)}updateHud()},formation:()=>state.formation,groups:()=>[...state.groups.entries()].map(([id,g])=>({id,ids:g.ids,layout:g.layout,offsets:g.offsets})),projectiles:()=>state.projectiles.map(p=>({kind:p.kind,hit:p.hit,age:p.age,duration:p.dur,effectiveness:p.effectiveness})),selectIds:ids=>{state.selection.clear();ids.forEach(id=>state.selection.add(id));updateHud()},createGroup:()=>makeGroup(),recallGroup:()=>recallGroup(),arrangeSix:()=>arrangeSix(),selectedIds:()=>[...state.selection]};
+window.HWM_DEBUG={state:()=>({battle:BATTLES[state.battle].id,time:state.t,zoom:state.zoom,panX:state.panX,panY:state.panY,running:state.running,paused:state.paused,finished:state.finished,phase:state.phase,deployMode:state.deployMode,allies:state.units.filter(u=>u.side==='ally'&&active(u)).length,enemies:state.units.filter(u=>u.side==='enemy'&&active(u)).length,routedAllies:state.units.filter(u=>u.side==='ally'&&u.routed).length,routedEnemies:state.units.filter(u=>u.side==='enemy'&&u.routed).length,breaches:state.breaches,reinforcementIndex:state.wave,nextReinforcement:(BATTLES[state.battle].reinforcements||[])[state.wave]?.at??null,objective:BATTLES[state.battle].goal,reason:state.endReason||null,events:state.events}),start:(mode='free')=>start(mode),deploy:()=>enterDeployment(),preset:(kind)=>deployFormation(kind,true),moveDeploy:(x,y)=>moveDeployedSquads({x,y}),selectAll:()=>{for(const u of state.units)if(u.side==='ally'&&active(u))state.selection.add(u.id);updateHud()},command:(x,y)=>command({x,y}),load:idx=>loadBattle(idx),step:seconds=>{for(let i=0;i<Math.ceil(seconds/.04);i++)update(.04)},walkable:(x,y)=>walkable(x,y),thermoBounds:(x)=>thermoBounds(x),battles:()=>BATTLES.map(b=>({id:b.id,name:b.name,campaign:b.campaign!==false,medal:campaign.results[b.id]?.bestMedal||'none'})),campaign:()=>({xp:campaignXP(),rank:campaignRank(),wins:campaignWins(),results:JSON.parse(JSON.stringify(campaign.results))}),unitPositions:()=>state.units.filter(u=>u.hp>0).map(u=>({id:u.id,side:u.side,x:Math.round(u.x),y:Math.round(u.y),soldiers:u.soldiers,hp:Math.round(u.hp),cohesion:Math.round(u.cohesion),morale:Math.round(u.morale),type:u.type,phase:phase(u),routed:u.routed,withdraw:u.withdraw,disengaged:u.disengaged,path:u.path.length,individualOrder:u.groupOverride,skirmish:u.skirmishActive,panic:u.skirmishPanic,shotSlowUntil:Number(u.shotSlowUntil.toFixed(2)),aiRole:u.aiRole})),setPosition:(id,x,y)=>{const u=state.units.find(u=>u.id===id);if(u&&walkable(x,y)){u.x=x;u.y=y;u.goal=null;u.path=[];u.pathIndex=0;return true}return false},retreat:()=>{for(const u of selectedUnits()){u.groupOverride=true;issueRetreat(u,false)}updateHud()},formation:()=>state.formation,groups:()=>[...state.groups.entries()].map(([id,g])=>({id,ids:g.ids,layout:g.layout,offsets:g.offsets})),projectiles:()=>state.projectiles.map(p=>({kind:p.kind,hit:p.hit,age:p.age,duration:p.dur,effectiveness:p.effectiveness})),selectIds:ids=>{state.selection.clear();ids.forEach(id=>state.selection.add(id));updateHud()},createGroup:()=>makeGroup(),recallGroup:()=>recallGroup(),arrangeSix:()=>arrangeSix(),selectedIds:()=>[...state.selection]};
 
 const INTRO=(()=>{
  const layer=el('introLayer'),video=el('introVideo'),sub=el('introSub'),skip=el('introSkip'),playBtn=el('introPlay');
