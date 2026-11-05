@@ -416,7 +416,7 @@ const UNIT_VISUAL={
  persianCavalry:{letter:'C',banner:'#8e1f2d',spriteCol:5,filter:'hue-rotate(330deg) saturate(1.25)'},
  macedonian:{letter:'M',banner:'#274f96',spriteCol:0,filter:'hue-rotate(10deg) saturate(1.1)'},
  companionCavalry:{letter:'HC',banner:'#274f96',spriteCol:5,filter:'hue-rotate(8deg) saturate(1.15)'},
- roman:{letter:'R',banner:'#9b3029',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.22)'},
+ roman:{letter:'R',banner:'#9b3029',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.22)',asset:'roman'},
  romanHastati:{letter:'H',banner:'#9b3029',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.18)'},
  romanPrincipes:{letter:'P',banner:'#7f201f',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.35) brightness(.92)'},
  velite:{letter:'V',banner:'#b34b32',spriteCol:2,filter:'hue-rotate(325deg) saturate(1.1)'},
@@ -433,7 +433,7 @@ const UNIT_VISUAL={
  longbow:{letter:'LB',banner:'#2b486f',spriteCol:1,filter:'hue-rotate(20deg) saturate(.75)'},
  french:{letter:'F',banner:'#3a4d9a',spriteCol:0,filter:'hue-rotate(25deg) saturate(1.15)'},
  frenchKnight:{letter:'K',banner:'#3a4d9a',spriteCol:5,filter:'hue-rotate(25deg) saturate(1.15)'},
- germanic:{letter:'G',banner:'#72532e',spriteCol:0,filter:'sepia(.45) saturate(.9)'},
+ germanic:{letter:'G',banner:'#72532e',spriteCol:0,filter:'sepia(.45) saturate(.9)',asset:'germanic'},
  frenchLine:{letter:'F',banner:'#294b8e',spriteCol:0,filter:'hue-rotate(15deg) saturate(.95)'},
  russianLine:{letter:'R',banner:'#3f654a',spriteCol:0,filter:'hue-rotate(95deg) saturate(.75)'},
  artillery:{letter:'●',banner:'#555047',spriteCol:5,filter:'grayscale(.35)'}
@@ -517,8 +517,11 @@ function nextCampaignIndex(from){
  const pos=campaignIdx.indexOf(from);return campaignIdx[(pos<0?0:pos+1)%campaignIdx.length];
 }
 const SPRITE_CELL=204;
-const ASSETS={units:new Image(),terrain:{}};
+const FACTION_SPRITE_CELL=51;
+const ASSETS={units:new Image(),factions:{roman:new Image(),germanic:new Image()},terrain:{}};
 ASSETS.units.src='assets/units-atlas.webp';
+ASSETS.factions.roman.src='assets/units/roman-legionary.webp';
+ASSETS.factions.germanic.src='assets/units/germanic-warrior.webp';
 for(const id of ['marathon1','marathon2','thermopylae','plataea','mantinea']){
  const img=new Image();img.src={marathon1:'assets/marathon-1-original.png',marathon2:'assets/marathon-2-original.png',thermopylae:'assets/terrain-thermopylae.webp',plataea:'assets/terrain-plataea.webp',mantinea:'assets/terrain-mantinea.webp'}[id];ASSETS.terrain[id]=img;
 }
@@ -1058,11 +1061,16 @@ function drawSquad(u){
    const px=u.x+perp.x*a+forward.x*b,py=u.y+perp.y*a+forward.y*b+bob;
    const frame=(state.t-u.lastShot<.28&&i%3===0)?2:(isMoving ? ((Math.floor(state.t*7+i)%3===0)?0:1) : pose);
    ctx.save();ctx.translate(px,py);ctx.rotate(u.facing-Math.PI/2);
-   if(ASSETS.units.complete&&ASSETS.units.naturalWidth){
+   const factionAsset=visual.asset&&ASSETS.factions[visual.asset];
+   const hasFactionAsset=factionAsset&&factionAsset.complete&&factionAsset.naturalWidth;
+   if(hasFactionAsset||(ASSETS.units.complete&&ASSETS.units.naturalWidth)){
      ctx.globalAlpha=1;
-     if(visual.filter)ctx.filter=visual.filter;else if(BATTLES[state.battle].id==='mantinea'&&u.side==='enemy')ctx.filter='hue-rotate(135deg) saturate(.8)';
+     if(!hasFactionAsset){
+       if(visual.filter)ctx.filter=visual.filter;else if(BATTLES[state.battle].id==='mantinea'&&u.side==='enemy')ctx.filter='hue-rotate(135deg) saturate(.8)';
+     }
      const size=u.type==='cavalry'?41:36;
-     ctx.drawImage(ASSETS.units,colSprite*SPRITE_CELL,frame*SPRITE_CELL,SPRITE_CELL,SPRITE_CELL,-size/2,-size/2,size,size);
+     if(hasFactionAsset)ctx.drawImage(factionAsset,frame*FACTION_SPRITE_CELL,0,FACTION_SPRITE_CELL,FACTION_SPRITE_CELL,-size/2,-size/2,size,size);
+     else ctx.drawImage(ASSETS.units,colSprite*SPRITE_CELL,frame*SPRITE_CELL,SPRITE_CELL,SPRITE_CELL,-size/2,-size/2,size,size);
      ctx.filter='none';
    }else soldier(u,0,0,i);
    ctx.restore();
