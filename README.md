@@ -1,8 +1,71 @@
-# HWM alfa 0.8.18
+# HWM 0.9.1 RC1 — Grandes batallas de la historia
 
-HWM 0.8.7 conserva la jugabilidad de 0.8.6 y suma un pulido visual de lectura táctica sin alterar el combate.
+HWM es un RTS táctico histórico centrado en formaciones, terreno, moral, cohesión y asimetría entre ejércitos.
 
-## Música
+## Estado actual
+
+La campaña **Campaña del Comandante** tiene 10 batallas válidas:
+
+1. Maratón
+2. Termópilas
+3. Platea
+4. Mantinea
+5. Gaugamela
+6. Cannas
+7. Hastings
+8. Agincourt
+9. Bosque de Teutoburgo
+10. Borodinó
+
+`Maratón 2` queda como archivo/prueba y no cuenta para la campaña.
+
+## Sistemas integrados
+
+- progreso persistente con victorias, puntaje, medallas, XP y rangos;
+- reservas y refuerzos;
+- moral, cohesión, retirada y reorganización;
+- formaciones Línea / Cuña / Columna;
+- terreno procedural, bosque, barro, colinas, marjal y redutos;
+- objetivo especial de escape y emboscadas en Teutoburgo;
+- artillería y shock de área limitado en Borodinó;
+- disciplina de falange: hoplitas, falanges y muros de escudos no persiguen automáticamente cuando están en línea y cohesionados;
+- roster ampliado a 30 tipos de unidad;
+- diferenciación mecánica de persas, macedonios, romanos, cartagineses, normandos, sajones, ingleses, franceses, germanos y ejércitos napoleónicos;
+- dos intros cinematográficas locales con rotación automática;
+- música y SFX integrados.
+
+## Desarrollo con dos agentes
+
+La coordinación del proyecto se hace mediante:
+
+- `AGENTS.md`: contrato operativo persistente;
+- `CAMPAIGN_V1.md`: contrato de campaña;
+- GitHub Issue #2: tablero compartido entre agentes.
+
+Roles actuales:
+
+- **Agente A**: chat principal, líder técnico e integrador.
+- **Agente B / Work**: ejecutor autónomo de tareas largas y paralelas.
+
+Antes de modificar código, cualquier agente debe leer `AGENTS.md`, HEAD de `main`, `CAMPAIGN_V1.md` y los últimos comentarios de Issue #2.
+
+## Prioridad inmediata
+
+Completar identidad gráfica propia por ejército, empezando por:
+
+Teutoburgo → Cannas → Gaugamela → Hastings → Agincourt → Borodinó.
+
+Después: QA jugable de las 10 batallas, balance fino y cierre de v1.0.
+
+## Estado de release
+
+`0.9.1 RC1` es una release candidate. El JavaScript y los datos pasaron QA lógico/estático, pero todavía falta QA jugable completo en navegador antes de declarar v1.0.
+
+---
+
+## Historial 0.8.x
+
+### Música
 
 - **Briefing inicial:** `Shadows of War`
 - **Preparación / despliegue:** `Omniscient Evil`
