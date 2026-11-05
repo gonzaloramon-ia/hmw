@@ -388,7 +388,7 @@ const MUSIC=(()=>{
 
 const COMBAT={pace:.64,damage:.39,flankShock:2.15,rearShock:3.1,routMorale:19,routCohesion:15};
 const SKIRMISH={archer:{retreat:150,clear:195,panic:59,shotSlow:.55,accuracy:.55},peltast:{retreat:112,clear:157,panic:57,shotSlow:.74,accuracy:.75}};
-const TYPES={hoplite:{name:'Hoplitas',hp:140,armor:.34,damage:16,range:42,speed:43,delay:1.05,morale:100,rad:22},archer:{name:'Arqueros',hp:78,armor:.06,damage:10,range:180,speed:49,delay:1.55,morale:75,rad:19},peltast:{name:'Peltastas',hp:94,armor:.12,damage:11,range:132,speed:56,delay:1.38,morale:86,rad:20},cavalry:{name:'Caballería',hp:123,armor:.18,damage:24,range:49,speed:79,delay:1.2,morale:90,rad:23},persian:{name:'Infantería persa',hp:105,armor:.14,damage:12,range:39,speed:47,delay:1.12,morale:80,rad:21},macedonian:{name:'Falange macedonia',hp:144,armor:.33,damage:17,range:45,speed:42,delay:1.06,morale:103,rad:22},roman:{name:'Legionarios romanos',hp:139,armor:.30,damage:16,range:42,speed:44,delay:1.02,morale:99,rad:22},carthaginian:{name:'Infantería cartaginesa',hp:126,armor:.22,damage:15,range:41,speed:47,delay:1.05,morale:94,rad:21},norman:{name:'Infantería normanda',hp:132,armor:.28,damage:15,range:41,speed:45,delay:1.04,morale:96,rad:21},saxon:{name:'Muro de escudos sajón',hp:150,armor:.36,damage:17,range:42,speed:38,delay:1.08,morale:105,rad:23},english:{name:'Hombres de armas ingleses',hp:132,armor:.31,damage:16,range:41,speed:43,delay:1.04,morale:98,rad:21},french:{name:'Hombres de armas franceses',hp:148,armor:.37,damage:17,range:42,speed:36,delay:1.08,morale:98,rad:23}};
+const TYPES={hoplite:{name:'Hoplitas',hp:140,armor:.34,damage:16,range:42,speed:43,delay:1.05,morale:100,rad:22},archer:{name:'Arqueros',hp:78,armor:.06,damage:10,range:180,speed:49,delay:1.55,morale:75,rad:19},peltast:{name:'Peltastas',hp:94,armor:.12,damage:11,range:132,speed:56,delay:1.38,morale:86,rad:20},cavalry:{name:'Caballería',hp:123,armor:.18,damage:24,range:49,speed:79,delay:1.2,morale:90,rad:23},persian:{name:'Infantería persa',hp:105,armor:.14,damage:12,range:39,speed:47,delay:1.12,morale:80,rad:21},macedonian:{name:'Falange macedonia',hp:144,armor:.33,damage:17,range:45,speed:42,delay:1.06,morale:103,rad:22},roman:{name:'Legionarios romanos',hp:139,armor:.30,damage:16,range:42,speed:44,delay:1.02,morale:99,rad:22},carthaginian:{name:'Infantería cartaginesa',hp:126,armor:.22,damage:15,range:41,speed:47,delay:1.05,morale:94,rad:21},norman:{name:'Infantería normanda',hp:132,armor:.28,damage:15,range:41,speed:45,delay:1.04,morale:96,rad:21},saxon:{name:'Muro de escudos sajón',hp:150,armor:.36,damage:17,range:42,speed:38,delay:1.08,morale:105,rad:23},english:{name:'Hombres de armas ingleses',hp:132,armor:.31,damage:16,range:41,speed:43,delay:1.04,morale:98,rad:21},french:{name:'Hombres de armas franceses',hp:148,armor:.37,damage:17,range:42,speed:36,delay:1.08,morale:98,rad:23},germanic:{name:'Guerreros germánicos',hp:112,armor:.12,damage:15,range:39,speed:54,delay:1.0,morale:97,rad:21}};
 const TERRAIN={
 marathon1:{seed:19,ground:['#7b8960','#87966c'],hills:[{x:20,y:24,w:245,h:135},{x:20,y:575,w:210,h:132}],marsh:[{x:690,y:23,w:350,h:155},{x:884,y:171,w:188,h:105}],rocks:[],river:[],cliffs:[]},
 marathon2:{seed:19,ground:['#7b8960','#87966c'],hills:[{x:20,y:24,w:245,h:135},{x:20,y:575,w:210,h:132}],marsh:[{x:690,y:23,w:350,h:155},{x:884,y:171,w:188,h:105}],rocks:[],river:[],cliffs:[]},
@@ -398,7 +398,8 @@ mantinea:{seed:61,ground:['#85895e','#959970'],hills:[{x:370,y:50,w:310,h:90},{x
 gaugamela:{seed:77,ground:['#9d936e','#b1a47a'],hills:[],marsh:[],rocks:[{x:650,y:118,r:13},{x:710,y:595,r:11}],river:[],cliffs:[]},
 cannae:{seed:83,ground:['#9a8b63','#ad9a70'],hills:[],marsh:[{x:500,y:575,w:210,h:70}],rocks:[],river:[{x:-20,y:0,w:1320,h:48}],cliffs:[]},
 hastings:{seed:97,ground:['#7b865f','#919a70'],hills:[{x:755,y:70,w:470,h:575}],marsh:[{x:455,y:245,w:235,h:230}],rocks:[],river:[],cliffs:[],woods:[]},
-agincourt:{seed:111,ground:['#81795c','#988c68'],hills:[],marsh:[{x:330,y:145,w:620,h:430}],rocks:[],river:[],cliffs:[],woods:[{x:0,y:0,w:1280,h:125},{x:0,y:585,w:1280,h:135}]}};
+agincourt:{seed:111,ground:['#81795c','#988c68'],hills:[],marsh:[{x:330,y:145,w:620,h:430}],rocks:[],river:[],cliffs:[],woods:[{x:0,y:0,w:1280,h:125},{x:0,y:585,w:1280,h:135}]},
+teutoburg:{seed:129,ground:['#596b4d','#6f7d59'],hills:[{x:390,y:405,w:350,h:90}],marsh:[{x:0,y:82,w:1280,h:145}],rocks:[{x:540,y:300,r:16},{x:820,y:430,r:14}],river:[],cliffs:[],woods:[{x:0,y:0,w:1280,h:78},{x:0,y:505,w:1280,h:215}]}};
 const BATTLES=[
 {id:'marathon1',name:'Maratón 1',year:'490 a. C.',subtitle:'Atenas y Platea contra Persia · Vista amplia',kind:'Foto 1 · Vista amplia',desc:'Las fuerzas atenienses y plateas enfrentan al ejército persa en la llanura de Maratón. Una batalla decisiva de las Guerras Médicas.',mission:'Objetivo: derrotar o desbandar al ejército persa. El mar queda fuera de la zona transitable y el ejército persa despliega sobre tierra firme junto a la costa.',ally:'Atenas',enemy:'Persia',goal:'destroy',squads:[['ally','hoplite',112,245,4],['ally','hoplite',167,395,3],['ally','archer',82,495,2],['ally','peltast',155,595,2],['enemy','persian',805,255,4],['enemy','persian',900,417,3],['enemy','archer',930,542,2],['enemy','cavalry',960,620,1]]},
 {id:'marathon2',campaign:false,name:'Maratón 2',year:'490 a. C.',subtitle:'Atenas y Platea contra Persia · Vista cercana',kind:'Foto 2 · Vista cercana',desc:'Las fuerzas atenienses y plateas enfrentan al ejército persa en la llanura de Maratón. Una batalla decisiva de las Guerras Médicas.',mission:'Objetivo: derrotar o desbandar al ejército persa. Ahora empezás más lejos de la costa: aprovechá la aproximación para organizar tu ataque.',ally:'Atenas',enemy:'Persia',goal:'destroy',squads:[['ally','hoplite',112,245,4],['ally','hoplite',167,395,3],['ally','archer',82,495,2],['ally','peltast',155,595,2],['enemy','persian',1028,255,4],['enemy','persian',1034,417,3],['enemy','archer',1003,542,2],['enemy','cavalry',970,620,1]]},
@@ -414,7 +415,12 @@ const BATTLES=[
 {id:'gaugamela',name:'Gaugamela',year:'331 a. C.',label:'LLANURA DE GAUGAMELA',subtitle:'Macedonia contra el Imperio aqueménida',kind:'Mapa táctico procedural · Campo abierto',desc:'Alejandro enfrenta a Darío en una llanura amplia preparada para favorecer la caballería persa. La batalla exige evitar el envolvimiento y abrir una ruptura decisiva.',mission:'Objetivo: quebrar al ejército persa. No dejes que la superioridad de caballería cierre tus flancos; sostené la falange y usá tu ala móvil para abrir un hueco.',ally:'Macedonia',enemy:'Persia',goal:'destroy',reinforcements:[{at:70,label:'Segunda línea macedonia',squads:[['ally','macedonian',92,470,1],['ally','peltast',88,565,1]]}],squads:[['ally','macedonian',185,255,4],['ally','macedonian',205,405,3],['ally','peltast',145,525,2],['ally','cavalry',205,625,3],['enemy','persian',930,215,5],['enemy','persian',1015,365,4],['enemy','archer',1000,500,2],['enemy','cavalry',980,115,3],['enemy','cavalry',1035,615,4]]},
 {id:'cannae',name:'Cannas',year:'216 a. C.',label:'LLANURA DE CANNAS',subtitle:'Cartago contra Roma',kind:'Mapa táctico procedural · Envolvimiento',desc:'El ejército cartaginés enfrenta a una masa romana superior. La clave no es resistir de frente indefinidamente, sino fijar el centro y decidir la batalla sobre los flancos y la retaguardia.',mission:'Objetivo: quebrar al ejército romano. El centro cartaginés es más débil; preservalo mientras la caballería y las alas buscan el doble envolvimiento.',ally:'Cartago',enemy:'Roma',goal:'destroy',squads:[['ally','carthaginian',230,305,3],['ally','carthaginian',255,420,2],['ally','peltast',180,515,2],['ally','cavalry',185,150,3],['ally','cavalry',190,620,3],['enemy','roman',925,285,5],['enemy','roman',990,395,5],['enemy','roman',960,505,4],['enemy','cavalry',1030,145,2],['enemy','cavalry',1040,610,2]]},
 {id:'hastings',name:'Hastings',year:'1066',label:'SENLAC HILL',subtitle:'Normandía contra Inglaterra anglosajona',kind:'Mapa táctico procedural · Altura defensiva',desc:'El ejército normando debe romper una línea sajona atrincherada sobre terreno elevado. La movilidad normanda contrasta con una defensa compacta que se fortalece si conserva la formación.',mission:'Objetivo: quebrar el muro de escudos sajón. Atacar de frente cuesta caro: combiná arqueros, infantería y caballería, y usá retiradas ordenadas para desarmar la línea enemiga.',ally:'Normandía',enemy:'Inglaterra sajona',goal:'destroy',squads:[['ally','norman',180,300,4],['ally','archer',145,445,3],['ally','cavalry',175,575,4],['enemy','saxon',940,245,5],['enemy','saxon',1000,385,5],['enemy','saxon',970,520,4]]},
-{id:'agincourt',name:'Agincourt',year:'1415',label:'CAMPO DE AGINCOURT',subtitle:'Inglaterra contra Francia',kind:'Mapa táctico procedural · Barro y frente estrecho',desc:'Un campo estrecho entre bosques y saturado de barro reduce la ventaja numérica francesa. Los ingleses dependen de fuego a distancia y de mantener una línea compacta.',mission:'Objetivo: detener y quebrar el avance francés. El barro castiga la masa que avanza por el centro; mantené a los arqueros protegidos y obligá al enemigo a cruzar el corredor bajo fuego.',ally:'Inglaterra',enemy:'Francia',goal:'destroy',squads:[['ally','english',220,365,3],['ally','archer',175,235,5],['ally','archer',175,505,5],['enemy','french',965,265,6],['enemy','french',1025,385,6],['enemy','french',995,500,4],['enemy','cavalry',1045,190,3]]}
+{id:'agincourt',name:'Agincourt',year:'1415',label:'CAMPO DE AGINCOURT',subtitle:'Inglaterra contra Francia',kind:'Mapa táctico procedural · Barro y frente estrecho',desc:'Un campo estrecho entre bosques y saturado de barro reduce la ventaja numérica francesa. Los ingleses dependen de fuego a distancia y de mantener una línea compacta.',mission:'Objetivo: detener y quebrar el avance francés. El barro castiga la masa que avanza por el centro; mantené a los arqueros protegidos y obligá al enemigo a cruzar el corredor bajo fuego.',ally:'Inglaterra',enemy:'Francia',goal:'destroy',squads:[['ally','english',220,365,3],['ally','archer',175,235,5],['ally','archer',175,505,5],['enemy','french',965,265,6],['enemy','french',1025,385,6],['enemy','french',995,500,4],['enemy','cavalry',1045,190,3]]},
+{id:'teutoburg',name:'Bosque de Teutoburgo',year:'9 d. C.',label:'DESFILADERO DE TEUTOBURGO',subtitle:'Legiones romanas contra coalición germánica',kind:'Mapa táctico procedural · Emboscada y escape',desc:'Una columna romana queda atrapada entre bosque, marjal y terreno estrecho mientras fuerzas germánicas atacan desde posiciones preparadas. El objetivo ya no es conquistar el campo: es salvar una parte de la fuerza.',mission:'Objetivo: hacer escapar al menos 4 formaciones romanas por el extremo occidental. Mantené la columna compacta, evitá perseguir dentro del bosque y abrí paso antes de que lleguen nuevas emboscadas.',ally:'Roma',enemy:'Coalición germánica',goal:'escape',deploySide:'right',escapeX:115,escapeRequired:4,reinforcements:[
+ {at:14,label:'Emboscada germánica · I',squads:[['enemy','germanic',760,245,2],['enemy','germanic',735,470,2]]},
+ {at:34,label:'Emboscada germánica · II',squads:[['enemy','germanic',570,245,2],['enemy','germanic',555,465,2]]},
+ {at:56,label:'Emboscada germánica · III',squads:[['enemy','germanic',390,250,3],['enemy','germanic',390,462,2]]}
+],squads:[['ally','roman',1040,300,4],['ally','roman',1110,390,4],['ally','roman',1000,465,3],['enemy','germanic',850,250,2],['enemy','germanic',825,470,2]]}
 ];
 
 const CAMPAIGN_KEY='hwm:campaign:v1';
@@ -460,7 +466,7 @@ ASSETS.units.src='assets/units-atlas.webp';
 for(const id of ['marathon1','marathon2','thermopylae','plataea','mantinea']){
  const img=new Image();img.src={marathon1:'assets/marathon-1-original.png',marathon2:'assets/marathon-2-original.png',thermopylae:'assets/terrain-thermopylae.webp',plataea:'assets/terrain-plataea.webp',mantinea:'assets/terrain-mantinea.webp'}[id];ASSETS.terrain[id]=img;
 }
-const state={breaches:0,breachedIds:new Set(),events:[],lastLineAlert:0,groupSync:0,panX:0,panY:0,lastHudRefresh:0,battle:0,units:[],projectiles:[],particles:[],trees:[],terrain:TERRAIN.marathon1,running:false,paused:false,finished:false,t:0,wave:0,lastWave:0,nextId:1,mode:'move',selection:new Set(),drag:null,hover:null,cmdMarker:null,zoom:1,seed:1,fps:60,phase:'briefing',deployPattern:'grid',deployMode:'free',helpWasPaused:false};
+const state={breaches:0,breachedIds:new Set(),escaped:0,escapedIds:new Set(),events:[],lastLineAlert:0,groupSync:0,panX:0,panY:0,lastHudRefresh:0,battle:0,units:[],projectiles:[],particles:[],trees:[],terrain:TERRAIN.marathon1,running:false,paused:false,finished:false,t:0,wave:0,lastWave:0,nextId:1,mode:'move',selection:new Set(),drag:null,hover:null,cmdMarker:null,zoom:1,seed:1,fps:60,phase:'briefing',deployPattern:'grid',deployMode:'free',helpWasPaused:false};
 function rng(seed){let n=seed>>>0;return()=>{n=(Math.imul(1664525,n)+1013904223)>>>0;return n/4294967296}};
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));const lerp=(a,b,t)=>a+(b-a)*t;
 function isMarathon(){return BATTLES[state.battle].id.startsWith('marathon')}
@@ -522,7 +528,7 @@ function processReinforcements(b){
   spawnReinforcementEvent(b,ev,index);
  }
 }
-function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.hoverId=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.label||(battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN');const terrainImage=ASSETS.terrain[battle.id];document.querySelector('.stage').style.setProperty('--battle-bg',terrainImage?`url('${terrainImage.src}')`:'none');showIntro();updateHud()}
+function loadBattle(idx){state.battle=idx;state.terrain=TERRAIN[BATTLES[idx].id];state.units=[];state.projectiles=[];state.particles=[];state.selection.clear();state.t=0;state.wave=0;state.lastWave=0;state.breaches=0;state.breachedIds=new Set();state.escaped=0;state.escapedIds=new Set();state.events=[];state.lastLineAlert=0;state.groupSync=0;state.endReason=null;state.nextId=1;state.running=false;state.finished=false;state.paused=false;state.mode='move';state.drag=null;state.cmdMarker=null;state.hoverId=null;state.zoom=1;state.panX=0;state.panY=0;state.lastHudRefresh=0;state.simSpeed=1;state.armedCommand=null;state.formation='line';state.phase='briefing';state.deployPattern='grid';state.deployMode='free';state.helpWasPaused=false;state.groups=new Map();state.nextGroupId=1;state.groupSelectionId=null;brain=0;hideDeployment();grid=makeGrid();const battle=BATTLES[idx];for(const [side,type,x,y,count] of battle.squads){for(let i=0;i<count;i++){let col=i%2,row=(i/2)|0;let px=x+(side==='ally'?-1:1)*col*53,py=y+(row-(count-1)/4)*49;let pos=findSafe({x:px,y:py});addUnit(side,type,pos.x,pos.y)}}if(battle.id==='thermopylae'){let n=0;for(const u of state.units)if(u.side==='enemy'&&u.type==='persian'){u.aiRole=(n++%2===0)?'breach':'front';u.aiLane=clamp(u.y,318,401)}}genDecor();renderBattleList();ui.mapTitle.textContent=`${battle.name} · ${battle.year}`;ui.mapSubtitle.textContent=battle.subtitle;document.getElementById('battleLabel').textContent=battle.label||(battle.id==='thermopylae'?'PASO DE LAS TERMÓPILAS':battle.id==='plataea'?'LLANURA DE PLATEA':battle.id==='mantinea'?'LLANURA DE MANTINEA':'LLANURA DE MARATÓN');const terrainImage=ASSETS.terrain[battle.id];document.querySelector('.stage').style.setProperty('--battle-bg',terrainImage?`url('${terrainImage.src}')`:'none');showIntro();updateHud()}
 function battleThumb(b){
  const known={marathon1:'assets/thumb-marathon-1.webp',marathon2:'assets/thumb-marathon-2.webp',thermopylae:'assets/thumb-thermopylae.webp',plataea:'assets/thumb-plataea.webp',mantinea:'assets/thumb-mantinea.webp'}[b.id];
  if(known)return known;
@@ -568,6 +574,10 @@ function finish(victory,reason=''){if(state.finished)return;state.endReason=reas
   ui.overlayTitle.textContent=victory?'El paso resistió':'El paso ha caído';
   ui.overlayDesc.textContent=victory?`Tus defensores mantuvieron el paso durante ${b.duration} segundos: victoria defensiva, aunque Persia aún tenga tropas en pie.`:reason==='breach'?`Dos formaciones persas cruzaron la línea defensiva. Se perdió el objetivo, aunque todavía queden griegos combatiendo.`:'El ejército defensor fue derrotado antes de cumplir la misión.';
   ui.overlayMission.textContent=`Resistencia ${formatTime(state.t)} / ${formatTime(b.duration)} · Penetraciones persas ${state.breaches}/${b.breachLimit} · Defensores firmes ${aFirm} · Persas firmes ${eFirm}`;
+ }else if(b.goal==='escape'){
+  ui.overlayTitle.textContent=victory?'La columna abrió paso':'La columna fue destruida';
+  ui.overlayDesc.textContent=victory?`Lograste sacar ${state.escaped} formaciones romanas del corredor de Teutoburgo.`:`Sólo ${state.escaped} formaciones alcanzaron la salida antes del colapso.`;
+  ui.overlayMission.textContent=`Formaciones a salvo ${state.escaped}/${b.escapeRequired} · Tiempo ${formatTime(state.t)} · Romanos aún firmes ${aFirm}`;
  }else{
   ui.overlayTitle.textContent=victory?'La historia pudo cambiar':'La batalla ha terminado';
   ui.overlayDesc.textContent=victory?`Condujiste a ${b.ally} a la victoria en ${b.name}. El enemigo perdió su capacidad de combatir; no fue necesario eliminar a todos los soldados.`:`${b.enemy} prevaleció. Revisá las bajas, la moral y las posiciones que cedieron.`;
@@ -791,6 +801,15 @@ function update(dt){
  updateProjectiles(dt);
  const b=BATTLES[state.battle];
  processReinforcements(b);
+ if(b.goal==='escape'){
+  for(const u of units){
+   if(u.side!=='ally'||!active(u)||state.escapedIds.has(u.id))continue;
+   if(u.x<=b.escapeX){
+    state.escapedIds.add(u.id);state.escaped++;u.disengaged=true;u.path=[];u.attackTarget=null;
+    battleEvent(`Formación romana a salvo: ${state.escaped}/${b.escapeRequired}.`);
+   }
+  }
+ }
  if(b.goal==='survive'){
   // Explicit defense objective. A fleeing, withdrawing, or broken enemy unit does not count as a breach.
   for(const u of units){
@@ -802,7 +821,8 @@ function update(dt){
    }
   }
  }
- if(b.goal==='survive'&&state.breaches>=b.breachLimit)finish(false,'breach');
+ if(b.goal==='escape'&&state.escaped>=b.escapeRequired)finish(true,'escaped');
+ else if(b.goal==='survive'&&state.breaches>=b.breachLimit)finish(false,'breach');
  else if(!units.some(u=>u.side==='ally'&&active(u)))finish(false,'annihilation');
  else if(b.goal==='survive'&&state.t>=b.duration)finish(true,'held');
  else if(b.goal==='destroy'&&!units.some(u=>u.side==='enemy'&&active(u)))finish(true);
@@ -822,6 +842,7 @@ function updateHud(){
  if(ms){
   const nextReinforcement=(mission.reinforcements||[])[state.wave];
   if(mission.goal==='survive')ms.textContent=`DEFENDER EL PASO · ${Math.max(0,Math.ceil(mission.duration-state.t))} s restantes · Penetraciones ${state.breaches}/${mission.breachLimit}`;
+  else if(mission.goal==='escape')ms.textContent=`ROMPÉ LA EMBOSCADA · FORMACIONES A SALVO ${state.escaped}/${mission.escapeRequired}`;
   else if(state.events.length)ms.textContent=state.events[0].msg;
   else if(nextReinforcement&&nextReinforcement.squads.some(q=>q[0]==='ally'))ms.textContent=`MANTENÉ LA LÍNEA · RESERVA EN ${formatTime(Math.max(0,nextReinforcement.at-state.t))}`;
   else ms.textContent='PROTEGÉ LOS FLANCOS · MANTENÉ TROPAS DE RESERVA';
@@ -883,7 +904,7 @@ function drawStandard(u){
  ctx.fillStyle=u.side==='ally'?'#155f91':'#9e302b';ctx.strokeStyle='#ead095';ctx.lineWidth=1.4;
  ctx.beginPath();ctx.moveTo(left-1,top-10);ctx.lineTo(left+25,top-6);ctx.lineTo(left+25,top+17);ctx.lineTo(left-1,top+13);ctx.closePath();ctx.fill();ctx.stroke();
  ctx.shadowColor='transparent';
- const letter=u.type==='hoplite'?'H':u.type==='macedonian'?'M':u.type==='roman'?'R':u.type==='carthaginian'?'C':u.type==='norman'?'N':u.type==='saxon'?'S':u.type==='english'?'E':u.type==='french'?'F':u.type==='archer'?'A':u.type==='peltast'?'J':u.type==='cavalry'?'C':u.type==='persian'?'I':'?';
+ const letter=u.type==='hoplite'?'H':u.type==='macedonian'?'M':u.type==='roman'?'R':u.type==='carthaginian'?'C':u.type==='norman'?'N':u.type==='saxon'?'S':u.type==='english'?'E':u.type==='french'?'F':u.type==='germanic'?'G':u.type==='archer'?'A':u.type==='peltast'?'J':u.type==='cavalry'?'C':u.type==='persian'?'I':'?';
  ctx.fillStyle='#f7e9c9';ctx.font='bold 16px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(letter,left+12,top+5);
  ctx.restore();
 }
@@ -950,8 +971,8 @@ function drawSquad(u){
  const isMoving=u.pathIndex<u.path.length;
  let pose=isMoving?1:0;
  if(!isMoving&&u.attackTarget&&u.stance==='attack'&&dist(u,u.attackTarget)<TYPES[u.type].range+26){pose=(u.cooldown<TYPES[u.type].delay*.62)?2:0;}
- const colSprite = u.side==='ally'?((u.type==='hoplite'||u.type==='macedonian'||u.type==='roman'||u.type==='norman'||u.type==='english'||u.type==='saxon'||u.type==='french')?0:u.type==='archer'?1:u.type==='peltast'?2:u.type==='cavalry'?5:u.type==='carthaginian'?3:0):
-   ((u.type==='hoplite'||u.type==='roman'||u.type==='macedonian'||u.type==='norman'||u.type==='english'||u.type==='saxon'||u.type==='french')?0:(u.type==='persian'||u.type==='carthaginian')?3:u.type==='archer'?4:u.type==='cavalry'?5:3);
+ const colSprite = u.side==='ally'?((u.type==='hoplite'||u.type==='macedonian'||u.type==='roman'||u.type==='norman'||u.type==='english'||u.type==='saxon'||u.type==='french'||u.type==='germanic')?0:u.type==='archer'?1:u.type==='peltast'?2:u.type==='cavalry'?5:u.type==='carthaginian'?3:0):
+   ((u.type==='hoplite'||u.type==='roman'||u.type==='macedonian'||u.type==='norman'||u.type==='english'||u.type==='saxon'||u.type==='french'||u.type==='germanic')?0:(u.type==='persian'||u.type==='carthaginian')?3:u.type==='archer'?4:u.type==='cavalry'?5:3);
  // Nine individually animated soldiers per selectable tactical unit.
  for(let i=alive-1;i>=0;i--){
    const off=formationOffset(u,i,alive),a=off.a,b=off.b;
@@ -983,7 +1004,7 @@ function drawSquad(u){
  ctx.restore();
 }
 function drawDeploymentZone(){
- ctx.save();const zone=isMarathon()?{x:35,y:55,w:337,h:620}:BATTLES[state.battle].id==='thermopylae'?{x:39,y:239,w:400,h:270}:{x:30,y:30,w:510,h:660};ctx.fillStyle='#2772af19';ctx.fillRect(zone.x,zone.y,zone.w,zone.h);
+ ctx.save();const z=deployZone(),zone={x:z.minX,y:z.minY,w:z.maxX-z.minX,h:z.maxY-z.minY};ctx.fillStyle='#2772af19';ctx.fillRect(zone.x,zone.y,zone.w,zone.h);
  ctx.strokeStyle='#b8dffa';ctx.lineWidth=2.5;ctx.setLineDash([12,8]);ctx.strokeRect(zone.x,zone.y,zone.w,zone.h);ctx.setLineDash([]);
  ctx.fillStyle='#081b21cc';ctx.fillRect(32,34,230,32);
  ctx.fillStyle='#d7ecf4';ctx.font='bold 16px Georgia';ctx.textAlign='left';ctx.fillText('ZONA DE DESPLIEGUE',47,56);
@@ -1021,14 +1042,20 @@ for(const p of state.particles){
  }
 }}
 function drawDefensiveLine(){
- const b=BATTLES[state.battle];if(b.goal!=='survive')return;
+ const b=BATTLES[state.battle];if(b.goal!=='survive'&&b.goal!=='escape')return;
  ctx.save();ctx.strokeStyle='#f4d286db';ctx.setLineDash([14,7]);ctx.lineWidth=3;
- const gate=thermoBounds(b.breachX);ctx.beginPath();ctx.moveTo(b.breachX,gate.top+8);ctx.lineTo(b.breachX,gate.bottom-8);ctx.stroke();ctx.setLineDash([]);
- ctx.fillStyle='#101d1cd9';ctx.fillRect(72,185,300,28);
- ctx.fillStyle='#f9e1a5';ctx.font='bold 15px Georgia';ctx.textAlign='left';ctx.fillText('DEFENDER EL PASO · '+state.breaches+'/'+b.breachLimit+' CRUCES',79,204);
+ if(b.goal==='escape'){
+  ctx.beginPath();ctx.moveTo(b.escapeX,235);ctx.lineTo(b.escapeX,495);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#101d1cd9';ctx.fillRect(72,185,325,28);
+  ctx.fillStyle='#f9e1a5';ctx.font='bold 15px Georgia';ctx.textAlign='left';ctx.fillText('SALIDA · '+state.escaped+'/'+b.escapeRequired+' FORMACIONES',79,204);
+ }else{
+  const gate=thermoBounds(b.breachX);ctx.beginPath();ctx.moveTo(b.breachX,gate.top+8);ctx.lineTo(b.breachX,gate.bottom-8);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#101d1cd9';ctx.fillRect(72,185,300,28);
+  ctx.fillStyle='#f9e1a5';ctx.font='bold 15px Georgia';ctx.textAlign='left';ctx.fillText('DEFENDER EL PASO · '+state.breaches+'/'+b.breachLimit+' CRUCES',79,204);
+ }
  ctx.restore();
 }
-function drawDecor(){const b=BATTLES[state.battle];if(b.id==='thermopylae'){ctx.fillStyle='#d8d0b8c2';ctx.font='italic 17px Georgia';ctx.fillText('DESFILADERO',579,385)}else if(b.id.startsWith('marathon')){ctx.fillStyle='#d8e2d09a';ctx.font='italic 17px Georgia';ctx.fillText('LLANURA DE MARATÓN',520,355)}else if(b.id==='plataea'){ctx.font='italic 17px Georgia';ctx.fillStyle='#d2ddcaa8';ctx.fillText('PLATEA',537,365)}else{ctx.font='italic 17px Georgia';ctx.fillStyle='#d2ddcaa8';ctx.fillText('MANTINEA',557,364)}
+function drawDecor(){const b=BATTLES[state.battle];const label=b.label||(b.id==='thermopylae'?'DESFILADERO':b.id.startsWith('marathon')?'LLANURA DE MARATÓN':b.id==='plataea'?'PLATEA':b.id==='mantinea'?'MANTINEA':b.name.toUpperCase());ctx.font='italic 17px Georgia';ctx.fillStyle='#d2ddcaa8';ctx.fillText(label,500,365);
 // a softly drawn compass rose.
 ctx.save();ctx.translate(1202,650);ctx.globalAlpha=.72;ctx.strokeStyle='#f0e4c1';ctx.fillStyle='#f0e4c1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,-21);ctx.lineTo(-5,6);ctx.lineTo(0,2);ctx.lineTo(5,6);ctx.closePath();ctx.stroke();ctx.fillText('N',-4,-27);ctx.restore();ctx.fillStyle='#00000042';ctx.fillRect(0,0,1280,3);ctx.fillRect(0,717,1280,3);ctx.strokeStyle='#d8cfb04f';ctx.lineWidth=1;ctx.strokeRect(9,9,1262,702)}
 let view={s:1,ox:0,oy:0,w:1000,h:700};function resize(){const r=canvas.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(r.width*dpr));canvas.height=Math.max(1,Math.round(r.height*dpr));view.w=r.width;view.h=r.height;view.dpr=dpr}
@@ -1065,7 +1092,7 @@ function hit(p,side=null){
 function choose(p,e){let unit=hit(p,'ally');if(unit){if(e.shiftKey){state.selection.has(unit.id)?state.selection.delete(unit.id):state.selection.add(unit.id)}else{state.selection.clear();state.selection.add(unit.id)}}else if(!e.shiftKey){state.selection.clear()}updateHud()}
 
 const DEPLOY_ZONE={minX:64,maxX:515,minY:90,maxY:630};
-function deployZone(){return isMarathon()?{minX:53,maxX:355,minY:75,maxY:650}:BATTLES[state.battle].id==='thermopylae'?{minX:45,maxX:435,minY:240,maxY:510}:DEPLOY_ZONE}
+function deployZone(){const b=BATTLES[state.battle];if(b.deploySide==='right')return{minX:760,maxX:1215,minY:245,maxY:485};return isMarathon()?{minX:53,maxX:355,minY:75,maxY:650}:b.id==='thermopylae'?{minX:45,maxX:435,minY:240,maxY:510}:DEPLOY_ZONE}
 function validDeployPoint(x,y,excluded){
  const z=deployZone();return x>=z.minX&&x<=z.maxX&&y>=z.minY&&y<=z.maxY&&walkable(x,y)&&
  !state.units.some(v=>v.side==='ally'&&v.hp>0&&!excluded.has(v.id)&&Math.hypot(v.x-x,v.y-y)<40);
@@ -1077,7 +1104,7 @@ function findDeployPoint(x,y,excluded){
  return null;
 }
 function placeSquad(u,p){if(!u||u.side!=='ally'||!p)return false;
- u.x=p.x;u.y=p.y;u.goal=null;u.path=[];u.pathIndex=0;u.attackTarget=null;u.stance='hold';u.attackMove=false;u.facing=0;return true;}
+ u.x=p.x;u.y=p.y;u.goal=null;u.path=[];u.pathIndex=0;u.attackTarget=null;u.stance='hold';u.attackMove=false;u.facing=BATTLES[state.battle].deploySide==='right'?Math.PI:0;return true;}
 function moveDeployedSquads(p){
  const sel=selectedUnits();if(!sel.length){notify('Seleccioná escuadrones antes de moverlos.');return}
  const cx=sel.reduce((s,u)=>s+u.x,0)/sel.length,cy=sel.reduce((s,u)=>s+u.y,0)/sel.length;
@@ -1094,7 +1121,9 @@ function deployFormation(kind,all=false,live=false){
  state.deployPattern=kind;
  const n=sel.length,rows=kind==='grid'?3:kind==='line'?Math.min(6,n):kind==='wings'?Math.min(5,n):Math.min(3,n);
  const slots=[];
- if(BATTLES[state.battle].id==='thermopylae'&&!live){
+ if(BATTLES[state.battle].id==='teutoburg'&&!live){
+  for(let i=0;i<n;i++){const col=Math.floor(i/2),row=i%2;slots.push({x:1160-col*92,y:330+row*82})}
+ }else if(BATTLES[state.battle].id==='thermopylae'&&!live){
   // Greek staging west of the choke; deploy in shallow files, rather than off the mountain/into the gulf.
   for(let i=0;i<n;i++){const col=Math.floor(i/2),row=i%2;slots.push({x:403-col*78,y:328+row*68})}
  }else if(kind==='grid'){
@@ -1182,7 +1211,7 @@ function sixSlots(){const spacingY=112,spacingX=102;return [[spacingX/2,-spacing
 function arrangeSix(){
  const s=selectedUnits();if(s.length!==6){notify('Elegí seis formaciones para ordenarlas 3 adelante y 3 detrás.');return}
  let gid=selectedGroup();if(!gid)gid=makeGroup();if(!gid)return;
- const g=state.groups.get(gid),squads=getGroupUnits(g),p={hoplite:0,macedonian:0,roman:0,carthaginian:0,norman:0,saxon:0,english:0,french:0,persian:0,cavalry:1,peltast:2,archer:3};
+ const g=state.groups.get(gid),squads=getGroupUnits(g),p={hoplite:0,macedonian:0,roman:0,carthaginian:0,norman:0,saxon:0,english:0,french:0,germanic:0,persian:0,cavalry:1,peltast:2,archer:3};
  for(const u of squads)u.groupOverride=false;
  const sorted=[...squads].sort((a,b)=>(p[a.type]??2)-(p[b.type]??2)||a.id-b.id),slots=sixSlots();
  const offsets={};sorted.forEach((u,i)=>{offsets[u.id]=slots[i]});g.offsets=offsets;g.layout='3+3';
@@ -1285,7 +1314,7 @@ window.addEventListener('keydown',e=>{
  if((state.phase!=='battle'&&state.phase!=='deploy')||!/^1$/.test(e.key))return;
  e.preventDefault();e.stopImmediatePropagation();if(e.ctrlKey)makeGroup();else recallGroup();
 },true);
-window.HWM_DEBUG={state:()=>({battle:BATTLES[state.battle].id,time:state.t,zoom:state.zoom,panX:state.panX,panY:state.panY,running:state.running,paused:state.paused,finished:state.finished,phase:state.phase,deployMode:state.deployMode,allies:state.units.filter(u=>u.side==='ally'&&active(u)).length,enemies:state.units.filter(u=>u.side==='enemy'&&active(u)).length,routedAllies:state.units.filter(u=>u.side==='ally'&&u.routed).length,routedEnemies:state.units.filter(u=>u.side==='enemy'&&u.routed).length,breaches:state.breaches,reinforcementIndex:state.wave,nextReinforcement:(BATTLES[state.battle].reinforcements||[])[state.wave]?.at??null,objective:BATTLES[state.battle].goal,reason:state.endReason||null,events:state.events}),start:(mode='free')=>start(mode),deploy:()=>enterDeployment(),preset:(kind)=>deployFormation(kind,true),moveDeploy:(x,y)=>moveDeployedSquads({x,y}),selectAll:()=>{for(const u of state.units)if(u.side==='ally'&&active(u))state.selection.add(u.id);updateHud()},command:(x,y)=>command({x,y}),load:idx=>loadBattle(idx),step:seconds=>{for(let i=0;i<Math.ceil(seconds/.04);i++)update(.04)},walkable:(x,y)=>walkable(x,y),thermoBounds:(x)=>thermoBounds(x),battles:()=>BATTLES.map(b=>({id:b.id,name:b.name,campaign:b.campaign!==false,medal:campaign.results[b.id]?.bestMedal||'none'})),campaign:()=>({xp:campaignXP(),rank:campaignRank(),wins:campaignWins(),results:JSON.parse(JSON.stringify(campaign.results))}),unitPositions:()=>state.units.filter(u=>u.hp>0).map(u=>({id:u.id,side:u.side,x:Math.round(u.x),y:Math.round(u.y),soldiers:u.soldiers,hp:Math.round(u.hp),cohesion:Math.round(u.cohesion),morale:Math.round(u.morale),type:u.type,phase:phase(u),routed:u.routed,withdraw:u.withdraw,disengaged:u.disengaged,path:u.path.length,individualOrder:u.groupOverride,skirmish:u.skirmishActive,panic:u.skirmishPanic,shotSlowUntil:Number(u.shotSlowUntil.toFixed(2)),aiRole:u.aiRole})),setPosition:(id,x,y)=>{const u=state.units.find(u=>u.id===id);if(u&&walkable(x,y)){u.x=x;u.y=y;u.goal=null;u.path=[];u.pathIndex=0;return true}return false},retreat:()=>{for(const u of selectedUnits()){u.groupOverride=true;issueRetreat(u,false)}updateHud()},formation:()=>state.formation,groups:()=>[...state.groups.entries()].map(([id,g])=>({id,ids:g.ids,layout:g.layout,offsets:g.offsets})),projectiles:()=>state.projectiles.map(p=>({kind:p.kind,hit:p.hit,age:p.age,duration:p.dur,effectiveness:p.effectiveness})),selectIds:ids=>{state.selection.clear();ids.forEach(id=>state.selection.add(id));updateHud()},createGroup:()=>makeGroup(),recallGroup:()=>recallGroup(),arrangeSix:()=>arrangeSix(),selectedIds:()=>[...state.selection]};
+window.HWM_DEBUG={state:()=>({battle:BATTLES[state.battle].id,time:state.t,zoom:state.zoom,panX:state.panX,panY:state.panY,running:state.running,paused:state.paused,finished:state.finished,phase:state.phase,deployMode:state.deployMode,allies:state.units.filter(u=>u.side==='ally'&&active(u)).length,enemies:state.units.filter(u=>u.side==='enemy'&&active(u)).length,routedAllies:state.units.filter(u=>u.side==='ally'&&u.routed).length,routedEnemies:state.units.filter(u=>u.side==='enemy'&&u.routed).length,breaches:state.breaches,escaped:state.escaped,reinforcementIndex:state.wave,nextReinforcement:(BATTLES[state.battle].reinforcements||[])[state.wave]?.at??null,objective:BATTLES[state.battle].goal,reason:state.endReason||null,events:state.events}),start:(mode='free')=>start(mode),deploy:()=>enterDeployment(),preset:(kind)=>deployFormation(kind,true),moveDeploy:(x,y)=>moveDeployedSquads({x,y}),selectAll:()=>{for(const u of state.units)if(u.side==='ally'&&active(u))state.selection.add(u.id);updateHud()},command:(x,y)=>command({x,y}),load:idx=>loadBattle(idx),step:seconds=>{for(let i=0;i<Math.ceil(seconds/.04);i++)update(.04)},walkable:(x,y)=>walkable(x,y),thermoBounds:(x)=>thermoBounds(x),battles:()=>BATTLES.map(b=>({id:b.id,name:b.name,campaign:b.campaign!==false,medal:campaign.results[b.id]?.bestMedal||'none'})),campaign:()=>({xp:campaignXP(),rank:campaignRank(),wins:campaignWins(),results:JSON.parse(JSON.stringify(campaign.results))}),unitPositions:()=>state.units.filter(u=>u.hp>0).map(u=>({id:u.id,side:u.side,x:Math.round(u.x),y:Math.round(u.y),soldiers:u.soldiers,hp:Math.round(u.hp),cohesion:Math.round(u.cohesion),morale:Math.round(u.morale),type:u.type,phase:phase(u),routed:u.routed,withdraw:u.withdraw,disengaged:u.disengaged,path:u.path.length,individualOrder:u.groupOverride,skirmish:u.skirmishActive,panic:u.skirmishPanic,shotSlowUntil:Number(u.shotSlowUntil.toFixed(2)),aiRole:u.aiRole})),setPosition:(id,x,y)=>{const u=state.units.find(u=>u.id===id);if(u&&walkable(x,y)){u.x=x;u.y=y;u.goal=null;u.path=[];u.pathIndex=0;return true}return false},retreat:()=>{for(const u of selectedUnits()){u.groupOverride=true;issueRetreat(u,false)}updateHud()},formation:()=>state.formation,groups:()=>[...state.groups.entries()].map(([id,g])=>({id,ids:g.ids,layout:g.layout,offsets:g.offsets})),projectiles:()=>state.projectiles.map(p=>({kind:p.kind,hit:p.hit,age:p.age,duration:p.dur,effectiveness:p.effectiveness})),selectIds:ids=>{state.selection.clear();ids.forEach(id=>state.selection.add(id));updateHud()},createGroup:()=>makeGroup(),recallGroup:()=>recallGroup(),arrangeSix:()=>arrangeSix(),selectedIds:()=>[...state.selection]};
 
 const INTRO=(()=>{
  const layer=el('introLayer'),video=el('introVideo'),sub=el('introSub'),skip=el('introSkip'),playBtn=el('introPlay');
