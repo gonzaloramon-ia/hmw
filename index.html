@@ -417,13 +417,13 @@ const UNIT_VISUAL={
  macedonian:{letter:'M',banner:'#274f96',spriteCol:0,filter:'hue-rotate(10deg) saturate(1.1)'},
  companionCavalry:{letter:'HC',banner:'#274f96',spriteCol:5,filter:'hue-rotate(8deg) saturate(1.15)'},
  roman:{letter:'R',banner:'#9b3029',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.22)'},
- romanHastati:{letter:'H',banner:'#9b3029',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.18)'},
- romanPrincipes:{letter:'P',banner:'#7f201f',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.35) brightness(.92)'},
+ romanHastati:{letter:'H',banner:'#9b3029',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.18)',asset:'republicanRoman'},
+ romanPrincipes:{letter:'P',banner:'#7f201f',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.35) brightness(.92)',asset:'republicanRoman'},
  velite:{letter:'V',banner:'#b34b32',spriteCol:2,filter:'hue-rotate(325deg) saturate(1.1)'},
  romanCavalry:{letter:'C',banner:'#9b3029',spriteCol:5,filter:'hue-rotate(320deg) saturate(1.15)'},
- carthaginian:{letter:'C',banner:'#4d376d',spriteCol:3,filter:'hue-rotate(210deg) saturate(1.1)'},
- africanInfantry:{letter:'A',banner:'#4d376d',spriteCol:3,filter:'hue-rotate(205deg) saturate(1.25) brightness(.90)'},
- iberianInfantry:{letter:'I',banner:'#6a4a35',spriteCol:3,filter:'sepia(.2) saturate(.95)'},
+ carthaginian:{letter:'C',banner:'#4d376d',spriteCol:3,filter:'hue-rotate(210deg) saturate(1.1)',asset:'carthaginianAfrican'},
+ africanInfantry:{letter:'A',banner:'#4d376d',spriteCol:3,filter:'hue-rotate(205deg) saturate(1.25) brightness(.90)',asset:'carthaginianAfrican'},
+ iberianInfantry:{letter:'I',banner:'#6a4a35',spriteCol:3,filter:'sepia(.2) saturate(.95)',asset:'iberianWarrior'},
  numidianCavalry:{letter:'N',banner:'#6e5430',spriteCol:5,filter:'sepia(.35) saturate(.9)'},
  norman:{letter:'N',banner:'#304f8a',spriteCol:0,filter:'hue-rotate(15deg) saturate(.9)'},
  normanArcher:{letter:'A',banner:'#304f8a',spriteCol:1,filter:'hue-rotate(15deg) saturate(.9)'},
@@ -517,8 +517,12 @@ function nextCampaignIndex(from){
  const pos=campaignIdx.indexOf(from);return campaignIdx[(pos<0?0:pos+1)%campaignIdx.length];
 }
 const SPRITE_CELL=204;
-const ASSETS={units:new Image(),terrain:{}};
+const FACTION_SPRITE_CELL=51;
+const ASSETS={units:new Image(),factions:{republicanRoman:new Image(),carthaginianAfrican:new Image(),iberianWarrior:new Image()},terrain:{}};
 ASSETS.units.src='assets/units-atlas.webp';
+ASSETS.factions.republicanRoman.src='assets/units/republican-roman.webp';
+ASSETS.factions.carthaginianAfrican.src='assets/units/carthaginian-african.webp';
+ASSETS.factions.iberianWarrior.src='assets/units/iberian-warrior.webp';
 for(const id of ['marathon1','marathon2','thermopylae','plataea','mantinea']){
  const img=new Image();img.src={marathon1:'assets/marathon-1-original.png',marathon2:'assets/marathon-2-original.png',thermopylae:'assets/terrain-thermopylae.webp',plataea:'assets/terrain-plataea.webp',mantinea:'assets/terrain-mantinea.webp'}[id];ASSETS.terrain[id]=img;
 }
@@ -1058,11 +1062,16 @@ function drawSquad(u){
    const px=u.x+perp.x*a+forward.x*b,py=u.y+perp.y*a+forward.y*b+bob;
    const frame=(state.t-u.lastShot<.28&&i%3===0)?2:(isMoving ? ((Math.floor(state.t*7+i)%3===0)?0:1) : pose);
    ctx.save();ctx.translate(px,py);ctx.rotate(u.facing-Math.PI/2);
-   if(ASSETS.units.complete&&ASSETS.units.naturalWidth){
+   const factionAsset=visual.asset&&ASSETS.factions[visual.asset];
+   const hasFactionAsset=factionAsset&&factionAsset.complete&&factionAsset.naturalWidth;
+   if(hasFactionAsset||(ASSETS.units.complete&&ASSETS.units.naturalWidth)){
      ctx.globalAlpha=1;
-     if(visual.filter)ctx.filter=visual.filter;else if(BATTLES[state.battle].id==='mantinea'&&u.side==='enemy')ctx.filter='hue-rotate(135deg) saturate(.8)';
+     if(!hasFactionAsset){
+       if(visual.filter)ctx.filter=visual.filter;else if(BATTLES[state.battle].id==='mantinea'&&u.side==='enemy')ctx.filter='hue-rotate(135deg) saturate(.8)';
+     }
      const size=u.type==='cavalry'?41:36;
-     ctx.drawImage(ASSETS.units,colSprite*SPRITE_CELL,frame*SPRITE_CELL,SPRITE_CELL,SPRITE_CELL,-size/2,-size/2,size,size);
+     if(hasFactionAsset)ctx.drawImage(factionAsset,frame*FACTION_SPRITE_CELL,0,FACTION_SPRITE_CELL,FACTION_SPRITE_CELL,-size/2,-size/2,size,size);
+     else ctx.drawImage(ASSETS.units,colSprite*SPRITE_CELL,frame*SPRITE_CELL,SPRITE_CELL,SPRITE_CELL,-size/2,-size/2,size,size);
      ctx.filter='none';
    }else soldier(u,0,0,i);
    ctx.restore();
