@@ -250,8 +250,8 @@ const SFX=(()=>{
   play('battleCry',.45,.98+Math.random()*.05);
  }
  function ranged(u){
-  if(!gate(u?.type==='archer'?'arrow':'javelin',u?.type==='archer'?420:520))return;
-  play('arrow',u?.type==='archer'?.144:.096,u?.type==='archer'?.96:.78);
+  const bow=BOW_TYPES.has(u?.type);if(!gate(bow?'arrow':'javelin',bow?420:520))return;
+  play('arrow',bow?.144:.096,bow?.96:.78);
  }
  function projectileHit(){}
  function rout(){
@@ -387,8 +387,59 @@ const MUSIC=(()=>{
 })();
 
 const COMBAT={pace:.64,damage:.39,flankShock:2.15,rearShock:3.1,routMorale:19,routCohesion:15};
-const SKIRMISH={archer:{retreat:150,clear:195,panic:59,shotSlow:.55,accuracy:.55},peltast:{retreat:112,clear:157,panic:57,shotSlow:.74,accuracy:.75}};
-const TYPES={hoplite:{name:'Hoplitas',hp:140,armor:.34,damage:16,range:42,speed:43,delay:1.05,morale:100,rad:22},archer:{name:'Arqueros',hp:78,armor:.06,damage:10,range:180,speed:49,delay:1.55,morale:75,rad:19},peltast:{name:'Peltastas',hp:94,armor:.12,damage:11,range:132,speed:56,delay:1.38,morale:86,rad:20},cavalry:{name:'Caballería',hp:123,armor:.18,damage:24,range:49,speed:79,delay:1.2,morale:90,rad:23},persian:{name:'Infantería persa',hp:105,armor:.14,damage:12,range:39,speed:47,delay:1.12,morale:80,rad:21},macedonian:{name:'Falange macedonia',hp:144,armor:.33,damage:17,range:45,speed:42,delay:1.06,morale:103,rad:22},roman:{name:'Legionarios romanos',hp:139,armor:.30,damage:16,range:42,speed:44,delay:1.02,morale:99,rad:22},carthaginian:{name:'Infantería cartaginesa',hp:126,armor:.22,damage:15,range:41,speed:47,delay:1.05,morale:94,rad:21},norman:{name:'Infantería normanda',hp:132,armor:.28,damage:15,range:41,speed:45,delay:1.04,morale:96,rad:21},saxon:{name:'Muro de escudos sajón',hp:150,armor:.36,damage:17,range:42,speed:38,delay:1.08,morale:105,rad:23},english:{name:'Hombres de armas ingleses',hp:132,armor:.31,damage:16,range:41,speed:43,delay:1.04,morale:98,rad:21},french:{name:'Hombres de armas franceses',hp:148,armor:.37,damage:17,range:42,speed:36,delay:1.08,morale:98,rad:23},germanic:{name:'Guerreros germánicos',hp:112,armor:.12,damage:15,range:39,speed:54,delay:1.0,morale:97,rad:21},frenchLine:{name:'Infantería de línea francesa',hp:128,armor:.21,damage:16,range:45,speed:46,delay:1.03,morale:98,rad:21},russianLine:{name:'Infantería de línea rusa',hp:136,armor:.24,damage:16,range:44,speed:42,delay:1.06,morale:103,rad:22},artillery:{name:'Artillería',hp:86,armor:.08,damage:30,range:285,speed:22,delay:3.4,morale:82,rad:24}};
+const SKIRMISH={archer:{retreat:150,clear:195,panic:59,shotSlow:.55,accuracy:.55},normanArcher:{retreat:148,clear:192,panic:59,shotSlow:.56,accuracy:.57},longbow:{retreat:158,clear:205,panic:62,shotSlow:.53,accuracy:.60},peltast:{retreat:112,clear:157,panic:57,shotSlow:.74,accuracy:.75},velite:{retreat:118,clear:165,panic:55,shotSlow:.73,accuracy:.76}};
+const TYPES={hoplite:{name:'Hoplitas',hp:140,armor:.34,damage:16,range:42,speed:43,delay:1.05,morale:100,rad:22},archer:{name:'Arqueros',hp:78,armor:.06,damage:10,range:180,speed:49,delay:1.55,morale:75,rad:19},peltast:{name:'Peltastas',hp:94,armor:.12,damage:11,range:132,speed:56,delay:1.38,morale:86,rad:20},cavalry:{name:'Caballería',hp:123,armor:.18,damage:24,range:49,speed:79,delay:1.2,morale:90,rad:23},persian:{name:'Infantería persa',hp:105,armor:.14,damage:12,range:39,speed:47,delay:1.12,morale:80,rad:21},macedonian:{name:'Falange macedonia',hp:144,armor:.33,damage:17,range:45,speed:42,delay:1.06,morale:103,rad:22},roman:{name:'Legionarios romanos',hp:139,armor:.30,damage:16,range:42,speed:44,delay:1.02,morale:99,rad:22},carthaginian:{name:'Infantería cartaginesa',hp:126,armor:.22,damage:15,range:41,speed:47,delay:1.05,morale:94,rad:21},norman:{name:'Infantería normanda',hp:132,armor:.28,damage:15,range:41,speed:45,delay:1.04,morale:96,rad:21},saxon:{name:'Muro de escudos sajón',hp:150,armor:.36,damage:17,range:42,speed:38,delay:1.08,morale:105,rad:23},english:{name:'Hombres de armas ingleses',hp:132,armor:.31,damage:16,range:41,speed:43,delay:1.04,morale:98,rad:21},french:{name:'Hombres de armas franceses',hp:148,armor:.37,damage:17,range:42,speed:36,delay:1.08,morale:98,rad:23},germanic:{name:'Guerreros germánicos',hp:112,armor:.12,damage:15,range:39,speed:54,delay:1.0,morale:97,rad:21},frenchLine:{name:'Infantería de línea francesa',hp:128,armor:.21,damage:16,range:45,speed:46,delay:1.03,morale:98,rad:21},russianLine:{name:'Infantería de línea rusa',hp:136,armor:.24,damage:16,range:44,speed:42,delay:1.06,morale:103,rad:22},artillery:{name:'Artillería',hp:86,armor:.08,damage:30,range:285,speed:22,delay:3.4,morale:82,rad:24},persianImmortal:{name:'Inmortales persas',hp:126,armor:.24,damage:15,range:41,speed:46,delay:1.04,morale:101,rad:21}
+,companionCavalry:{name:'Hetairoi macedonios',hp:132,armor:.23,damage:27,range:50,speed:83,delay:1.16,morale:102,rad:23}
+,persianCavalry:{name:'Caballería persa',hp:119,armor:.19,damage:23,range:48,speed:78,delay:1.18,morale:91,rad:23}
+,romanHastati:{name:'Hastati',hp:126,armor:.25,damage:15,range:41,speed:47,delay:1.0,morale:94,rad:21}
+,romanPrincipes:{name:'Príncipes',hp:143,armor:.33,damage:17,range:42,speed:43,delay:1.03,morale:103,rad:22}
+,velite:{name:'Velites',hp:84,armor:.06,damage:10,range:126,speed:60,delay:1.32,morale:80,rad:19}
+,romanCavalry:{name:'Caballería romana',hp:118,armor:.18,damage:22,range:48,speed:76,delay:1.2,morale:88,rad:22}
+,africanInfantry:{name:'Infantería africana',hp:139,armor:.31,damage:17,range:43,speed:44,delay:1.03,morale:102,rad:22}
+,iberianInfantry:{name:'Íberos / Libios',hp:116,armor:.16,damage:15,range:40,speed:53,delay:.98,morale:91,rad:20}
+,numidianCavalry:{name:'Caballería númida',hp:93,armor:.06,damage:18,range:44,speed:91,delay:1.08,morale:88,rad:21}
+,normanArcher:{name:'Arqueros normandos',hp:77,armor:.07,damage:10,range:174,speed:50,delay:1.48,morale:78,rad:19}
+,normanCavalry:{name:'Caballería normanda',hp:139,armor:.29,damage:27,range:50,speed:77,delay:1.18,morale:101,rad:24}
+,longbow:{name:'Arqueros largos',hp:76,armor:.05,damage:11,range:205,speed:48,delay:1.48,morale:86,rad:19}
+,frenchKnight:{name:'Caballería pesada francesa',hp:153,armor:.39,damage:29,range:50,speed:69,delay:1.25,morale:100,rad:25}};
+const BOW_TYPES=new Set(['archer','normanArcher','longbow']);
+const JAVELIN_TYPES=new Set(['peltast','velite']);
+const FORMATION_DISCIPLINE=new Set(['hoplite','macedonian','saxon']);
+function isFormationDisciplined(u){return !!u&&FORMATION_DISCIPLINE.has(u.type)&&u.formation==='line'&&u.cohesion>=45}
+const UNIT_VISUAL={
+ hoplite:{letter:'H',banner:'#155f91',spriteCol:0},
+ peltast:{letter:'J',banner:'#226d94',spriteCol:2},
+ archer:{letter:'A',banner:'#226d94',spriteCol:1},
+ cavalry:{letter:'C',banner:'#226d94',spriteCol:5},
+ persian:{letter:'I',banner:'#9e302b',spriteCol:3,filter:'hue-rotate(340deg) saturate(1.08)'},
+ persianImmortal:{letter:'∞',banner:'#8e1f2d',spriteCol:3,filter:'hue-rotate(330deg) saturate(1.4) brightness(.92)'},
+ persianCavalry:{letter:'C',banner:'#8e1f2d',spriteCol:5,filter:'hue-rotate(330deg) saturate(1.25)'},
+ macedonian:{letter:'M',banner:'#274f96',spriteCol:0,filter:'hue-rotate(10deg) saturate(1.1)'},
+ companionCavalry:{letter:'HC',banner:'#274f96',spriteCol:5,filter:'hue-rotate(8deg) saturate(1.15)'},
+ roman:{letter:'R',banner:'#9b3029',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.22)'},
+ romanHastati:{letter:'H',banner:'#9b3029',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.18)'},
+ romanPrincipes:{letter:'P',banner:'#7f201f',spriteCol:0,filter:'hue-rotate(320deg) saturate(1.35) brightness(.92)'},
+ velite:{letter:'V',banner:'#b34b32',spriteCol:2,filter:'hue-rotate(325deg) saturate(1.1)'},
+ romanCavalry:{letter:'C',banner:'#9b3029',spriteCol:5,filter:'hue-rotate(320deg) saturate(1.15)'},
+ carthaginian:{letter:'C',banner:'#4d376d',spriteCol:3,filter:'hue-rotate(210deg) saturate(1.1)'},
+ africanInfantry:{letter:'A',banner:'#4d376d',spriteCol:3,filter:'hue-rotate(205deg) saturate(1.25) brightness(.90)'},
+ iberianInfantry:{letter:'I',banner:'#6a4a35',spriteCol:3,filter:'sepia(.2) saturate(.95)'},
+ numidianCavalry:{letter:'N',banner:'#6e5430',spriteCol:5,filter:'sepia(.35) saturate(.9)'},
+ norman:{letter:'N',banner:'#304f8a',spriteCol:0,filter:'hue-rotate(15deg) saturate(.9)'},
+ normanArcher:{letter:'A',banner:'#304f8a',spriteCol:1,filter:'hue-rotate(15deg) saturate(.9)'},
+ normanCavalry:{letter:'C',banner:'#304f8a',spriteCol:5,filter:'hue-rotate(15deg) saturate(.95)'},
+ saxon:{letter:'S',banner:'#55603c',spriteCol:0,filter:'sepia(.3) saturate(.8)'},
+ english:{letter:'E',banner:'#2b486f',spriteCol:0,filter:'hue-rotate(20deg) saturate(.75)'},
+ longbow:{letter:'LB',banner:'#2b486f',spriteCol:1,filter:'hue-rotate(20deg) saturate(.75)'},
+ french:{letter:'F',banner:'#3a4d9a',spriteCol:0,filter:'hue-rotate(25deg) saturate(1.15)'},
+ frenchKnight:{letter:'K',banner:'#3a4d9a',spriteCol:5,filter:'hue-rotate(25deg) saturate(1.15)'},
+ germanic:{letter:'G',banner:'#72532e',spriteCol:0,filter:'sepia(.45) saturate(.9)'},
+ frenchLine:{letter:'F',banner:'#294b8e',spriteCol:0,filter:'hue-rotate(15deg) saturate(.95)'},
+ russianLine:{letter:'R',banner:'#3f654a',spriteCol:0,filter:'hue-rotate(95deg) saturate(.75)'},
+ artillery:{letter:'●',banner:'#555047',spriteCol:5,filter:'grayscale(.35)'}
+};
+function unitVisual(u){return UNIT_VISUAL[u.type]||{letter:'?',banner:u.side==='ally'?'#155f91':'#9e302b',spriteCol:u.side==='ally'?0:3}}
+
 const TERRAIN={
 marathon1:{seed:19,ground:['#7b8960','#87966c'],hills:[{x:20,y:24,w:245,h:135},{x:20,y:575,w:210,h:132}],marsh:[{x:690,y:23,w:350,h:155},{x:884,y:171,w:188,h:105}],rocks:[],river:[],cliffs:[]},
 marathon2:{seed:19,ground:['#7b8960','#87966c'],hills:[{x:20,y:24,w:245,h:135},{x:20,y:575,w:210,h:132}],marsh:[{x:690,y:23,w:350,h:155},{x:884,y:171,w:188,h:105}],rocks:[],river:[],cliffs:[]},
@@ -413,10 +464,10 @@ const BATTLES=[
  {at:60,label:'Reserva griega entra en combate',squads:[['ally','hoplite',95,520,1],['ally','peltast',92,620,1]]}
 ],squads:[['ally','hoplite',180,235,3],['ally','hoplite',235,365,3],['ally','peltast',170,520,2],['ally','archer',265,605,2],['enemy','persian',990,210,3],['enemy','persian',1080,330,3],['enemy','archer',1090,515,2],['enemy','cavalry',970,600,1]]},
 {id:'mantinea',name:'Mantinea',year:'418 a. C.',subtitle:'Esparta contra la coalición argiva',kind:'Falanges enfrentadas · Peloponeso',desc:'Los espartanos y sus aliados combaten contra una coalición encabezada por Argos y apoyada por Atenas y Mantinea.',mission:'Objetivo: romper la moral enemiga. Formaciones compactas en línea resisten mejor; un ataque sobre el flanco puede decidir el combate.',ally:'Esparta',enemy:'Coalición argiva',goal:'destroy',squads:[['ally','hoplite',165,190,4],['ally','hoplite',240,360,3],['ally','hoplite',205,520,2],['ally','peltast',120,605,1],['enemy','hoplite',1015,200,4],['enemy','hoplite',1060,390,3],['enemy','hoplite',1040,535,2],['enemy','archer',1130,630,1]]},
-{id:'gaugamela',name:'Gaugamela',year:'331 a. C.',label:'LLANURA DE GAUGAMELA',subtitle:'Macedonia contra el Imperio aqueménida',kind:'Mapa táctico procedural · Campo abierto',desc:'Alejandro enfrenta a Darío en una llanura amplia preparada para favorecer la caballería persa. La batalla exige evitar el envolvimiento y abrir una ruptura decisiva.',mission:'Objetivo: quebrar al ejército persa. No dejes que la superioridad de caballería cierre tus flancos; sostené la falange y usá tu ala móvil para abrir un hueco.',ally:'Macedonia',enemy:'Persia',goal:'destroy',reinforcements:[{at:70,label:'Segunda línea macedonia',squads:[['ally','macedonian',92,470,1],['ally','peltast',88,565,1]]}],squads:[['ally','macedonian',185,255,4],['ally','macedonian',205,405,3],['ally','peltast',145,525,2],['ally','cavalry',205,625,3],['enemy','persian',930,215,5],['enemy','persian',1015,365,4],['enemy','archer',1000,500,2],['enemy','cavalry',980,115,3],['enemy','cavalry',1035,615,4]]},
-{id:'cannae',name:'Cannas',year:'216 a. C.',label:'LLANURA DE CANNAS',subtitle:'Cartago contra Roma',kind:'Mapa táctico procedural · Envolvimiento',desc:'El ejército cartaginés enfrenta a una masa romana superior. La clave no es resistir de frente indefinidamente, sino fijar el centro y decidir la batalla sobre los flancos y la retaguardia.',mission:'Objetivo: quebrar al ejército romano. El centro cartaginés es más débil; preservalo mientras la caballería y las alas buscan el doble envolvimiento.',ally:'Cartago',enemy:'Roma',goal:'destroy',squads:[['ally','carthaginian',230,305,3],['ally','carthaginian',255,420,2],['ally','peltast',180,515,2],['ally','cavalry',185,150,3],['ally','cavalry',190,620,3],['enemy','roman',925,285,5],['enemy','roman',990,395,5],['enemy','roman',960,505,4],['enemy','cavalry',1030,145,2],['enemy','cavalry',1040,610,2]]},
-{id:'hastings',name:'Hastings',year:'1066',label:'SENLAC HILL',subtitle:'Normandía contra Inglaterra anglosajona',kind:'Mapa táctico procedural · Altura defensiva',desc:'El ejército normando debe romper una línea sajona atrincherada sobre terreno elevado. La movilidad normanda contrasta con una defensa compacta que se fortalece si conserva la formación.',mission:'Objetivo: quebrar el muro de escudos sajón. Atacar de frente cuesta caro: combiná arqueros, infantería y caballería, y usá retiradas ordenadas para desarmar la línea enemiga.',ally:'Normandía',enemy:'Inglaterra sajona',goal:'destroy',squads:[['ally','norman',180,300,4],['ally','archer',145,445,3],['ally','cavalry',175,575,4],['enemy','saxon',940,245,5],['enemy','saxon',1000,385,5],['enemy','saxon',970,520,4]]},
-{id:'agincourt',name:'Agincourt',year:'1415',label:'CAMPO DE AGINCOURT',subtitle:'Inglaterra contra Francia',kind:'Mapa táctico procedural · Barro y frente estrecho',desc:'Un campo estrecho entre bosques y saturado de barro reduce la ventaja numérica francesa. Los ingleses dependen de fuego a distancia y de mantener una línea compacta.',mission:'Objetivo: detener y quebrar el avance francés. El barro castiga la masa que avanza por el centro; mantené a los arqueros protegidos y obligá al enemigo a cruzar el corredor bajo fuego.',ally:'Inglaterra',enemy:'Francia',goal:'destroy',squads:[['ally','english',220,365,3],['ally','archer',175,235,5],['ally','archer',175,505,5],['enemy','french',965,265,6],['enemy','french',1025,385,6],['enemy','french',995,500,4],['enemy','cavalry',1045,190,3]]},
+{id:'gaugamela',name:'Gaugamela',year:'331 a. C.',label:'LLANURA DE GAUGAMELA',subtitle:'Macedonia contra el Imperio aqueménida',kind:'Mapa táctico procedural · Campo abierto',desc:'Alejandro enfrenta a Darío en una llanura amplia preparada para favorecer la caballería persa. La batalla exige evitar el envolvimiento y abrir una ruptura decisiva.',mission:'Objetivo: quebrar al ejército persa. No dejes que la superioridad de caballería cierre tus flancos; sostené la falange y usá tu ala móvil para abrir un hueco.',ally:'Macedonia',enemy:'Persia',goal:'destroy',reinforcements:[{at:70,label:'Segunda línea macedonia',squads:[['ally','macedonian',92,470,1],['ally','peltast',88,565,1]]}],squads:[['ally','macedonian',185,255,4],['ally','macedonian',205,405,3],['ally','peltast',145,525,2],['ally','companionCavalry',205,625,3],['enemy','persianImmortal',930,215,3],['enemy','persian',1015,365,6],['enemy','archer',1000,500,2],['enemy','persianCavalry',980,115,3],['enemy','persianCavalry',1035,615,4]]},
+{id:'cannae',name:'Cannas',year:'216 a. C.',label:'LLANURA DE CANNAS',subtitle:'Cartago contra Roma',kind:'Mapa táctico procedural · Envolvimiento',desc:'El ejército cartaginés enfrenta a una masa romana superior. La clave no es resistir de frente indefinidamente, sino fijar el centro y decidir la batalla sobre los flancos y la retaguardia.',mission:'Objetivo: quebrar al ejército romano. El centro cartaginés es más débil; preservalo mientras la caballería y las alas buscan el doble envolvimiento.',ally:'Cartago',enemy:'Roma',goal:'destroy',squads:[['ally','africanInfantry',230,305,3],['ally','iberianInfantry',255,420,3],['ally','peltast',180,515,2],['ally','numidianCavalry',185,150,3],['ally','numidianCavalry',190,620,3],['enemy','romanHastati',925,285,5],['enemy','romanPrincipes',990,395,5],['enemy','romanHastati',960,505,4],['enemy','velite',1015,565,2],['enemy','romanCavalry',1030,145,2],['enemy','romanCavalry',1040,610,2]]},
+{id:'hastings',name:'Hastings',year:'1066',label:'SENLAC HILL',subtitle:'Normandía contra Inglaterra anglosajona',kind:'Mapa táctico procedural · Altura defensiva',desc:'El ejército normando debe romper una línea sajona atrincherada sobre terreno elevado. La movilidad normanda contrasta con una defensa compacta que se fortalece si conserva la formación.',mission:'Objetivo: quebrar el muro de escudos sajón. Atacar de frente cuesta caro: combiná arqueros, infantería y caballería, y usá retiradas ordenadas para desarmar la línea enemiga.',ally:'Normandía',enemy:'Inglaterra sajona',goal:'destroy',squads:[['ally','norman',180,300,4],['ally','normanArcher',145,445,3],['ally','normanCavalry',175,575,4],['enemy','saxon',940,245,5],['enemy','saxon',1000,385,5],['enemy','saxon',970,520,4]]},
+{id:'agincourt',name:'Agincourt',year:'1415',label:'CAMPO DE AGINCOURT',subtitle:'Inglaterra contra Francia',kind:'Mapa táctico procedural · Barro y frente estrecho',desc:'Un campo estrecho entre bosques y saturado de barro reduce la ventaja numérica francesa. Los ingleses dependen de fuego a distancia y de mantener una línea compacta.',mission:'Objetivo: detener y quebrar el avance francés. El barro castiga la masa que avanza por el centro; mantené a los arqueros protegidos y obligá al enemigo a cruzar el corredor bajo fuego.',ally:'Inglaterra',enemy:'Francia',goal:'destroy',squads:[['ally','english',220,365,3],['ally','longbow',175,235,5],['ally','longbow',175,505,5],['enemy','french',965,265,6],['enemy','french',1025,385,6],['enemy','french',995,500,4],['enemy','frenchKnight',1045,190,3]]},
 {id:'teutoburg',name:'Bosque de Teutoburgo',year:'9 d. C.',label:'DESFILADERO DE TEUTOBURGO',subtitle:'Legiones romanas contra coalición germánica',kind:'Mapa táctico procedural · Emboscada y escape',desc:'Una columna romana queda atrapada entre bosque, marjal y terreno estrecho mientras fuerzas germánicas atacan desde posiciones preparadas. El objetivo ya no es conquistar el campo: es salvar una parte de la fuerza.',mission:'Objetivo: hacer escapar al menos 4 formaciones romanas por el extremo occidental. Mantené la columna compacta, evitá perseguir dentro del bosque y abrí paso antes de que lleguen nuevas emboscadas.',ally:'Roma',enemy:'Coalición germánica',goal:'escape',deploySide:'right',escapeX:115,escapeRequired:4,reinforcements:[
  {at:14,label:'Emboscada germánica · I',squads:[['enemy','germanic',760,245,2],['enemy','germanic',735,470,2]]},
  {at:34,label:'Emboscada germánica · II',squads:[['enemy','germanic',570,245,2],['enemy','germanic',555,465,2]]},
@@ -660,9 +711,9 @@ function firing(u,v,movingShot=false){
   state.projectiles.push({x:u.x,y:u.y,startX:u.x,startY:u.y,tx:v.x,ty:v.y,target:v,owner:u,dur:clamp(distShot/165,.75,1.75),age:0,kind:'artillery',hit:true,effectiveness:1.15});
   return;
  }
- if(u.type!=='archer'&&u.type!=='peltast'){dealDamage(u,v);return}
+ if(!BOW_TYPES.has(u.type)&&!JAVELIN_TYPES.has(u.type)){dealDamage(u,v);return}
  SFX.ranged(u);
- const isBow=u.type==='archer',shots=isBow?4:3,distShot=dist(u,v),angle=Math.atan2(v.y-u.y,v.x-u.x);
+ const isBow=BOW_TYPES.has(u.type),shots=isBow?4:3,distShot=dist(u,v),angle=Math.atan2(v.y-u.y,v.x-u.x);
  const movingPenalty=movingShot?SKIRMISH[u.type].accuracy:1;
  u.lastShot=state.t;
  if(movingShot){u.shotSlowUntil=state.t+(isBow?.85:.57);u.shotSlowFactor=SKIRMISH[u.type].shotSlow}
@@ -670,7 +721,7 @@ function firing(u,v,movingShot=false){
   const lateral=(k-(shots-1)/2)*(isBow?9:12),perpX=-Math.sin(angle),perpY=Math.cos(angle),scatter=(k-(shots-1)/2)*8;
   const sx=u.x+perpX*lateral,sy=u.y+perpY*lateral;
   const tx=v.x+perpX*scatter,ty=v.y+perpY*scatter;
-  state.projectiles.push({x:sx,y:sy,startX:sx,startY:sy,tx,ty,target:v,owner:u,dur:clamp(distShot/(isBow?235:250),.45,1.02)+(k*.045),age:0,kind:u.type,hit:k===Math.floor(shots/2),effectiveness:movingPenalty});
+  state.projectiles.push({x:sx,y:sy,startX:sx,startY:sy,tx,ty,target:v,owner:u,dur:clamp(distShot/(isBow?235:250),.45,1.02)+(k*.045),age:0,kind:isBow?'archer':'peltast',hit:k===Math.floor(shots/2),effectiveness:movingPenalty});
  }
 }
 function updateProjectiles(dt){
@@ -786,7 +837,7 @@ function update(dt){
   }
   let target=u.attackTarget;
   if(target&&!active(target)){u.attackTarget=null;target=null;u.path=[];u.goal=null}
-  if(u.side==='ally'&&!target&&(u.attackMove||!u.goal||u.stance==='hold')){const near=nearestTarget(u,spec.range+(spec.range<70?92:33));if(near&&u.stance!=='stop'){target=near;if(!u.goal&&u.stance==='hold'&&dist(u,near)>spec.range+TYPES[near.type].rad*.5&&!SKIRMISH[u.type])chase(u,near)}}
+  if(u.side==='ally'&&!target&&(u.attackMove||!u.goal||u.stance==='hold')){const disciplined=isFormationDisciplined(u),scan=disciplined?spec.range+46:spec.range+(spec.range<70?92:33),near=nearestTarget(u,scan);if(near&&u.stance!=='stop'){target=near;if(!disciplined&&!u.goal&&u.stance==='hold'&&dist(u,near)>spec.range+TYPES[near.type].rad*.5&&!SKIRMISH[u.type])chase(u,near)}}
   if(u.side==='enemy'&&!target)target=nearestTarget(u,u.aiRole==='breach'?spec.range+19:spec.range+28);
   if(u.stance==='stop'&&!target)target=nearestTarget(u,spec.range+TYPES[u.type].rad);
   let engaged=false;
@@ -928,10 +979,10 @@ function drawStandard(u){
  ctx.save();const left=u.x-27,top=u.y-57;
  ctx.shadowColor='#0009';ctx.shadowBlur=3;ctx.shadowOffsetX=1.5;ctx.shadowOffsetY=2;
  ctx.strokeStyle='#332719';ctx.lineWidth=2.7;ctx.beginPath();ctx.moveTo(left,top+45);ctx.lineTo(left,top-10);ctx.stroke();
- ctx.fillStyle=u.side==='ally'?'#155f91':'#9e302b';ctx.strokeStyle='#ead095';ctx.lineWidth=1.4;
+ const visual=unitVisual(u);ctx.fillStyle=visual.banner;ctx.strokeStyle='#ead095';ctx.lineWidth=1.4;
  ctx.beginPath();ctx.moveTo(left-1,top-10);ctx.lineTo(left+25,top-6);ctx.lineTo(left+25,top+17);ctx.lineTo(left-1,top+13);ctx.closePath();ctx.fill();ctx.stroke();
  ctx.shadowColor='transparent';
- const letter=u.type==='hoplite'?'H':u.type==='macedonian'?'M':u.type==='roman'?'R':u.type==='carthaginian'?'C':u.type==='norman'?'N':u.type==='saxon'?'S':u.type==='english'?'E':u.type==='french'?'F':u.type==='germanic'?'G':u.type==='frenchLine'?'F':u.type==='russianLine'?'R':u.type==='artillery'?'⚫':u.type==='archer'?'A':u.type==='peltast'?'J':u.type==='cavalry'?'C':u.type==='persian'?'I':'?';
+ const letter=unitVisual(u).letter;
  ctx.fillStyle='#f7e9c9';ctx.font='bold 16px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(letter,left+12,top+5);
  ctx.restore();
 }
@@ -999,8 +1050,7 @@ function drawSquad(u){
  const isMoving=u.pathIndex<u.path.length;
  let pose=isMoving?1:0;
  if(!isMoving&&u.attackTarget&&u.stance==='attack'&&dist(u,u.attackTarget)<TYPES[u.type].range+26){pose=(u.cooldown<TYPES[u.type].delay*.62)?2:0;}
- const colSprite = u.side==='ally'?((u.type==='hoplite'||u.type==='macedonian'||u.type==='roman'||u.type==='norman'||u.type==='english'||u.type==='saxon'||u.type==='french'||u.type==='germanic'||u.type==='frenchLine'||u.type==='russianLine')?0:u.type==='artillery'?5:u.type==='archer'?1:u.type==='peltast'?2:u.type==='cavalry'?5:u.type==='carthaginian'?3:0):
-   ((u.type==='hoplite'||u.type==='roman'||u.type==='macedonian'||u.type==='norman'||u.type==='english'||u.type==='saxon'||u.type==='french'||u.type==='germanic'||u.type==='frenchLine'||u.type==='russianLine')?0:(u.type==='persian'||u.type==='carthaginian')?3:u.type==='artillery'?5:u.type==='archer'?4:u.type==='cavalry'?5:3);
+ const visual=unitVisual(u),colSprite=visual.spriteCol;
  // Nine individually animated soldiers per selectable tactical unit.
  for(let i=alive-1;i>=0;i--){
    const off=formationOffset(u,i,alive),a=off.a,b=off.b;
@@ -1010,7 +1060,7 @@ function drawSquad(u){
    ctx.save();ctx.translate(px,py);ctx.rotate(u.facing-Math.PI/2);
    if(ASSETS.units.complete&&ASSETS.units.naturalWidth){
      ctx.globalAlpha=1;
-     if(BATTLES[state.battle].id==='mantinea'&&u.side==='enemy')ctx.filter='hue-rotate(135deg) saturate(.8)';
+     if(visual.filter)ctx.filter=visual.filter;else if(BATTLES[state.battle].id==='mantinea'&&u.side==='enemy')ctx.filter='hue-rotate(135deg) saturate(.8)';
      const size=u.type==='cavalry'?41:36;
      ctx.drawImage(ASSETS.units,colSprite*SPRITE_CELL,frame*SPRITE_CELL,SPRITE_CELL,SPRITE_CELL,-size/2,-size/2,size,size);
      ctx.filter='none';
@@ -1149,7 +1199,7 @@ function deployFormation(kind,all=false,live=false){
  let sel=all?state.units.filter(u=>u.side==='ally'&&active(u)):selectedUnits();
  if(!sel.length){notify('Seleccioná escuadrones para formar.');return}
  // The enemy approaches from the east; front line on the right, support and reserves to the west.
- const priority={hoplite:0,persian:0,cavalry:1,peltast:2,archer:3};
+ const priority={hoplite:0,macedonian:0,persianImmortal:0,roman:0,romanHastati:0,romanPrincipes:0,africanInfantry:0,iberianInfantry:0,norman:0,saxon:0,english:0,french:0,germanic:0,frenchLine:0,russianLine:0,persian:0,cavalry:1,companionCavalry:1,persianCavalry:1,romanCavalry:1,numidianCavalry:1,normanCavalry:1,frenchKnight:1,peltast:2,velite:2,archer:3,normanArcher:3,longbow:3,artillery:4};
  sel=[...sel].sort((a,b)=>(priority[a.type]??2)-(priority[b.type]??2)||a.id-b.id);
  state.deployPattern=kind;
  const n=sel.length,rows=kind==='grid'?3:kind==='line'?Math.min(6,n):kind==='wings'?Math.min(5,n):Math.min(3,n);
@@ -1199,7 +1249,15 @@ function command(p,forceAttackMove=false){
  const gid=selectedGroup(),group=gid&&state.groups.get(gid);
  if(group){const target=hit(p,'enemy');commandGroup(group,target?{x:target.x-105,y:target.y}:p,!!target||forceAttackMove||state.mode==='attack');return}
  for(const u of selected)u.groupOverride=true; // Individual orders override the group until its next joint order.
- const hostile=hit(p,'enemy');if(hostile&&active(hostile)){selected.forEach(u=>{u.goal=null;u.path=[];u.attackTarget=hostile;u.stance='attack';chase(u,hostile)})}
+ const hostile=hit(p,'enemy');if(hostile&&active(hostile)){
+  const disciplined=selected.length>1&&selected.every(isFormationDisciplined);
+  if(disciplined){
+   const cx=selected.reduce((n,u)=>n+u.x,0)/selected.length,cy=selected.reduce((n,u)=>n+u.y,0)/selected.length;
+   const angle=Math.atan2(hostile.y-cy,hostile.x-cx),px=-Math.sin(angle),py=Math.cos(angle),spacing=58;
+   selected.forEach((u,i)=>{const off=(i-(selected.length-1)/2)*spacing,goal={x:hostile.x-Math.cos(angle)*62+px*off,y:hostile.y-Math.sin(angle)*62+py*off};u.attackTarget=null;setGoal(u,goal,true);u.formation='line'});
+   notify('Falange avanza en bloque: mantiene la línea hasta el contacto.');
+  }else selected.forEach(u=>{u.goal=null;u.path=[];u.attackTarget=hostile;u.stance='attack';chase(u,hostile)})
+ }
  else{const cols=Math.ceil(Math.sqrt(selected.length)),rows=Math.ceil(selected.length/cols),spacing=state.formation==='line'?92:state.formation==='wedge'?82:70;selected.forEach((u,i)=>{const col=i%cols,row=(i/cols)|0,dx=state.formation==='column'?(row-(rows-1)/2)*spacing:state.formation==='wedge'?(col-(cols-1)/2)*spacing:(col-(cols-1)/2)*spacing,dy=state.formation==='column'?(col-(cols-1)/2)*spacing:state.formation==='wedge'?(row-(rows-1)/2)*spacing+Math.abs(col-(cols-1)/2)*spacing*.45:(row-(rows-1)/2)*spacing,point={x:p.x+dx,y:p.y+dy};setGoal(u,point,forceAttackMove||state.mode==='attack')})}
  state.cmdMarker={x:p.x,y:p.y,t:state.t,kind:(hostile||forceAttackMove||state.mode==='attack')?'attack':'move'};updateHud();
 }
@@ -1244,7 +1302,7 @@ function sixSlots(){const spacingY=112,spacingX=102;return [[spacingX/2,-spacing
 function arrangeSix(){
  const s=selectedUnits();if(s.length!==6){notify('Elegí seis formaciones para ordenarlas 3 adelante y 3 detrás.');return}
  let gid=selectedGroup();if(!gid)gid=makeGroup();if(!gid)return;
- const g=state.groups.get(gid),squads=getGroupUnits(g),p={hoplite:0,macedonian:0,roman:0,carthaginian:0,norman:0,saxon:0,english:0,french:0,germanic:0,frenchLine:0,russianLine:0,persian:0,artillery:3,cavalry:1,peltast:2,archer:3};
+ const g=state.groups.get(gid),squads=getGroupUnits(g),p={hoplite:0,macedonian:0,persianImmortal:0,roman:0,romanHastati:0,romanPrincipes:0,carthaginian:0,africanInfantry:0,iberianInfantry:0,norman:0,saxon:0,english:0,french:0,germanic:0,frenchLine:0,russianLine:0,persian:0,cavalry:1,companionCavalry:1,persianCavalry:1,romanCavalry:1,numidianCavalry:1,normanCavalry:1,frenchKnight:1,peltast:2,velite:2,archer:3,normanArcher:3,longbow:3,artillery:4};
  for(const u of squads)u.groupOverride=false;
  const sorted=[...squads].sort((a,b)=>(p[a.type]??2)-(p[b.type]??2)||a.id-b.id),slots=sixSlots();
  const offsets={};sorted.forEach((u,i)=>{offsets[u.id]=slots[i]});g.offsets=offsets;g.layout='3+3';
