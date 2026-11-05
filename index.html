@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>HWM 0.9.1 RC1 · Campaña del Comandante</title>
+<title>HWM 0.9.2 RC1 · Campaña del Comandante</title>
 <style>
 
 :root{--night:#080d0f;--ink:#101618;--gold:#e9be77;--gold2:#9d7545;--blue:#207cb1;--red:#af4435;--soft:#aab4ae;--text:#f3eadb}
@@ -174,7 +174,7 @@
 <div class="battleHead"><h1 id="mapTitle">Maratón · 490 a. C.</h1><small id="mapSubtitle">Atenas y Platea contra Persia</small></div>
 <div class="topright"><div class="counter ally"><label>ALIADOS</label><b id="allyCount">11</b></div><div class="counter enemy"><label>ENEMIGOS</label><b id="enemyCount">10</b></div><div class="counter time"><label>TIEMPO</label><b id="timer">00:00</b></div><button class="headButton" id="pauseBtn" title="Pausar / reanudar [Espacio]">Ⅱ</button><button class="headButton" id="speedBtn" title="Velocidad normal / doble">»</button><button class="headButton" id="musicBtn" title="Activar / silenciar música" aria-pressed="true">♫</button><button class="headButton" id="fxBtn" title="Activar / silenciar efectos" aria-pressed="true">FX</button><button class="headButton" id="introBtn" title="Reproducir intro">▶</button><button class="headButton" id="helpBtn" title="Ayuda y controles">?</button></div></header>
 <div class="workspace">
-<aside class="sidebar" id="sidebar"><div class="eyebrow">CAMPAÑA DEL COMANDANTE</div><div class="campaignStatus" id="campaignStatus"></div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · 0.9.1 RC1</b><p>Intro cinematográfica + música dinámica + ambiente de batalla. HWM = History War Moments.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
+<aside class="sidebar" id="sidebar"><div class="eyebrow">CAMPAÑA DEL COMANDANTE</div><div class="campaignStatus" id="campaignStatus"></div><div class="battlelist" id="battlelist"></div><div class="sidefoot"><b>HWM · 0.9.2 RC1</b><p>Intro cinematográfica + música dinámica + ambiente de batalla. HWM = History War Moments.</p><button class="btn compact" id="resetBtn" style="margin-top:9px">↻ Reiniciar batalla</button></div></aside>
 <main class="stage" id="stage">
 
 
@@ -438,7 +438,25 @@ const UNIT_VISUAL={
  russianLine:{letter:'R',banner:'#3f654a',spriteCol:0,filter:'hue-rotate(95deg) saturate(.75)'},
  artillery:{letter:'●',banner:'#555047',spriteCol:5,filter:'grayscale(.35)'}
 };
+const STANDARD_PALETTE={
+ marathon1:{ally:{base:'#1f5f8f',accent:'#d8c27a'},enemy:{base:'#982f2a',accent:'#d9b35b'}},
+ marathon2:{ally:{base:'#1f5f8f',accent:'#d8c27a'},enemy:{base:'#982f2a',accent:'#d9b35b'}},
+ thermopylae:{ally:{base:'#285e88',accent:'#d6c17a'},enemy:{base:'#8f2b2b',accent:'#d5ad55'}},
+ plataea:{ally:{base:'#275e88',accent:'#d7c17a'},enemy:{base:'#8f2d2d',accent:'#d3ab55'}},
+ mantinea:{ally:{base:'#4a607f',accent:'#d6c47e'},enemy:{base:'#6d4934',accent:'#d0a86b'}},
+ gaugamela:{ally:{base:'#334f9d',accent:'#d8c56a'},enemy:{base:'#8d2632',accent:'#e0b650'}},
+ cannae:{ally:{base:'#4e376d',accent:'#d3ae62'},enemy:{base:'#9b3029',accent:'#e1c174'}},
+ hastings:{ally:{base:'#31558c',accent:'#d3c17a'},enemy:{base:'#55603c',accent:'#d1b26b'}},
+ agincourt:{ally:{base:'#7b2f32',accent:'#e7ded0'},enemy:{base:'#294b8e',accent:'#d4b75b'}},
+ teutoburg:{ally:{base:'#a13029',accent:'#e1c46f'},enemy:{base:'#71512f',accent:'#c9a45e'}},
+ borodino:{ally:{base:'#28549b',accent:'#f0e7d0'},enemy:{base:'#3d6a49',accent:'#d6b85d'}}
+};
 function unitVisual(u){return UNIT_VISUAL[u.type]||{letter:'?',banner:u.side==='ally'?'#155f91':'#9e302b',spriteCol:u.side==='ally'?0:3}}
+function standardPalette(u){
+ const b=BATTLES[state.battle],p=STANDARD_PALETTE[b?.id]?.[u.side];
+ if(p)return p;
+ const v=unitVisual(u);return{base:v.banner,accent:u.side==='ally'?'#d6c37c':'#d7aa68'};
+}
 
 const TERRAIN={
 marathon1:{seed:19,ground:['#7b8960','#87966c'],hills:[{x:20,y:24,w:245,h:135},{x:20,y:575,w:210,h:132}],marsh:[{x:690,y:23,w:350,h:155},{x:884,y:171,w:188,h:105}],rocks:[],river:[],cliffs:[]},
@@ -605,7 +623,7 @@ function renderBattleList(){
  });
  renderCampaignStatus();
 }
-function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent=b.campaign===false?'Archivo táctico · Prueba':'Campaña del Comandante · '+campaignRank();ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='HWM 0.9.1 RC1 · Campaña del Comandante: 10 batallas, progreso, medallas, refuerzos y objetivos tácticos diferenciados.';}
+function showIntro(){const b=BATTLES[state.battle];SFX.setScene('briefing');ui.overlay.classList.remove('hidden');ui.overlayKicker.textContent=b.campaign===false?'Archivo táctico · Prueba':'Campaña del Comandante · '+campaignRank();ui.overlayTitle.textContent=`${b.name} · ${b.year}`;ui.overlayDesc.textContent=b.desc;ui.overlayMission.textContent=b.mission;ui.startBtn.textContent='Preparar ejército';ui.chooseBtn.classList.add('hidden');el('pressureBtn').classList.remove('hidden');ui.overlayNote.textContent='HWM 0.9.2 RC1 · Campaña del Comandante: 10 batallas, progreso, medallas, refuerzos y objetivos tácticos diferenciados.';}
 function start(mode='free'){
  state.phase='battle';state.deployMode=mode;state.running=true;state.paused=false;state.finished=false;
  hideDeployment();ui.overlay.classList.add('hidden');ui.pauseBtn.textContent='Ⅱ';
@@ -872,8 +890,24 @@ function update(dt){
   }
   if(u.goal&&u.pathIndex>=u.path.length&&u.path.length){u.goal=null;u.path=[];u.attackMove=false;u.stance='hold'}
  }
- // Separation: maintain tactical unit footprints without changing the navmesh.
- for(let i=0;i<units.length;i++){const a=units[i];if(a.hp<=0||a.disengaged)continue;for(let j=i+1;j<units.length;j++){const b=units[j];if(b.hp<=0||b.disengaged)continue;const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.1,min=(TYPES[a.type].rad+TYPES[b.type].rad)*.85;if(d<min){const push=(min-d)*.065,px=dx/d*push,py=dy/d*push;if(walkable(a.x-px,a.y-py)){a.x-=px;a.y-=py}if(walkable(b.x+px,b.y+py)){b.x+=px;b.y+=py}}}}
+ // Separation: friendly formations preserve readable footprints; opposing formations may still close for melee.
+ for(let i=0;i<units.length;i++){
+  const a=units[i];if(a.hp<=0||a.disengaged)continue;
+  for(let j=i+1;j<units.length;j++){
+   const b=units[j];if(b.hp<=0||b.disengaged)continue;
+   const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.1,sameSide=a.side===b.side;
+   const fa=formationFootprint(a),fb=formationFootprint(b);
+   const friendlyMin=Math.max(50,(fa.rx+fb.rx)*.72);
+   const combatMin=(TYPES[a.type].rad+TYPES[b.type].rad)*.85;
+   const recentlyEngaged=state.t-a.lastEngaged<1.4||state.t-b.lastEngaged<1.4;
+   const min=sameSide?(recentlyEngaged?friendlyMin*.82:friendlyMin):combatMin;
+   if(d<min){
+    const strength=sameSide?.16:.065,push=(min-d)*strength,px=dx/d*push,py=dy/d*push;
+    if(walkable(a.x-px,a.y-py)){a.x-=px;a.y-=py}
+    if(walkable(b.x+px,b.y+py)){b.x+=px;b.y+=py}
+   }
+  }
+ }
  updateProjectiles(dt);
  const b=BATTLES[state.battle];
  processReinforcements(b);
@@ -979,14 +1013,17 @@ for(const d of state.trees){ctx.save();ctx.translate(d.x,d.y);ctx.rotate(d.rot);
 const vignette=ctx.createRadialGradient(640,360,220,640,360,740);vignette.addColorStop(0,'#0000');vignette.addColorStop(1,'#18221c55');ctx.fillStyle=vignette;ctx.fillRect(0,0,1280,720);
 }
 function drawStandard(u){
- ctx.save();const left=u.x-27,top=u.y-57;
+ ctx.save();const left=u.x-27,top=u.y-57,pal=standardPalette(u),visual=unitVisual(u);
  ctx.shadowColor='#0009';ctx.shadowBlur=3;ctx.shadowOffsetX=1.5;ctx.shadowOffsetY=2;
- ctx.strokeStyle='#332719';ctx.lineWidth=2.7;ctx.beginPath();ctx.moveTo(left,top+45);ctx.lineTo(left,top-10);ctx.stroke();
- const visual=unitVisual(u);ctx.fillStyle=visual.banner;ctx.strokeStyle='#ead095';ctx.lineWidth=1.4;
- ctx.beginPath();ctx.moveTo(left-1,top-10);ctx.lineTo(left+25,top-6);ctx.lineTo(left+25,top+17);ctx.lineTo(left-1,top+13);ctx.closePath();ctx.fill();ctx.stroke();
+ ctx.strokeStyle='#2d2419';ctx.lineWidth=2.7;ctx.beginPath();ctx.moveTo(left,top+45);ctx.lineTo(left,top-10);ctx.stroke();
+ ctx.fillStyle=pal.base;ctx.strokeStyle=pal.accent;ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(left-1,top-10);ctx.lineTo(left+27,top-6);ctx.lineTo(left+27,top+18);ctx.lineTo(left-1,top+13);ctx.closePath();ctx.fill();ctx.stroke();
  ctx.shadowColor='transparent';
- const letter=unitVisual(u).letter;
- ctx.fillStyle='#f7e9c9';ctx.font='bold 16px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(letter,left+12,top+5);
+ // Banda de facción: mantiene identidad aunque la letra sea compartida (p. ej. artillería).
+ ctx.fillStyle=pal.accent;ctx.fillRect(left+18,top-7,6,22);
+ ctx.fillStyle='#16130e';ctx.globalAlpha=.35;ctx.fillRect(left+1,top+10,17,2);ctx.globalAlpha=1;
+ const letter=visual.letter;
+ ctx.fillStyle='#fff7df';ctx.font=letter.length>1?'bold 11px Georgia':'bold 16px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(letter,left+9,top+4);
  ctx.restore();
 }
 function soldier(u,x,y,i){
@@ -1086,7 +1123,7 @@ function drawSquad(u){
   ctx.fillStyle='#101415b9';ctx.fillRect(bx,by+13,bw,3);ctx.fillStyle='#eccc7d';ctx.fillRect(bx,by+13,bw*u.morale/u.maxMorale,3);
  }
  if(u.routed||u.withdraw){ctx.fillStyle=u.routed?'#ffb0a0':'#f7e5a9';ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText(u.routed?'EN FUGA':'RETIRADA',u.x,by-5)}
- if(selected){ctx.fillStyle='#fff5d8';ctx.font='bold 10px system-ui';ctx.textAlign='center';const fName=u.formation==='line'?'LÍNEA':u.formation==='wedge'?'CUÑA':'COLUMNA';ctx.fillText(TYPES[u.type].name+' · '+fName,u.x,u.y+Math.max(42,footprint.ry+11))}
+ if(hovered||(selected&&state.selection.size===1)){ctx.fillStyle='#fff5d8';ctx.font='bold 10px system-ui';ctx.textAlign='center';const fName=u.formation==='line'?'LÍNEA':u.formation==='wedge'?'CUÑA':'COLUMNA';ctx.fillText(TYPES[u.type].name+' · '+fName,u.x,u.y+Math.max(42,footprint.ry+11))}
  ctx.restore();
 }
 function drawDeploymentZone(){
