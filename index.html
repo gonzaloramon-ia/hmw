@@ -388,7 +388,7 @@ const MUSIC=(()=>{
 
 const COMBAT={pace:.64,damage:.39,flankShock:2.15,rearShock:3.1,routMorale:19,routCohesion:15};
 const SKIRMISH={archer:{retreat:150,clear:195,panic:59,shotSlow:.55,accuracy:.55},peltast:{retreat:112,clear:157,panic:57,shotSlow:.74,accuracy:.75}};
-const TYPES={hoplite:{name:'Hoplitas',hp:140,armor:.34,damage:16,range:42,speed:43,delay:1.05,morale:100,rad:22},archer:{name:'Arqueros',hp:78,armor:.06,damage:10,range:180,speed:49,delay:1.55,morale:75,rad:19},peltast:{name:'Peltastas',hp:94,armor:.12,damage:11,range:132,speed:56,delay:1.38,morale:86,rad:20},cavalry:{name:'Caballería',hp:123,armor:.18,damage:24,range:49,speed:79,delay:1.2,morale:90,rad:23},persian:{name:'Infantería persa',hp:105,armor:.14,damage:12,range:39,speed:47,delay:1.12,morale:80,rad:21},macedonian:{name:'Falange macedonia',hp:144,armor:.33,damage:17,range:45,speed:42,delay:1.06,morale:103,rad:22},roman:{name:'Legionarios romanos',hp:139,armor:.30,damage:16,range:42,speed:44,delay:1.02,morale:99,rad:22},carthaginian:{name:'Infantería cartaginesa',hp:126,armor:.22,damage:15,range:41,speed:47,delay:1.05,morale:94,rad:21},norman:{name:'Infantería normanda',hp:132,armor:.28,damage:15,range:41,speed:45,delay:1.04,morale:96,rad:21},saxon:{name:'Muro de escudos sajón',hp:150,armor:.36,damage:17,range:42,speed:38,delay:1.08,morale:105,rad:23},english:{name:'Hombres de armas ingleses',hp:132,armor:.31,damage:16,range:41,speed:43,delay:1.04,morale:98,rad:21},french:{name:'Hombres de armas franceses',hp:148,armor:.37,damage:17,range:42,speed:36,delay:1.08,morale:98,rad:23},germanic:{name:'Guerreros germánicos',hp:112,armor:.12,damage:15,range:39,speed:54,delay:1.0,morale:97,rad:21}};
+const TYPES={hoplite:{name:'Hoplitas',hp:140,armor:.34,damage:16,range:42,speed:43,delay:1.05,morale:100,rad:22},archer:{name:'Arqueros',hp:78,armor:.06,damage:10,range:180,speed:49,delay:1.55,morale:75,rad:19},peltast:{name:'Peltastas',hp:94,armor:.12,damage:11,range:132,speed:56,delay:1.38,morale:86,rad:20},cavalry:{name:'Caballería',hp:123,armor:.18,damage:24,range:49,speed:79,delay:1.2,morale:90,rad:23},persian:{name:'Infantería persa',hp:105,armor:.14,damage:12,range:39,speed:47,delay:1.12,morale:80,rad:21},macedonian:{name:'Falange macedonia',hp:144,armor:.33,damage:17,range:45,speed:42,delay:1.06,morale:103,rad:22},roman:{name:'Legionarios romanos',hp:139,armor:.30,damage:16,range:42,speed:44,delay:1.02,morale:99,rad:22},carthaginian:{name:'Infantería cartaginesa',hp:126,armor:.22,damage:15,range:41,speed:47,delay:1.05,morale:94,rad:21},norman:{name:'Infantería normanda',hp:132,armor:.28,damage:15,range:41,speed:45,delay:1.04,morale:96,rad:21},saxon:{name:'Muro de escudos sajón',hp:150,armor:.36,damage:17,range:42,speed:38,delay:1.08,morale:105,rad:23},english:{name:'Hombres de armas ingleses',hp:132,armor:.31,damage:16,range:41,speed:43,delay:1.04,morale:98,rad:21},french:{name:'Hombres de armas franceses',hp:148,armor:.37,damage:17,range:42,speed:36,delay:1.08,morale:98,rad:23},germanic:{name:'Guerreros germánicos',hp:112,armor:.12,damage:15,range:39,speed:54,delay:1.0,morale:97,rad:21},frenchLine:{name:'Infantería de línea francesa',hp:128,armor:.21,damage:16,range:45,speed:46,delay:1.03,morale:98,rad:21},russianLine:{name:'Infantería de línea rusa',hp:136,armor:.24,damage:16,range:44,speed:42,delay:1.06,morale:103,rad:22},artillery:{name:'Artillería',hp:86,armor:.08,damage:30,range:285,speed:22,delay:3.4,morale:82,rad:24}};
 const TERRAIN={
 marathon1:{seed:19,ground:['#7b8960','#87966c'],hills:[{x:20,y:24,w:245,h:135},{x:20,y:575,w:210,h:132}],marsh:[{x:690,y:23,w:350,h:155},{x:884,y:171,w:188,h:105}],rocks:[],river:[],cliffs:[]},
 marathon2:{seed:19,ground:['#7b8960','#87966c'],hills:[{x:20,y:24,w:245,h:135},{x:20,y:575,w:210,h:132}],marsh:[{x:690,y:23,w:350,h:155},{x:884,y:171,w:188,h:105}],rocks:[],river:[],cliffs:[]},
@@ -399,7 +399,8 @@ gaugamela:{seed:77,ground:['#9d936e','#b1a47a'],hills:[],marsh:[],rocks:[{x:650,
 cannae:{seed:83,ground:['#9a8b63','#ad9a70'],hills:[],marsh:[{x:500,y:575,w:210,h:70}],rocks:[],river:[{x:-20,y:0,w:1320,h:48}],cliffs:[]},
 hastings:{seed:97,ground:['#7b865f','#919a70'],hills:[{x:755,y:70,w:470,h:575}],marsh:[{x:455,y:245,w:235,h:230}],rocks:[],river:[],cliffs:[],woods:[]},
 agincourt:{seed:111,ground:['#81795c','#988c68'],hills:[],marsh:[{x:330,y:145,w:620,h:430}],rocks:[],river:[],cliffs:[],woods:[{x:0,y:0,w:1280,h:125},{x:0,y:585,w:1280,h:135}]},
-teutoburg:{seed:129,ground:['#596b4d','#6f7d59'],hills:[{x:390,y:405,w:350,h:90}],marsh:[{x:0,y:82,w:1280,h:145}],rocks:[{x:540,y:300,r:16},{x:820,y:430,r:14}],river:[],cliffs:[],woods:[{x:0,y:0,w:1280,h:78},{x:0,y:505,w:1280,h:215}]}};
+teutoburg:{seed:129,ground:['#596b4d','#6f7d59'],hills:[{x:390,y:405,w:350,h:90}],marsh:[{x:0,y:82,w:1280,h:145}],rocks:[{x:540,y:300,r:16},{x:820,y:430,r:14}],river:[],cliffs:[],woods:[{x:0,y:0,w:1280,h:78},{x:0,y:505,w:1280,h:215}]},
+borodino:{seed:1812,ground:['#7d795c','#918a68'],hills:[{x:690,y:120,w:250,h:145},{x:720,y:370,w:330,h:180}],marsh:[{x:540,y:40,w:120,h:110}],rocks:[],river:[{x:610,y:-20,w:34,h:170}],cliffs:[],woods:[{x:0,y:0,w:1280,h:68},{x:0,y:650,w:1280,h:70}],redoubts:[{x:770,y:185,w:125,h:86},{x:815,y:405,w:155,h:98}]}};
 const BATTLES=[
 {id:'marathon1',name:'Maratón 1',year:'490 a. C.',subtitle:'Atenas y Platea contra Persia · Vista amplia',kind:'Foto 1 · Vista amplia',desc:'Las fuerzas atenienses y plateas enfrentan al ejército persa en la llanura de Maratón. Una batalla decisiva de las Guerras Médicas.',mission:'Objetivo: derrotar o desbandar al ejército persa. El mar queda fuera de la zona transitable y el ejército persa despliega sobre tierra firme junto a la costa.',ally:'Atenas',enemy:'Persia',goal:'destroy',squads:[['ally','hoplite',112,245,4],['ally','hoplite',167,395,3],['ally','archer',82,495,2],['ally','peltast',155,595,2],['enemy','persian',805,255,4],['enemy','persian',900,417,3],['enemy','archer',930,542,2],['enemy','cavalry',960,620,1]]},
 {id:'marathon2',campaign:false,name:'Maratón 2',year:'490 a. C.',subtitle:'Atenas y Platea contra Persia · Vista cercana',kind:'Foto 2 · Vista cercana',desc:'Las fuerzas atenienses y plateas enfrentan al ejército persa en la llanura de Maratón. Una batalla decisiva de las Guerras Médicas.',mission:'Objetivo: derrotar o desbandar al ejército persa. Ahora empezás más lejos de la costa: aprovechá la aproximación para organizar tu ataque.',ally:'Atenas',enemy:'Persia',goal:'destroy',squads:[['ally','hoplite',112,245,4],['ally','hoplite',167,395,3],['ally','archer',82,495,2],['ally','peltast',155,595,2],['enemy','persian',1028,255,4],['enemy','persian',1034,417,3],['enemy','archer',1003,542,2],['enemy','cavalry',970,620,1]]},
@@ -420,7 +421,11 @@ const BATTLES=[
  {at:14,label:'Emboscada germánica · I',squads:[['enemy','germanic',760,245,2],['enemy','germanic',735,470,2]]},
  {at:34,label:'Emboscada germánica · II',squads:[['enemy','germanic',570,245,2],['enemy','germanic',555,465,2]]},
  {at:56,label:'Emboscada germánica · III',squads:[['enemy','germanic',390,250,3],['enemy','germanic',390,462,2]]}
-],squads:[['ally','roman',1040,300,4],['ally','roman',1110,390,4],['ally','roman',1000,465,3],['enemy','germanic',850,250,2],['enemy','germanic',825,470,2]]}
+],squads:[['ally','roman',1040,300,4],['ally','roman',1110,390,4],['ally','roman',1000,465,3],['enemy','germanic',850,250,2],['enemy','germanic',825,470,2]]},
+{id:'borodino',name:'Borodinó',year:'1812',label:'CAMPO DE BORODINÓ',subtitle:'Francia contra Rusia',kind:'Mapa táctico procedural · Redutos y desgaste',desc:'Napoleón enfrenta al ejército ruso en una batalla frontal de enorme desgaste. Las posiciones fortificadas y la artillería convierten cada avance en una decisión costosa.',mission:'Objetivo: quebrar al ejército ruso. Neutralizá los redutos antes de comprometer toda la infantería; conservá reservas para explotar una ruptura y soportar los contraataques.',ally:'Francia',enemy:'Rusia',goal:'destroy',reinforcements:[
+ {at:52,label:'Reserva francesa',squads:[['ally','frenchLine',95,270,2],['ally','frenchLine',95,430,2],['ally','cavalry',90,565,1]]},
+ {at:76,label:'Reserva rusa',squads:[['enemy','russianLine',1120,245,2],['enemy','russianLine',1130,410,2],['enemy','artillery',1090,540,1]]}
+],squads:[['ally','frenchLine',190,245,4],['ally','frenchLine',215,390,4],['ally','cavalry',165,545,2],['ally','artillery',120,195,2],['enemy','russianLine',900,235,5],['enemy','russianLine',980,385,4],['enemy','russianLine',930,520,3],['enemy','cavalry',1040,610,2],['enemy','artillery',845,225,1],['enemy','artillery',875,455,1]]}
 ];
 
 const CAMPAIGN_KEY='hwm:campaign:v1';
@@ -490,7 +495,7 @@ function makeGrid(){const rows=Math.ceil(WORLD.h/TILE),cols=Math.ceil(WORLD.w/TI
 let grid=null;
 function findSafe(p){if(walkable(p.x,p.y))return p;for(let r=12;r<280;r+=12){for(let a=0;a<16;a++){let th=a/16*Math.PI*2;let q={x:clamp(p.x+Math.cos(th)*r,22,1258),y:clamp(p.y+Math.sin(th)*r,22,698)};if(walkable(q.x,q.y))return q}}return{x:200,y:360}}
 function route(start,end){const goal=findSafe(end);if(!grid)return [goal];const sc=clamp(Math.floor(start.x/TILE),0,grid.cols-1),sr=clamp(Math.floor(start.y/TILE),0,grid.rows-1),ec=clamp(Math.floor(goal.x/TILE),0,grid.cols-1),er=clamp(Math.floor(goal.y/TILE),0,grid.rows-1);const si=sr*grid.cols+sc,ei=er*grid.cols+ec;const nodes=grid.cols*grid.rows;const seen=new Uint8Array(nodes),parent=new Int32Array(nodes).fill(-1),scores=new Float32Array(nodes).fill(Infinity);let open=[si];scores[si]=0;let loops=0;while(open.length&&loops++<3000){let bi=0,bv=Infinity;for(let i=0;i<open.length;i++){let id=open[i],c=id%grid.cols,r=(id/grid.cols)|0,v=scores[id]+Math.abs(c-ec)+Math.abs(r-er);if(v<bv){bv=v;bi=i}}const cur=open.splice(bi,1)[0];if(cur===ei){const pts=[];let at=cur;while(at!==si&&at!==-1){pts.push({x:(at%grid.cols+.5)*TILE,y:(((at/grid.cols)|0)+.5)*TILE});at=parent[at]}pts.reverse();pts.push(goal);return pts}seen[cur]=1;const c=cur%grid.cols,r=(cur/grid.cols)|0;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]]){let nx=c+dx,ny=r+dy;if(nx<0||ny<0||nx>=grid.cols||ny>=grid.rows||grid.blocked[ny][nx])continue;if(dx&&dy&&(grid.blocked[r][nx]||grid.blocked[ny][c]))continue;const next=ny*grid.cols+nx,nd=scores[cur]+(dx&&dy?1.414:1);if(nd<scores[next]){scores[next]=nd;parent[next]=cur;if(!seen[next]&&!open.includes(next))open.push(next)}}}return[]}
-function addUnit(side,type,x,y,level=1){let stat=TYPES[type];const u={id:state.nextId++,side,type,x,y,hp:stat.hp*(1+(level-1)*.08),maxHp:stat.hp*(1+(level-1)*.08),soldiers:100,maxSoldiers:100,morale:stat.morale,maxMorale:stat.morale,cohesion:100,level,cooldown:Math.random()*.9,attackTarget:null,goal:null,path:[],pathIndex:0,pathT:0,lastGoal:null,attackMove:false,stance:'hold',formation:'line',facing:side==='ally'?0:Math.PI,flash:0,retreat:false,withdraw:false,routed:false,disengaged:false,engagedTime:0,lastEngaged:-100,lastAttacked:-100,lastThreat:-100,flankUntil:0,recover:0,speedPenalty:1,breakCause:'',lastTacticalNote:'',aiLane:y,aiRole:type==='cavalry'?'flank':type==='archer'?'support':'front',skirmishActive:false,skirmishPanic:false,skirmishGoal:null,skirmishSaved:null,skirmishNext:0,lastShot:-99,shotSlowUntil:-99,shotSlowFactor:1,regimentId:0,groupOverride:false,movePace:'march',lastDust:-99,lastImpactFx:-99,lastContactCry:-99};state.units.push(u);return u}
+function addUnit(side,type,x,y,level=1){let stat=TYPES[type];const u={id:state.nextId++,side,type,x,y,hp:stat.hp*(1+(level-1)*.08),maxHp:stat.hp*(1+(level-1)*.08),soldiers:100,maxSoldiers:100,morale:stat.morale,maxMorale:stat.morale,cohesion:100,level,cooldown:Math.random()*.9,attackTarget:null,goal:null,path:[],pathIndex:0,pathT:0,lastGoal:null,attackMove:false,stance:'hold',formation:'line',facing:side==='ally'?0:Math.PI,flash:0,retreat:false,withdraw:false,routed:false,disengaged:false,engagedTime:0,lastEngaged:-100,lastAttacked:-100,lastThreat:-100,flankUntil:0,recover:0,speedPenalty:1,breakCause:'',lastTacticalNote:'',aiLane:y,aiRole:type==='cavalry'?'flank':(type==='archer'||type==='artillery')?'support':'front',skirmishActive:false,skirmishPanic:false,skirmishGoal:null,skirmishSaved:null,skirmishNext:0,lastShot:-99,shotSlowUntil:-99,shotSlowFactor:1,regimentId:0,groupOverride:false,movePace:'march',lastDust:-99,lastImpactFx:-99,lastContactCry:-99};state.units.push(u);return u}
 function setGoal(u,p,attackMove=false){u.skirmishActive=false;u.skirmishPanic=false;u.skirmishSaved=null;p=findSafe({x:clamp(p.x,22,1258),y:clamp(p.y,22,698)});u.goal=p;u.attackTarget=null;u.attackMove=attackMove;u.retreat=false;u.withdraw=false;u.path=route(u,p);u.pathIndex=0;u.pathT=0;u.lastGoal=p;u.stance='move'}
 function chase(u,target){if(!target||target.hp<=0)return;u.attackTarget=target;u.stance='attack';u.attackMove=false;const s=TYPES[u.type],d=dist(u,target),goal={x:target.x+(u.x-target.x)/Math.max(1,d)*Math.max(s.range*.65,25),y:target.y+(u.y-target.y)/Math.max(1,d)*Math.max(s.range*.65,25)};if(!u.lastGoal||Math.hypot(goal.x-u.lastGoal.x,goal.y-u.lastGoal.y)>32||u.pathT>1.8){u.path=route(u,goal);u.pathIndex=0;u.pathT=0;u.lastGoal=goal}}
 function nearestTarget(u,range=Infinity){let found=null,score=Infinity;for(const v of state.units){if(v.side===u.side||v.hp<=0||v.routed||v.disengaged)continue;const d=dist(u,v);if(d<score&&d<range){found=v;score=d}}return found}
@@ -598,7 +603,7 @@ function notify(msg){ui.signal.textContent=msg;ui.signal.classList.add('show');c
 function genDecor(){let random=rng(state.terrain.seed),items=[];for(let i=0;i<420;i++){let x=random()*WORLD.w,y=random()*WORLD.h,t=random();if(state.terrain.cliffs.some(c=>x>c.x&&x<c.x+c.w&&y>c.y&&y<c.y+c.h))continue;items.push({x,y,t,r:random()*4+1,rot:random()*6.28})}state.trees=items}
 function insideRect(x,y,r){return x>r.x&&y>r.y&&x<r.x+r.w&&y<r.y+r.h}
 function soilModifier(u){let m=1;for(const s of state.terrain.marsh)if(insideRect(u.x,u.y,s))m*=.56;for(const s of state.terrain.river)if(insideRect(u.x,u.y,s))m*=.77;for(const h of state.terrain.hills)if(insideRect(u.x,u.y,h))m*=.86;return m}
-function terrainDefense(u){for(const h of state.terrain.hills)if(insideRect(u.x,u.y,h))return 1.12;return 1}
+function terrainDefense(u){for(const r of state.terrain.redoubts||[])if(insideRect(u.x,u.y,r))return 1.28;for(const h of state.terrain.hills)if(insideRect(u.x,u.y,h))return 1.12;return 1}
 function moveUnit(u,dt){if(!u.path.length||u.pathIndex>=u.path.length)return;let p=u.path[u.pathIndex],dx=p.x-u.x,dy=p.y-u.y,d=Math.hypot(dx,dy);if(d<5){u.pathIndex++;return}let form=u.formation==='column'?1.18:u.formation==='line'?.95:1;
  const pace=(u.side==='ally'&&u.movePace==='fast'&&!u.withdraw&&!u.routed)?1.42:1;
  let speed=TYPES[u.type].speed*COMBAT.pace*form*pace*soilModifier(u)*(u.cohesion<40?.85:1)*(u.routed?1.2:1);
@@ -649,6 +654,12 @@ function dealDamage(att,victim,effectiveness=1){
  else if(victim.morale<=COMBAT.routMorale||victim.cohesion<=COMBAT.routCohesion||victim.hp/victim.maxHp<.14){victim.breakCause=victim.hp/victim.maxHp<.14?'bajas graves':victim.flankUntil>state.t?'flanco / retaguardia':victim.morale<=COMBAT.routMorale?'moral baja':'cohesión perdida';issueRetreat(victim,true)}
 }
 function firing(u,v,movingShot=false){
+ if(u.type==='artillery'){
+  const distShot=dist(u,v);
+  u.lastShot=state.t;
+  state.projectiles.push({x:u.x,y:u.y,startX:u.x,startY:u.y,tx:v.x,ty:v.y,target:v,owner:u,dur:clamp(distShot/165,.75,1.75),age:0,kind:'artillery',hit:true,effectiveness:1.15});
+  return;
+ }
  if(u.type!=='archer'&&u.type!=='peltast'){dealDamage(u,v);return}
  SFX.ranged(u);
  const isBow=u.type==='archer',shots=isBow?4:3,distShot=dist(u,v),angle=Math.atan2(v.y-u.y,v.x-u.x);
@@ -665,12 +676,23 @@ function firing(u,v,movingShot=false){
 function updateProjectiles(dt){
  for(let i=state.projectiles.length-1;i>=0;i--){
   const p=state.projectiles[i];p.age+=dt;const f=clamp(p.age/p.dur,0,1);p.x=lerp(p.startX,p.tx,f);p.y=lerp(p.startY,p.ty,f);
-  if(f>=1){if(p.hit&&active(p.target)&&Math.hypot(p.x-p.target.x,p.y-p.target.y)<62)dealDamage(p.owner,p.target,p.effectiveness);state.projectiles.splice(i,1)}
+  if(f>=1){
+   if(p.kind==='artillery'){
+    if(p.hit&&active(p.target)&&Math.hypot(p.x-p.target.x,p.y-p.target.y)<90)dealDamage(p.owner,p.target,p.effectiveness);
+    const victimSide=p.target?.side;
+    for(const u of state.units){
+     if(!active(u)||u.side!==victimSide||Math.hypot(u.x-p.x,u.y-p.y)>72)continue;
+     u.cohesion=clamp(u.cohesion-7,0,100);u.morale=clamp(u.morale-6,0,u.maxMorale);u.flash=Math.max(u.flash,.22);
+    }
+    state.particles.push({x:p.x,y:p.y,age:0,kind:'artilleryImpact'});
+   }else if(p.hit&&active(p.target)&&Math.hypot(p.x-p.target.x,p.y-p.target.y)<62)dealDamage(p.owner,p.target,p.effectiveness);
+   state.projectiles.splice(i,1)
+  }
  }
  for(let i=state.particles.length-1;i>=0;i--){
   const p=state.particles[i];p.age+=dt;
   if(p.vx!=null){p.x+=p.vx*dt;p.y+=(p.vy||0)*dt;p.vy=(p.vy||0)+3*dt}
-  const life=p.kind==='contact'?.58:p.kind==='dust'?.72:1.2;
+  const life=p.kind==='contact'?.58:p.kind==='dust'?.72:p.kind==='artilleryImpact'?1.0:1.2;
   if(p.age>life)state.particles.splice(i,1)
  }
 }
@@ -892,6 +914,11 @@ for(const wood of t.woods||[]){
   ellipse(x,y,r,r*.72,wr()>.45?'#3f5d40':'#263b2b');
  }
 }
+for(const redoubt of t.redoubts||[]){
+ ctx.fillStyle='#514733';ctx.fillRect(redoubt.x,redoubt.y,redoubt.w,redoubt.h);
+ ctx.strokeStyle='#b89c67';ctx.lineWidth=5;ctx.strokeRect(redoubt.x+3,redoubt.y+3,redoubt.w-6,redoubt.h-6);
+ ctx.strokeStyle='#2f2a20';ctx.lineWidth=2;ctx.strokeRect(redoubt.x+11,redoubt.y+11,redoubt.w-22,redoubt.h-22);
+}
 for(const cliff of t.cliffs){ctx.fillStyle='#555b4c';ctx.fillRect(cliff.x,cliff.y,cliff.w,cliff.h);const r2=rng(cliff.y+310);for(let i=0;i<380;i++){let x=cliff.x+r2()*cliff.w,y=cliff.y+r2()*cliff.h;ellipse(x,y,3+r2()*8,1+r2()*7,r2()>.5?'#6c705a':'#454d42',r2()*6)}ctx.strokeStyle='#c9c49d55';ctx.lineWidth=6;ctx.strokeRect(cliff.x+2,cliff.y+2,cliff.w-4,cliff.h-4)}
 for(const rock of t.rocks){ellipse(rock.x+4,rock.y+4,rock.r+5,rock.r*.72,'#39493f');polygon([[rock.x-rock.r,rock.y],[rock.x-rock.r*.5,rock.y-rock.r*.7],[rock.x+rock.r*.6,rock.y-rock.r*.6],[rock.x+rock.r,rock.y],[rock.x+rock.r*.4,rock.y+rock.r*.7]],'#7e8071','#5a685d',2)}
 for(const d of state.trees){ctx.save();ctx.translate(d.x,d.y);ctx.rotate(d.rot);if(d.t<.55){ctx.strokeStyle=d.t<.2?'#506844':'#adb18a';ctx.lineWidth=.9;ctx.beginPath();ctx.moveTo(-d.r,2);ctx.lineTo(0,-d.r*2);ctx.lineTo(d.r,2);ctx.stroke()}else if(d.t>.91){ellipse(0,1,d.r*1.6,d.r*.8,'#596b4d');ellipse(-1,-1,d.r,d.r*.6,'#879770')}else{ctx.fillStyle='#6c7756';ctx.fillRect(-1,-1,2,2)}ctx.restore()}
@@ -904,7 +931,7 @@ function drawStandard(u){
  ctx.fillStyle=u.side==='ally'?'#155f91':'#9e302b';ctx.strokeStyle='#ead095';ctx.lineWidth=1.4;
  ctx.beginPath();ctx.moveTo(left-1,top-10);ctx.lineTo(left+25,top-6);ctx.lineTo(left+25,top+17);ctx.lineTo(left-1,top+13);ctx.closePath();ctx.fill();ctx.stroke();
  ctx.shadowColor='transparent';
- const letter=u.type==='hoplite'?'H':u.type==='macedonian'?'M':u.type==='roman'?'R':u.type==='carthaginian'?'C':u.type==='norman'?'N':u.type==='saxon'?'S':u.type==='english'?'E':u.type==='french'?'F':u.type==='germanic'?'G':u.type==='archer'?'A':u.type==='peltast'?'J':u.type==='cavalry'?'C':u.type==='persian'?'I':'?';
+ const letter=u.type==='hoplite'?'H':u.type==='macedonian'?'M':u.type==='roman'?'R':u.type==='carthaginian'?'C':u.type==='norman'?'N':u.type==='saxon'?'S':u.type==='english'?'E':u.type==='french'?'F':u.type==='germanic'?'G':u.type==='frenchLine'?'F':u.type==='russianLine'?'R':u.type==='artillery'?'⚫':u.type==='archer'?'A':u.type==='peltast'?'J':u.type==='cavalry'?'C':u.type==='persian'?'I':'?';
  ctx.fillStyle='#f7e9c9';ctx.font='bold 16px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(letter,left+12,top+5);
  ctx.restore();
 }
@@ -937,6 +964,7 @@ function formationOffset(u,i,alive){
  return {a:(posInRow-center)*15,b:row===0?8:-9};
 }
 function formationFootprint(u){
+ if(u.type==='artillery')return {rx:34,ry:28};
  if(u.formation==='column')return {rx:26,ry:37};
  if(u.formation==='wedge')return {rx:39,ry:37};
  return {rx:46,ry:24};
@@ -944,7 +972,7 @@ function formationFootprint(u){
 function drawSquad(u){
  if(u.hp<=0||u.disengaged)return;
  ctx.save();
- const alive=clamp(Math.ceil(u.soldiers/u.maxSoldiers*12),1,12);
+ const alive=clamp(Math.ceil(u.soldiers/u.maxSoldiers*(u.type==='artillery'?5:12)),1,u.type==='artillery'?5:12);
  const selected=state.selection.has(u.id);
  const hovered=state.hoverId===u.id;
  const underFire=u.flash>0;
@@ -971,8 +999,8 @@ function drawSquad(u){
  const isMoving=u.pathIndex<u.path.length;
  let pose=isMoving?1:0;
  if(!isMoving&&u.attackTarget&&u.stance==='attack'&&dist(u,u.attackTarget)<TYPES[u.type].range+26){pose=(u.cooldown<TYPES[u.type].delay*.62)?2:0;}
- const colSprite = u.side==='ally'?((u.type==='hoplite'||u.type==='macedonian'||u.type==='roman'||u.type==='norman'||u.type==='english'||u.type==='saxon'||u.type==='french'||u.type==='germanic')?0:u.type==='archer'?1:u.type==='peltast'?2:u.type==='cavalry'?5:u.type==='carthaginian'?3:0):
-   ((u.type==='hoplite'||u.type==='roman'||u.type==='macedonian'||u.type==='norman'||u.type==='english'||u.type==='saxon'||u.type==='french'||u.type==='germanic')?0:(u.type==='persian'||u.type==='carthaginian')?3:u.type==='archer'?4:u.type==='cavalry'?5:3);
+ const colSprite = u.side==='ally'?((u.type==='hoplite'||u.type==='macedonian'||u.type==='roman'||u.type==='norman'||u.type==='english'||u.type==='saxon'||u.type==='french'||u.type==='germanic'||u.type==='frenchLine'||u.type==='russianLine')?0:u.type==='artillery'?5:u.type==='archer'?1:u.type==='peltast'?2:u.type==='cavalry'?5:u.type==='carthaginian'?3:0):
+   ((u.type==='hoplite'||u.type==='roman'||u.type==='macedonian'||u.type==='norman'||u.type==='english'||u.type==='saxon'||u.type==='french'||u.type==='germanic'||u.type==='frenchLine'||u.type==='russianLine')?0:(u.type==='persian'||u.type==='carthaginian')?3:u.type==='artillery'?5:u.type==='archer'?4:u.type==='cavalry'?5:3);
  // Nine individually animated soldiers per selectable tactical unit.
  for(let i=alive-1;i>=0;i--){
    const off=formationOffset(u,i,alive),a=off.a,b=off.b;
@@ -1021,16 +1049,21 @@ function drawPath(){for(const u of state.units){
  if(u.goal){ctx.strokeStyle=attacking?'#ef806b':'#f2d297';ctx.beginPath();ctx.arc(u.goal.x,u.goal.y,10,0,Math.PI*2);ctx.stroke()}
 }}
 function drawProjectiles(){for(const p of state.projectiles){
- const f=clamp(p.age/p.dur,0,1),height=Math.sin(f*Math.PI)*(p.kind==='archer'?26:16);
+ const f=clamp(p.age/p.dur,0,1),height=Math.sin(f*Math.PI)*(p.kind==='archer'?26:p.kind==='artillery'?34:16);
  const a=Math.atan2(p.ty-p.startY,p.tx-p.startX),len=p.kind==='archer'?15:24;
  ctx.save();ctx.translate(p.x,p.y-height);ctx.rotate(a);
+ if(p.kind==='artillery'){ctx.fillStyle='#222';ctx.strokeStyle='#a99671';ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(0,0,5.5,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore();continue;}
  ctx.strokeStyle='#171c19b8';ctx.lineWidth=3.8;ctx.beginPath();ctx.moveTo(-len*.72,2);ctx.lineTo(len*.28,2);ctx.stroke();
  ctx.strokeStyle=p.kind==='archer'?'#e7d8a4':'#cbb6a0';ctx.lineWidth=p.kind==='archer'?2:3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-len*.70,0);ctx.lineTo(len*.30,0);ctx.stroke();
  ctx.fillStyle=p.kind==='archer'?'#f6efd3':'#ecedeb';ctx.beginPath();ctx.moveTo(len*.52,0);ctx.lineTo(len*.20,-3.4);ctx.lineTo(len*.20,3.4);ctx.closePath();ctx.fill();
  if(p.kind==='archer'){ctx.strokeStyle='#f2f3db';ctx.lineWidth=1.2;for(const side of [-1,1]){ctx.beginPath();ctx.moveTo(-len*.56,0);ctx.lineTo(-len*.79,side*3.4);ctx.stroke()}}
  ctx.restore();}
 for(const p of state.particles){
- if(p.kind==='contact'){
+ if(p.kind==='artilleryImpact'){
+  const a=Math.max(0,1-p.age),r=10+p.age*34;
+  ctx.fillStyle=`rgba(74,66,52,${a*.42})`;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle=`rgba(222,188,125,${a*.55})`;ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,r*.72,0,Math.PI*2);ctx.stroke();
+ }else if(p.kind==='contact'){
   const life=.58,a=Math.max(0,1-p.age/life),r=3+p.age*15;
   ctx.fillStyle=`rgba(174,151,112,${a*.26})`;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle=`rgba(225,206,169,${a*.48})`;ctx.lineWidth=.9;ctx.beginPath();ctx.arc(p.x,p.y,r*.72,0,Math.PI*2);ctx.stroke();
@@ -1211,7 +1244,7 @@ function sixSlots(){const spacingY=112,spacingX=102;return [[spacingX/2,-spacing
 function arrangeSix(){
  const s=selectedUnits();if(s.length!==6){notify('Elegí seis formaciones para ordenarlas 3 adelante y 3 detrás.');return}
  let gid=selectedGroup();if(!gid)gid=makeGroup();if(!gid)return;
- const g=state.groups.get(gid),squads=getGroupUnits(g),p={hoplite:0,macedonian:0,roman:0,carthaginian:0,norman:0,saxon:0,english:0,french:0,germanic:0,persian:0,cavalry:1,peltast:2,archer:3};
+ const g=state.groups.get(gid),squads=getGroupUnits(g),p={hoplite:0,macedonian:0,roman:0,carthaginian:0,norman:0,saxon:0,english:0,french:0,germanic:0,frenchLine:0,russianLine:0,persian:0,artillery:3,cavalry:1,peltast:2,archer:3};
  for(const u of squads)u.groupOverride=false;
  const sorted=[...squads].sort((a,b)=>(p[a.type]??2)-(p[b.type]??2)||a.id-b.id),slots=sixSlots();
  const offsets={};sorted.forEach((u,i)=>{offsets[u.id]=slots[i]});g.offsets=offsets;g.layout='3+3';
