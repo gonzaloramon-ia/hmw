@@ -676,20 +676,31 @@ function genDecor(){let random=rng(state.terrain.seed),items=[];for(let i=0;i<42
 function insideRect(x,y,r){return x>r.x&&y>r.y&&x<r.x+r.w&&y<r.y+r.h}
 function soilModifier(u){let m=1;for(const s of state.terrain.marsh)if(insideRect(u.x,u.y,s))m*=.56;for(const s of state.terrain.river)if(insideRect(u.x,u.y,s))m*=.77;for(const h of state.terrain.hills)if(insideRect(u.x,u.y,h))m*=.86;return m}
 function terrainDefense(u){for(const r of state.terrain.redoubts||[])if(insideRect(u.x,u.y,r))return 1.28;for(const h of state.terrain.hills)if(insideRect(u.x,u.y,h))return 1.12;return 1}
+function turnToward(u,heading,dt){
+ const delta=Math.atan2(Math.sin(heading-u.facing),Math.cos(heading-u.facing));
+ if(Math.abs(delta)<.035)return;
+ u.facing+=clamp(delta,-dt*2.2,dt*2.2);
+}
 function moveUnit(u,dt){if(!u.path.length||u.pathIndex>=u.path.length)return;let p=u.path[u.pathIndex],dx=p.x-u.x,dy=p.y-u.y,d=Math.hypot(dx,dy);if(d<5){u.pathIndex++;return}let form=u.formation==='column'?1.18:u.formation==='line'?.95:1;
  const pace=(u.side==='ally'&&u.movePace==='fast'&&!u.withdraw&&!u.routed)?1.42:1;
  let speed=TYPES[u.type].speed*COMBAT.pace*form*pace*soilModifier(u)*(u.cohesion<40?.85:1)*(u.routed?1.2:1);
  if(pace>1&&state.t-u.lastEngaged>1.5)u.cohesion=clamp(u.cohesion-dt*1.15,35,100);
  if(u.skirmishActive&&state.t<u.shotSlowUntil)speed*=u.shotSlowFactor;
- // A moving command group waits for its slowest squad instead of stretching into a long column.
+ // While marching safely, squads share the slowest pace and wait for stragglers.
+ let marchHeading=null;
  if(u.side==='ally'&&!u.withdraw&&!u.groupOverride){for(const g of state.groups.values())if(g.marching&&g.ids.includes(u.id)&&g.destination){
    const mates=getGroupUnits(g).filter(v=>!v.withdraw&&!v.groupOverride&&state.t-v.lastEngaged>2.2&&distToHostile(v)>95);
-   if(mates.length>1){const total=mates.reduce((n,v)=>n+dist(v,{x:g.destination.x+(g.offsets[v.id]?.x||0),y:g.destination.y+(g.offsets[v.id]?.y||0)}),0);
-    const average=total/mates.length,own=dist(u,{x:g.destination.x+(g.offsets[u.id]?.x||0),y:g.destination.y+(g.offsets[u.id]?.y||0)});
-    if(average-own>95)speed*=.48;
+   if(mates.length>1&&mates.includes(u)){
+    const slot=v=>({x:g.destination.x+(g.offsets[v.id]?.x||0),y:g.destination.y+(g.offsets[v.id]?.y||0)});
+    const remaining=mates.map(v=>dist(v,slot(v))),own=dist(u,slot(u));
+    const slowestPace=Math.min(...mates.map(v=>TYPES[v.type].speed*COMBAT.pace*(v.formation==='column'?1.18:v.formation==='line'?.95:1)*(v.movePace==='fast'?1.42:1)*soilModifier(v)*(v.cohesion<40?.85:1)));
+    speed=Math.min(speed,slowestPace);
+    const lag=Math.max(...remaining)-own;
+    if(lag>35)speed*=clamp(1-(lag-35)/135,.18,1);
+    marchHeading=g.heading;
    }
    break;
- }}let m=Math.min(d,speed*dt);let nx=u.x+dx/d*m,ny=u.y+dy/d*m;if(walkable(nx,ny)){u.x=nx;u.y=ny;u.facing=Math.atan2(dy,dx);
+ }}let m=Math.min(d,speed*dt);let nx=u.x+dx/d*m,ny=u.y+dy/d*m;if(walkable(nx,ny)){u.x=nx;u.y=ny;turnToward(u,marchHeading??Math.atan2(dy,dx),dt);
   if(u.movePace==='fast'&&!u.withdraw&&state.t-u.lastDust>.32){u.lastDust=state.t;state.particles.push({x:u.x-Math.cos(u.facing)*20,y:u.y-Math.sin(u.facing)*20+9,age:0,kind:'dust',vx:(Math.random()-.5)*8,vy:-2-Math.random()*4})}
  }else{u.pathIndex++}}
 function dealDamage(att,victim,effectiveness=1){
@@ -1364,7 +1375,8 @@ function arrangeSix(){
 }
 function commandGroup(g,p,isAttack=false){
  const units=getGroupUnits(g),offs=g.offsets||groupOffsets(units);
- g.destination={x:p.x,y:p.y};g.marching=true;g.assault=!!isAttack;g.orderTime=state.t;
+ const center={x:units.reduce((n,u)=>n+u.x,0)/units.length,y:units.reduce((n,u)=>n+u.y,0)/units.length};
+ g.destination={x:p.x,y:p.y};g.heading=Math.atan2(p.y-center.y,p.x-center.x);g.marching=true;g.assault=!!isAttack;g.orderTime=state.t;
  for(const u of units)u.groupOverride=false;
  for(const u of units){const o=offs[u.id]||{x:0,y:0};setGoal(u,{x:p.x+o.x,y:p.y+o.y},isAttack)}
  state.cmdMarker={x:p.x,y:p.y,t:state.t,kind:isAttack?'attack':'move'};updateHud();
